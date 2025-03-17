@@ -15,7 +15,6 @@ public class CharityEvent {
     private String name;
     private String category;
     private String description;
-    private String imageUrl;
     private long targetAmount;
     private long currentAmount;
     private List<Donation> donations;// Danh sách đóng góp
@@ -23,12 +22,11 @@ public class CharityEvent {
     public CharityEvent() {
     }
 
-    public CharityEvent(int id, String name, String category, String description, String imageUrl, long targetAmount, long currentAmount, List<Donation> donations) {
+    public CharityEvent(int id, String name, String category, String description, long targetAmount, long currentAmount, List<Donation> donations) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.description = description;
-        this.imageUrl = imageUrl;
         this.targetAmount = targetAmount;
         this.currentAmount = currentAmount;
         this.donations = donations;
@@ -66,13 +64,6 @@ public class CharityEvent {
         this.description = description;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 
     public long getTargetAmount() {
         return targetAmount;

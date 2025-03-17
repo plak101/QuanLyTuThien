@@ -214,7 +214,7 @@
 											"top": 258,
 											"width": 159,
 											"height": 13,
-											"text": "+int gender",
+											"text": "+String gender",
 											"horizontalAlignment": 0
 										}
 									],
@@ -757,24 +757,6 @@
 										},
 										{
 											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGVmi9EM8cA918=",
-											"_parent": {
-												"$ref": "AAAAAAGVlTzYe4Uuyk4="
-											},
-											"model": {
-												"$ref": "AAAAAAGVmi9EK8b9m/4="
-											},
-											"font": "Arial;13;0",
-											"parentStyle": true,
-											"left": 157,
-											"top": 458,
-											"width": 166.88330078125,
-											"height": 13,
-											"text": "+String imageUrl",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGVmi94O8cHdaY=",
 											"_parent": {
 												"$ref": "AAAAAAGVlTzYe4Uuyk4="
@@ -785,7 +767,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 157,
-											"top": 473,
+											"top": 458,
 											"width": 166.88330078125,
 											"height": 13,
 											"text": "+long targetAmount",
@@ -803,7 +785,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 157,
-											"top": 488,
+											"top": 473,
 											"width": 166.88330078125,
 											"height": 13,
 											"text": "+long currentAmount",
@@ -821,7 +803,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 157,
-											"top": 503,
+											"top": 488,
 											"width": 166.88330078125,
 											"height": 13,
 											"text": "«List<Donation>»+donations",
@@ -833,7 +815,7 @@
 									"left": 152,
 									"top": 393,
 									"width": 176.88330078125,
-									"height": 128
+									"height": 113
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -847,7 +829,7 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 152,
-									"top": 521,
+									"top": 506,
 									"width": 176.88330078125,
 									"height": 10
 								},
@@ -1241,7 +1223,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTOd+oQ26A8="
 							},
-							"name": "String address"
+							"name": "String address",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1249,7 +1232,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTOd+oQ26A8="
 							},
-							"name": "String phone"
+							"name": "String phone",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1257,7 +1241,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTOd+oQ26A8="
 							},
-							"name": "int gender"
+							"name": "String gender"
 						}
 					]
 				},
@@ -1283,7 +1267,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTq/6YTK1k8="
 							},
-							"name": "int id"
+							"name": "int id",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1291,7 +1276,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTq/6YTK1k8="
 							},
-							"name": "int userId"
+							"name": "int userId",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1299,7 +1285,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTq/6YTK1k8="
 							},
-							"name": "int eventId"
+							"name": "int eventId",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1307,7 +1294,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTq/6YTK1k8="
 							},
-							"name": "long amount"
+							"name": "long amount",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1315,7 +1303,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTq/6YTK1k8="
 							},
-							"name": "Date date"
+							"name": "Date date",
+							"type": ""
 						}
 					]
 				},
@@ -1333,7 +1322,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTzYeoUmLSQ="
 							},
-							"name": "int id"
+							"name": "int id",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1341,7 +1331,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTzYeoUmLSQ="
 							},
-							"name": "String name"
+							"name": "String name",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1349,7 +1340,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTzYeoUmLSQ="
 							},
-							"name": "String category"
+							"name": "String category",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1357,15 +1349,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTzYeoUmLSQ="
 							},
-							"name": "String description"
-						},
-						{
-							"_type": "UMLAttribute",
-							"_id": "AAAAAAGVmi9EK8b9m/4=",
-							"_parent": {
-								"$ref": "AAAAAAGVlTzYeoUmLSQ="
-							},
-							"name": "String imageUrl"
+							"name": "String description",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1373,7 +1358,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTzYeoUmLSQ="
 							},
-							"name": "long targetAmount"
+							"name": "long targetAmount",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1381,7 +1367,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGVlTzYeoUmLSQ="
 							},
-							"name": "long currentAmount"
+							"name": "long currentAmount",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -1390,7 +1377,8 @@
 								"$ref": "AAAAAAGVlTzYeoUmLSQ="
 							},
 							"name": "donations",
-							"stereotype": "List<Donation>"
+							"stereotype": "List<Donation>",
+							"type": ""
 						}
 					]
 				},

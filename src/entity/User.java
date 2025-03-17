@@ -15,13 +15,13 @@ public class User {
     private String name;
     private String address;
     private String phone;
-    private int gender;
+    private String gender;
     private Date birthDay;
 
     public User() {
     }
 
-    public User(int id, String name, String address, String phone, int gender, Date birthDay) {
+    public User(int id, String name, String address, String phone, String gender, Date birthDay) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -64,11 +64,11 @@ public class User {
         this.phone = phone;
     }
 
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

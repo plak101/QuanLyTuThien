@@ -190,7 +190,6 @@ jPanel4.add(l3, "panel3");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         CardLayout layout = (CardLayout) jPanel4.getLayout();

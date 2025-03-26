@@ -23,17 +23,17 @@ public class DataConnection {
     
     
     //#KET NOI DATABASE
-//    public  void connectionDB() throws FileNotFoundException, IOException, SQLException, ClassNotFoundException{
-//        properties = new Properties();
-//        properties.load(new FileInputStream("resource\\database.properties"));
-//        String url = properties.getProperty("url");
-//        String username = properties.getProperty("username");
-//        String password = properties.getProperty("password");
-//        String driver = properties.getProperty("driver");
-//        conn = DriverManager.getConnection(url, username, password);
-//        Class.forName(driver);
-//        System.out.println("Thanh cong");
-//    }
+    public  void connectionDB() throws FileNotFoundException, IOException, SQLException, ClassNotFoundException{
+        properties = new Properties();
+        properties.load(new FileInputStream("resource\\database.properties"));
+        String url = properties.getProperty("url");
+        String username = properties.getProperty("username");
+        String password = properties.getProperty("password");
+        String driver = properties.getProperty("driver");
+        conn = DriverManager.getConnection(url, username, password);
+        Class.forName(driver);
+        System.out.println("Thanh cong");
+    }
     
     
     public static Connection getConnection(){

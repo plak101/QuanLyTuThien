@@ -8,22 +8,26 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author phaml
  */
 public class CharityEventDAO implements ICharityEventDAO{
-    
+    Connection connection= null;
+    ResultSet rs = null;
+    PreparedStatement ps=null;
     // Lấy danh sách tất cả sự kiện từ thiện
+    @Override
     public List<CharityEvent> getEventList() {
+        connection =ConnectionDB.getConnection();
         List<CharityEvent> eventList = new ArrayList<>();
-        Connection conn = null;
-        ResultSet rs = null;
+
         try {
-            conn = DataConnection.getConnection();
             String query = "SELECT * FROM event";
-            Statement stmt = conn.createStatement();
-            rs = stmt.executeQuery(query);
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
             
             while (rs.next()) {
                 CharityEvent event = new CharityEvent(
@@ -42,26 +46,99 @@ public class CharityEventDAO implements ICharityEventDAO{
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
-            closeResources(conn, rs);
+            closeResources(connection, ps , rs);
         }
         return eventList;
     }
 
     @Override
     public boolean addEvent(CharityEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection connection =ConnectionDB.getConnection();
+        PreparedStatement ps = null;
+        String query = "INSERT INTO event (eventName, categoty, targetAmount, currentAmount, dateBegin, dateEnd, descripstion)"+
+                "VALUE (?, ?, ?, ?, ?, ?,?)";
+        
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, event.getName());
+            ps.setString(2, event.getCategory());
+            ps.setLong(3, event.getTargetAmount());
+            ps.setLong(4, event.getCurrentAmount());
+            ps.setDate(5, (Date) event.getDateBegin());
+            ps.setDate(6, (Date) event.getDateEnd());
+            ps.setString(7, event.getDescription());
+            return ps.executeUpdate()>0;
+        } catch (SQLException ex) {
+            Logger.getLogger(CharityEventDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }finally{
+            closeResources(connection, ps);
+        }
     }
 
     @Override
     public boolean updateEvent(CharityEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection connection =ConnectionDB.getConnection();
+        PreparedStatement ps = null;
+        String query = "UPDATE event SET eventName=?, category=?, targetAmount=?, currentAmount=?, dateBegin=?, dateEnd=?, description=?"+
+                "WHERE eventId=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, event.getName());
+            ps.setString(2, event.getCategory());
+            ps.setLong(3, event.getTargetAmount());
+            ps.setLong(4, event.getCurrentAmount());
+            ps.setDate(5, (Date) event.getDateBegin());
+            ps.setDate(6, (Date) event.getDateEnd());
+            ps.setString(7, event.getDescription());
+            return ps.executeUpdate()>0;
+        } catch (SQLException ex) {
+            Logger.getLogger(CharityEventDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }finally{
+            closeResources(connection, ps);
+        }
+
     }
 
-
-    private void closeResources(Connection conn, Statement st) {
+    @Override
+    public boolean deleteEvent(int eventId) {
+        Connection conn= null;
+        PreparedStatement ps = null;
+        String query = "DELETE FROM event WHERE eventId = ?";
+        try {
+            conn= ConnectionDB.getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, eventId);
+            return ps.executeUpdate()>0;
+        } catch (SQLException ex) {
+            Logger.getLogger(CharityEventDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }finally{
+            closeResources(conn, ps);
+        }
+        
+    }
+    
+    @Override
+    public void closeResources(Connection conn, PreparedStatement ps) {
+        try {
+            if (ps!=null) ps.close();
+            if (conn!=null) conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CharityEventDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 
-    private void closeResources(Connection conn, ResultSet rs) {
+    @Override
+    public void closeResources(Connection conn, PreparedStatement ps, ResultSet rs) {
+        try {
+            if (ps!=null) ps.close();
+            if (conn!=null) conn.close();
+            if (rs!=null) rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CharityEventDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 
 }

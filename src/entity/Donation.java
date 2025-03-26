@@ -12,15 +12,15 @@ import java.util.Date;
  */
 public class Donation {
     private int id; // ID tự tăng
-    private int userId;  // ID của người quyên góp
     private int eventId; // ID của sự kiện từ thiện
+    private int userId;  // ID của người quyên góp
     private long amount;
     private Date donationDate;
 
     public Donation() {
     }
 
-    public Donation(int id, int userId, int eventId, long amount, Date donationDate) {
+    public Donation(int id, int eventId, int userId, long amount, Date donationDate) {
         this.id = id;
         this.userId = userId;
         this.eventId = eventId;

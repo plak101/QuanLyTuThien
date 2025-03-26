@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model;
+package entity;
 
 import java.util.Date;
 import java.util.List;
@@ -18,24 +18,15 @@ public class CharityEvent {
     private String description;
     private long targetAmount;
     private long currentAmount;
-    private float progress;
+
     private Date dateBegin, dateEnd;
     private List<Donation> donations;// Danh sách đóng góp
 
     public CharityEvent() {
     }
 
-    public CharityEvent(int id, String name, String category, String description, long targetAmount, long currentAmount, List<Donation> donations) {
+    public CharityEvent(int id, String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
         this.id = id;
-        this.name = name;
-        this.category = category;
-        this.description = description;
-        this.targetAmount = targetAmount;
-        this.currentAmount = currentAmount;
-        this.donations = donations;
-    }
-
-    public CharityEvent(String name, String category, String description, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd) {
         this.name = name;
         this.category = category;
         this.description = description;
@@ -43,7 +34,16 @@ public class CharityEvent {
         this.currentAmount = currentAmount;
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
-        this.progress =(currentAmount/targetAmount)*100;
+    }
+
+    public CharityEvent(String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
+        this.name = name;
+        this.category = category;
+        this.description = description;
+        this.targetAmount = targetAmount;
+        this.currentAmount = currentAmount;
+        this.dateBegin = dateBegin;
+        this.dateEnd = dateEnd;
     }
 
     public Date getDateBegin() {

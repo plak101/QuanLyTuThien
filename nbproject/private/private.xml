@@ -5,8 +5,9 @@
         <group>
             <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/view/UserUI.java</file>
             <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/view/Main.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/view/MyDonationTest.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/view/DonationPanel.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/dao/CharityEventDAO.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/dao/ICharityEventDAO.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/entity/CharityEvent.java</file>
         </group>
     </open-files>
 </project-private>

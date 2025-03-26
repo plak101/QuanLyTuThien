@@ -74,7 +74,7 @@ join user u on d.userId= u.userId
 join event e on e.eventId = d.eventId
 order by donationId asc;
 
-SELECT *
+SELECT donationId, eventName, userName, amount, donationDate
 FROM qltt.donation d
 join user u on d.userId= u.userId
 join event e on e.eventId = d.eventId

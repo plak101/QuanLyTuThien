@@ -2,7 +2,7 @@ package view;
 
 
 import dao.DataConnection;
-import model.CharityEvent;
+import entity.CharityEvent;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.util.ArrayList;

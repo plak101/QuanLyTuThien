@@ -1,10 +1,11 @@
 package view;
 
 
-import dao.DataConnection;
+import dao.ConnectionDB;
 import entity.CharityEvent;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -62,9 +63,9 @@ public class UserUI extends javax.swing.JFrame {
         ResultSet rs = null;
       
         try {
-            conn = DataConnection.getConnection();
+            conn = ConnectionDB.getConnection();
             String cauLenhSQL = "SELECT * FROM event;";
-            rs = (ResultSet) DataConnection.thucThiLenhSelect(cauLenhSQL);
+            rs = (ResultSet) ConnectionDB.executeSelect(cauLenhSQL);
 
             //Tạo 1 DefaultTableModle lấy từ eventTable 
             DefaultTableModel eventModel = (DefaultTableModel) eventTable.getModel();
@@ -108,7 +109,7 @@ public class UserUI extends javax.swing.JFrame {
         ResultSet rs = null;
 
         try {
-            conn = DataConnection.getConnection();
+            conn = ConnectionDB.getConnection();
             String cauLenhSQL = ""
                     + "SELECT donationId, eventName, userName, amount, donationDate\n"
                     + "FROM qltt.donation d\n"
@@ -116,7 +117,7 @@ public class UserUI extends javax.swing.JFrame {
                     + "join event e on e.eventId = d.eventId\n"
                     + "order by donationId asc";
 
-            rs = DataConnection.thucThiLenhSelect(cauLenhSQL);
+            rs = ConnectionDB.executeSelect(cauLenhSQL);
 
             DefaultTableModel donationListModel = (DefaultTableModel) donationListTable.getModel();
             Object[] obj = new Object[9];
@@ -153,14 +154,14 @@ public class UserUI extends javax.swing.JFrame {
         ResultSet rs = null;
 
         try {
-            conn = DataConnection.getConnection();
+            conn = ConnectionDB.getConnection();
             String cauLenhSQL = "SELECT donationId, eventName, userName, amount, donationDate\n"
                     + "FROM qltt.donation d\n"
                     + "join user u on d.userId= u.userId\n"
                     + "join event e on e.eventId = d.eventId\n"
                     + "where d.userId =1\n"
                     + "order by donationId asc;";
-            rs = DataConnection.thucThiLenhSelect(cauLenhSQL);
+            rs = ConnectionDB.executeSelect(cauLenhSQL);
 
             DefaultTableModel myDonationModel = (DefaultTableModel) myDonationTable.getModel();
             Object[] obj = new Object[9];

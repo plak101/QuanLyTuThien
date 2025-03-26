@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS QLTT;
+CREATE DATABASE QLTT;
+USE QLTT;
+
 -- Xóa bảng nếu đã tồn tại
 DROP TABLE IF EXISTS Donation;
 DROP TABLE IF EXISTS Event;
@@ -10,7 +14,7 @@ CREATE TABLE User (
     address NVARCHAR(255),
     phone NVARCHAR(10),
     gender ENUM('Male', 'Female', 'Other'),
-    birthDay DATE
+    birthday DATE
 );
 
 -- Tạo bảng Event
@@ -18,20 +22,43 @@ CREATE TABLE Event (
     eventId INT PRIMARY KEY AUTO_INCREMENT, 
     eventName NVARCHAR(255) NOT NULL, 
     category NVARCHAR(100), 
-    description TEXT, 
     targetAmount BIGINT NOT NULL, 
     currentAmount BIGINT NOT NULL DEFAULT 0,
     dateBegin DATE NOT NULL,
-    dateEnd DATE NOT NULL,
-    CONSTRAINT chk_date CHECK (dateBegin < dateEnd) -- Nếu MySQL hỗ trợ CHECK
+    dateEnd DATE NOT NULL ,
+    CHECK (dateBegin < dateEnd),
+    description TEXT
 );
+CREATE TABLE Event (
+    eventId INT PRIMARY KEY AUTO_INCREMENT,
+    eventName NVARCHAR(255) NOT NULL,
+    category NVARCHAR(100),
+    targetAmount BIGINT NOT NULL,
+    currentAmount BIGINT NOT NULL DEFAULT 0,
+    dateBegin DATE NOT NULL,
+    dateEnd DATE NOT NULL,
+    description TEXT
+);
+
+DELIMITER //
+CREATE TRIGGER before_insert_event
+BEFORE INSERT ON Event
+FOR EACH ROW
+BEGIN
+    IF NEW.dateBegin >= NEW.dateEnd THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'dateBegin phải nhỏ hơn dateEnd';
+    END IF;
+END;
+//
+DELIMITER ;
 
 -- Tạo bảng Donation
 CREATE TABLE Donation (
     donationId INT PRIMARY KEY AUTO_INCREMENT, 
     userId INT NOT NULL, 
     eventId INT NOT NULL, 
-    amount BIGINT NOT NULL, 
+    amount BIGINT NOT NULL CHECK (amount>0), 
     donationDate DATE NOT NULL, 
     FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE, 
     FOREIGN KEY (eventId) REFERENCES Event(eventId) ON DELETE CASCADE
@@ -69,7 +96,7 @@ SELECT * FROM Donation;
 
 -- donation list
 SELECT donationId, eventName, userName, amount, donationDate
-FROM qltt.donation d
+FROM donation d
 join user u on d.userId= u.userId
 join event e on e.eventId = d.eventId
 order by donationId asc;
@@ -79,4 +106,10 @@ FROM qltt.donation d
 join user u on d.userId= u.userId
 join event e on e.eventId = d.eventId
 where d.userId =1
+order by donationId asc;
+
+-- get donationByUserId
+SELECT *
+FROM qltt.donation d
+where d.userId = ?
 order by donationId asc;

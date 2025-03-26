@@ -16,18 +16,18 @@ public class User {
     private String address;
     private String phone;
     private String gender;
-    private Date birthDay;
+    private Date birthday;
 
     public User() {
     }
 
-    public User(int id, String name, String address, String phone, String gender, Date birthDay) {
+    public User(int id, String name, String address, String phone, String gender, Date birthday) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.gender = gender;
-        this.birthDay = birthDay;
+        this.birthday = birthday;
     }
 
     
@@ -72,12 +72,12 @@ public class User {
         this.gender = gender;
     }
 
-    public Date getBirthDay() {
-        return birthDay;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
     
     

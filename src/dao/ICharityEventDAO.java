@@ -11,6 +11,7 @@ import java.sql.*;
  */
 public interface ICharityEventDAO {
     public List<CharityEvent> getEventList();
+    public CharityEvent getEventById(int eventId) ;
     public boolean addEvent(CharityEvent event);
     public boolean updateEvent(CharityEvent event);
     public boolean deleteEvent(int eventId);

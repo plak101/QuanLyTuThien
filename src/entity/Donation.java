@@ -11,6 +11,7 @@ import java.util.Date;
  * @author phaml
  */
 public class Donation {
+
     private int id; // ID tự tăng
     private int eventId; // ID của sự kiện từ thiện
     private int userId;  // ID của người quyên góp
@@ -24,6 +25,13 @@ public class Donation {
         this.id = id;
         this.userId = userId;
         this.eventId = eventId;
+        this.amount = amount;
+        this.donationDate = donationDate;
+    }
+
+    public Donation(int eventId, int userId, long amount, Date donationDate) {
+        this.eventId = eventId;
+        this.userId = userId;
         this.amount = amount;
         this.donationDate = donationDate;
     }
@@ -67,6 +75,5 @@ public class Donation {
     public void setDonationDate(Date donationDate) {
         this.donationDate = donationDate;
     }
-    
-    
+
 }

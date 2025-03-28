@@ -1,10 +1,12 @@
 package view;
 
 
+import dao.CharityEventDAO;
 import dao.ConnectionDB;
 import entity.CharityEvent;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
+import javax.swing.*;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -25,7 +27,10 @@ import javax.swing.JPanel;
 public class UserUI extends javax.swing.JFrame {
     private List<CharityEvent> eventList = new ArrayList();
     DefaultTableModel eventModel;
-    
+    CharityEventDAO eventDAO = new CharityEventDAO();
+    private int pos= -1;
+    private int userId=1;
+    private int selectedEventId =-1;
     //định dạng số và ngày
     DecimalFormat numberFormat = new DecimalFormat("#,###");
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
@@ -59,47 +64,21 @@ public class UserUI extends javax.swing.JFrame {
     
     //hien thi thong tin event
     public void showEventTable(){
-        Connection conn = null;
-        ResultSet rs = null;
-      
-        try {
-            conn = ConnectionDB.getConnection();
-            String cauLenhSQL = "SELECT * FROM event;";
-            rs = (ResultSet) ConnectionDB.executeSelect(cauLenhSQL);
-
-            //Tạo 1 DefaultTableModle lấy từ eventTable 
-            DefaultTableModel eventModel = (DefaultTableModel) eventTable.getModel();
-
-            //Tạo 1 mảng đồi tượng 9 phần tử để chứa giá trị các cột
-            Object[] obj = new Object[9];
-            while(rs.next()){
-                obj[0]= rs.getInt("eventId");
-                obj[1]= rs.getString("eventName");
-                obj[2]= rs.getString("category");
-                obj[3]= numberFormat.format(rs.getLong("currentAmount"));
-                obj[4]= numberFormat.format(rs.getLong("targetAmount"));
-                obj[5]= String.format("%.2f%%", ((float)rs.getLong("currentAmount")/rs.getLong("targetAmount"))*100);
-                obj[6]= dateFormat.format(rs.getDate("dateBegin"));
-                obj[7]= dateFormat.format(rs.getDate("dateEnd"));
-                obj[8]= rs.getString("description");
-
-                eventModel.addRow(obj);//Thêm vào eventTable
-                eventTable.setModel(eventModel);
-            } 
-        } catch (SQLException ex) {
-            Logger.getLogger(UserUI.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(new JFrame(), "Lỗi truy xuất");
-        }finally{
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(UserUI.class.getName()).log(Level.SEVERE, "Lỗi đóng kết nối!", ex);
-            }
+        List<CharityEvent> events = new ArrayList<>();
+        events= eventDAO.getEventList();
+        DefaultTableModel eventModel = (DefaultTableModel) eventTable.getModel();
+        Object[] obj = new Object[9];
+        for (CharityEvent event : events) {
+            obj[0] = event.getId();
+            obj[1] = event.getName();
+            obj[2] = event.getCategory();
+            obj[3] = numberFormat.format(event.getCurrentAmount());
+            obj[4] = numberFormat.format(event.getTargetAmount());
+            obj[5] = String.format("%.2f%%", ((float) event.getCurrentAmount()/ event.getTargetAmount()) * 100);
+            obj[6] = dateFormat.format(event.getDateBegin());
+            obj[7] = dateFormat.format(event.getDateEnd());
+            obj[8] = event.getDescription();
+            eventModel.addRow(obj);
         }
     }
     
@@ -377,6 +356,11 @@ public class UserUI extends javax.swing.JFrame {
         jpnRight.add(jpnDonationList, "card3");
 
         jpnTrangChu.setBackground(new java.awt.Color(255, 255, 255));
+        jpnTrangChu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jpnTrangChuMouseClicked(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -388,6 +372,12 @@ public class UserUI extends javax.swing.JFrame {
         });
 
         jbtDonate.setText("Quyên góp");
+        jbtDonate.setEnabled(false);
+        jbtDonate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtDonateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -427,6 +417,11 @@ public class UserUI extends javax.swing.JFrame {
             }
         });
         eventTable.setRowHeight(22);
+        eventTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                eventTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(eventTable);
         if (eventTable.getColumnModel().getColumnCount() > 0) {
             eventTable.getColumnModel().getColumn(0).setPreferredWidth(7);
@@ -510,13 +505,49 @@ public class UserUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         eventModel.setRowCount(0);
         showEventTable();
+        jbtDonate.setEnabled(false);
+        pos=-1;
+        selectedEventId =-1;
     }//GEN-LAST:event_jbtResetActionPerformed
 
     private void donationListTableAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_donationListTableAncestorAdded
         // TODO add your handling code here:
     }//GEN-LAST:event_donationListTableAncestorAdded
 
+//lay sự kiện click chuột vào bảng event-----------------
+    private void eventTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eventTableMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 1) {
+            pos = eventTable.getSelectedRow();
+            selectedEventId = -1;
+            if (pos != -1) {
+                selectedEventId = (int) eventTable.getValueAt(pos, 0);
+                jbtDonate.setEnabled(true);//bat nut quyen gop
+            }
+        }
 
+    }//GEN-LAST:event_eventTableMouseClicked
+
+    private void jbtDonateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDonateActionPerformed
+        // TODO add your handling code here:
+        if (selectedEventId !=-1){
+               CharityEvent event = eventDAO.getEventById(selectedEventId);
+               
+               if (event == null ){
+                   JOptionPane.showMessageDialog(null, "Không tìm thấy sự kiện!", "Lỗi",JOptionPane.ERROR_MESSAGE);
+               }
+               
+               DonateJDialog dialog = new DonateJDialog(this, true, event, userId);
+               dialog.setVisible(true);
+        }else{
+            
+        } 
+    }//GEN-LAST:event_jbtDonateActionPerformed
+
+    private void jpnTrangChuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnTrangChuMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jpnTrangChuMouseClicked
+           
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable donationListTable;
     private javax.swing.JTable eventTable;
@@ -525,7 +556,6 @@ public class UserUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JButton jbtDonate;

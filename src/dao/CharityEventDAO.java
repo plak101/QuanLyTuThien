@@ -19,6 +19,10 @@ public class CharityEventDAO implements ICharityEventDAO{
     ResultSet rs = null;
     PreparedStatement ps=null;
     // Lấy danh sách tất cả sự kiện từ thiện
+
+    public CharityEventDAO() {
+    }
+    
     @Override
     public List<CharityEvent> getEventList() {
         connection =ConnectionDB.getConnection();
@@ -78,8 +82,8 @@ public class CharityEventDAO implements ICharityEventDAO{
 
     @Override
     public boolean updateEvent(CharityEvent event) {
-        Connection connection =ConnectionDB.getConnection();
-        PreparedStatement ps = null;
+        connection =ConnectionDB.getConnection();
+        ps = null;
         String query = "UPDATE event SET eventName=?, category=?, targetAmount=?, currentAmount=?, dateBegin=?, dateEnd=?, description=?"+
                 "WHERE eventId=?";
         try {
@@ -91,6 +95,7 @@ public class CharityEventDAO implements ICharityEventDAO{
             ps.setDate(5, (Date) event.getDateBegin());
             ps.setDate(6, (Date) event.getDateEnd());
             ps.setString(7, event.getDescription());
+            ps.setInt(8, event.getId());
             return ps.executeUpdate()>0;
         } catch (SQLException ex) {
             Logger.getLogger(CharityEventDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,4 +146,34 @@ public class CharityEventDAO implements ICharityEventDAO{
         } 
     }
 
+    @Override
+    public CharityEvent getEventById(int eventId) {
+        CharityEvent event = null;
+        String query = "SELECT * FROM event WHERE eventId=?";
+        connection = ConnectionDB.getConnection();
+        try {
+            ps= connection.prepareStatement(query);
+            ps.setInt(1, eventId);
+            rs= ps.executeQuery();
+            if (rs.next()){
+                event = new CharityEvent(
+                        rs.getInt("eventId"),
+                        rs.getString("eventName"),
+                        rs.getString("category"),
+                        rs.getLong("targetAmount"),
+                        rs.getLong("currentAmount"),
+                        rs.getDate("dateBegin"),
+                        rs.getDate("dateEnd"),
+                        rs.getString("description")
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CharityEventDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } finally{
+            closeResources(connection, ps, rs);
+        }
+        return event;
+
+    }
 }

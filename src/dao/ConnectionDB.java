@@ -52,7 +52,7 @@ public class ConnectionDB {
             String driver = properties.getProperty("driver");
             Class.forName(driver);
             connection = DriverManager.getConnection(url, username, password);
-            System.out.println("Kết nối MYSQL thành công");
+//            System.out.println("Kết nối MYSQL thành công");
             return connection;
 
         } catch (ClassNotFoundException ex) {

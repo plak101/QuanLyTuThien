@@ -15,21 +15,22 @@ import java.util.logging.Logger;
  *
  * @author phaml
  */
-public class UserDAO implements IUserDAO{
+public class UserDAO implements IUserDAO {
+
     Connection conn = null;
-    PreparedStatement ps= null;
-    ResultSet rs=null;
-    
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
     @Override
     public List<User> getAllUser() {
         List<User> users = new ArrayList<>();
-        conn= ConnectionDB.getConnection();
+        conn = ConnectionDB.getConnection();
         String query = "SELECT * FROM user";
         try {
-            ps= conn.prepareStatement(query);
-            rs= ps.executeQuery();
-            
-            while( rs.next()){
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
                 User user = new User(
                         rs.getInt("userId"),
                         rs.getString("userName"),
@@ -38,7 +39,7 @@ public class UserDAO implements IUserDAO{
                         rs.getString("gender"),
                         rs.getDate("birthday")
                 );
-                
+
                 users.add(user);
             }
         } catch (SQLException ex) {
@@ -60,11 +61,11 @@ public class UserDAO implements IUserDAO{
             ps.setString(3, user.getPhone());
             ps.setString(4, user.getGender());
             ps.setDate(5, (Date) user.getBirthday());
-            return ps.executeUpdate()>0;
+            return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             closeResources(conn, ps);
         }
     }
@@ -72,22 +73,22 @@ public class UserDAO implements IUserDAO{
     @Override
     public boolean updateUser(User user) {
         String query = "UPDATE user SET userName = ?, address=?, phone=?, gender=?, birthday=?";
-        conn= ConnectionDB.getConnection();
+        conn = ConnectionDB.getConnection();
         try {
-            ps =conn.prepareStatement(query);
+            ps = conn.prepareStatement(query);
             ps.setString(1, user.getName());
             ps.setString(2, user.getAddress());
             ps.setString(3, user.getPhone());
             ps.setString(4, user.getGender());
             ps.setDate(4, (Date) user.getBirthday());
-            return ps.executeUpdate()>0;
+            return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             closeResources(conn, ps);
         }
-        
+
     }
 
     @Override
@@ -97,14 +98,14 @@ public class UserDAO implements IUserDAO{
         try {
             ps = conn.prepareStatement(query);
             ps.setInt(1, userId);
-            return ps.executeUpdate()>0;
+            return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             closeResources(conn, ps);
         }
-        
+
     }
 
     @Override
@@ -137,5 +138,33 @@ public class UserDAO implements IUserDAO{
             Logger.getLogger(CharityEventDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    @Override
+    public User getUserById(int userId) {
+        User user = null;
+        String sql = "SELECT * FROM user WHERE userId =?";
+        conn = ConnectionDB.getConnection();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+            rs= ps.executeQuery();
+            if (rs.next()){
+                user = new User(
+                        rs.getInt("userId"),
+                        rs.getString("userName"),
+                        rs.getString("address"),
+                        rs.getString("phone"),
+                        rs.getString("gender"),
+                        rs.getDate("birthday")
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            closeResources(conn, ps, rs);
+            return user;
+        }
+
+    }
+
 }

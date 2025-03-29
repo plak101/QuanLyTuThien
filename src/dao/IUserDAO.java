@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface IUserDAO {
     public List<User> getAllUser();
+    public User getUserById(int userId);
+    
     public boolean addUser(User user);
     public boolean updateUser(User user);
     public boolean deleteUser(int userId);

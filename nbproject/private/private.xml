@@ -3,18 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/frontend_User/DonateJDialog.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/frontend_User/Main.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/dao/CharityEventDAO.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/dao/ICharityEventDAO.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/frontend_User/UserUI.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/dao/DonationDAO.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/entity/Donation.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/dao/ConnectionDB.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/test/UI/Main.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/dao/UserDAO.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/dao/IUserDAO.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/frontend_User/DonationPanel.java</file>
+            <file>file:/C:/Users/ngank/Documents/GitHub/QuanLyTuThien/src/frontend/Main.java</file>
+            <file>file:/C:/Users/ngank/Documents/GitHub/QuanLyTuThien/src/frontend_User/DonateJDialog.java</file>
+            <file>file:/C:/Users/ngank/Documents/GitHub/QuanLyTuThien/src/frontend_User/DonationPanel.java</file>
+            <file>file:/C:/Users/ngank/Documents/GitHub/QuanLyTuThien/src/frontend_User/GradientPanel.java</file>
+            <file>file:/C:/Users/ngank/Documents/GitHub/QuanLyTuThien/src/frontend_User/MyDonationTest.java</file>
+            <file>file:/C:/Users/ngank/Documents/GitHub/QuanLyTuThien/src/frontend_User/ProfilePanel.java</file>
+            <file>file:/C:/Users/ngank/Documents/GitHub/QuanLyTuThien/src/frontend_User/UserUI.java</file>
         </group>
     </open-files>
 </project-private>

@@ -1,5 +1,6 @@
 package charity.repository;
 
+import charity.model.Gender;
 import charity.model.User;
 import java.sql.Connection;
 import java.sql.Date;
@@ -40,7 +41,7 @@ public class UserRepository implements IUserRepository {
                         rs.getString("userName"),
                         rs.getString("address"),
                         rs.getString("phone"),
-                        rs.getString("gender"),
+                        Gender.valueOf(rs.getString("gender")),
                         rs.getDate("birthday")
                 );
 
@@ -53,7 +54,35 @@ public class UserRepository implements IUserRepository {
             return users;
         }
     }
-
+    
+//    public List<User> getAllUser() {
+//        List<User> users = new ArrayList<>();
+//        conn = ConnectionDB.getConnection();
+//        String query = "SELECT * FROM user";
+//        try {
+//            ps = conn.prepareStatement(query);
+//            rs = ps.executeQuery();
+//
+//            while (rs.next()) {
+//                User user = new User(
+//                        rs.getInt("userId"),
+//                        rs.getString("userName"),
+//                        rs.getString("address"),
+//                        rs.getString("phone"),
+//                        Gender.valueOf(rs.getString("gender")),
+//                        rs.getDate("birthday")
+//                );
+//
+//                users.add(user);
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            closeResources(conn, ps, rs);
+//            return users;
+//        }
+//    }
+//    
     @Override
     public boolean addUser(User user) {
         String query = "UPDATE user SET userName=?, address=?, phone=?, gender=?, birthday=?";
@@ -63,7 +92,7 @@ public class UserRepository implements IUserRepository {
             ps.setString(1, user.getName());
             ps.setString(2, user.getAddress());
             ps.setString(3, user.getPhone());
-            ps.setString(4, user.getGender());
+            ps.setObject(4, user.getGender());
             ps.setDate(5, (Date) user.getBirthday());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
@@ -83,7 +112,7 @@ public class UserRepository implements IUserRepository {
             ps.setString(1, user.getName());
             ps.setString(2, user.getAddress());
             ps.setString(3, user.getPhone());
-            ps.setString(4, user.getGender());
+            ps.setObject(4, user.getGender());
             ps.setDate(4, (Date) user.getBirthday());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
@@ -158,7 +187,7 @@ public class UserRepository implements IUserRepository {
                         rs.getString("userName"),
                         rs.getString("address"),
                         rs.getString("phone"),
-                        rs.getString("gender"),
+                        Gender.valueOf(rs.getString("gender")),
                         rs.getDate("birthday")
                 );
             }

@@ -113,3 +113,11 @@ SELECT *
 FROM qltt.donation d
 where d.userId = ?
 order by donationId asc;
+
+INSERT INTO Event (eventName, category, description, targetAmount, currentAmount, dateBegin, dateEnd) VALUES
+('Quyên góp từ thiện 4', 'Giáo dục', 'Hỗ trợ trẻ em nghèo đến trường', 50000000, 1000000, '2025-03-01', '2025-04-01');
+
+INSERT INTO Event (eventName, category, description, targetAmount, currentAmount, dateBegin, dateEnd) VALUES
+('Quyên góp từ thiện 67', 'Giáo dục', 'Hỗ trợ trẻ em nghèo đến trường', 50000000, 1000000, '2024-03-01', '2024-04-01');
+SELECT * FROM event
+ WHERE dateEnd > CURRENT_DATE

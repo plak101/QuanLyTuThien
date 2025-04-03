@@ -18,17 +18,7 @@ CREATE TABLE User (
 );
 
 -- Tạo bảng Event
-CREATE TABLE Event (
-    eventId INT PRIMARY KEY AUTO_INCREMENT, 
-    eventName NVARCHAR(255) NOT NULL, 
-    category NVARCHAR(100), 
-    targetAmount BIGINT NOT NULL, 
-    currentAmount BIGINT NOT NULL DEFAULT 0,
-    dateBegin DATE NOT NULL,
-    dateEnd DATE NOT NULL ,
-    CHECK (dateBegin < dateEnd),
-    description TEXT
-);
+
 CREATE TABLE Event (
     eventId INT PRIMARY KEY AUTO_INCREMENT,
     eventName NVARCHAR(255) NOT NULL,

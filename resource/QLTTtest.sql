@@ -13,7 +13,7 @@ CREATE TABLE User (
     userName NVARCHAR(100) NOT NULL,
     address NVARCHAR(255),
     phone NVARCHAR(10),
-    gender ENUM('Male', 'Female', 'Other'),
+    gender ENUM('Nam', 'Nữ'),
     birthday DATE
 );
 
@@ -69,9 +69,9 @@ DELETE FROM Event;
 DELETE FROM User;
 -- thêm dữ liệu vào bảng User
 INSERT INTO User (userName, address, phone, gender, birthDay) VALUES
-('Nguyễn Văn A', 'Hà Nội', '0123456789', 'Male', '1990-05-10'),
-('Trần Thị B', 'Hồ Chí Minh', '0987654321', 'Female', '1995-08-20'),
-('Lê Văn C', 'Đà Nẵng', '0369852147', 'Male', '1988-12-05');
+('Nguyễn Văn A', 'Hà Nội', '0123456789', 'Nam', '1990-05-10'),
+('Trần Thị B', 'Hồ Chí Minh', '0987654321', 'Nữ', '1995-08-20'),
+('Lê Văn C', 'Đà Nẵng', '0369852147', 'Nam', '1988-12-05');
 
 -- thêm dữ liệu vào bảng Event
 INSERT INTO Event (eventName, category, description, targetAmount, currentAmount, dateBegin, dateEnd) VALUES

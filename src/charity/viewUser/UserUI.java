@@ -56,7 +56,11 @@ public class UserUI extends javax.swing.JFrame {
         //1. Main 
         MainPanel mainPanel = new MainPanel(this, userId);
         jpnRight.add(mainPanel, "mainPanel");
-
+        
+        //2.Donation List
+        DonationListPanel donationListPanel = new DonationListPanel(this, userId);
+        jpnRight.add(donationListPanel, "donationListPanel");
+        
         jpnRight.add(jpnDonation, "donationList");
         jpnRight.add(jpnMyDonation, "myDonationList");
 //        jpnRight.add(jpnAccount, "account");
@@ -434,7 +438,7 @@ public class UserUI extends javax.swing.JFrame {
 
     private void jpnDonationOptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnDonationOptionMouseClicked
         CardLayout cardLayout = (CardLayout) jpnRight.getLayout();
-        cardLayout.show(jpnRight, "donationList");
+        cardLayout.show(jpnRight, "donationListPanel");
 
         jpnMainOption.setOpaque(false);
         jpnDonationOption.setOpaque(true);

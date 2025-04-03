@@ -1,5 +1,6 @@
 package charity.viewUser;
 
+import charity.model.Gender;
 import charity.model.User;
 import charity.repository.UserRepository;
 import java.text.SimpleDateFormat;
@@ -28,7 +29,7 @@ public class ProfilePanel extends javax.swing.JPanel {
         txtAddress.setText(user.getAddress());
         txtBirthday.setText(dateFormat.format(user.getBirthday()));
         txtPhone.setText(user.getPhone());
-        if (user.getGender() == "Nam") {
+        if (user.getGender() == Gender.Nam) {
             jrbtMale.setSelected(true);
         } else {
             jrbtFemale.setSelected(true);

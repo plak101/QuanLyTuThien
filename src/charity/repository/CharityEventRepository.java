@@ -1,6 +1,8 @@
 package charity.repository;
 
+import charity.repository.IRepository.ICharityEventRepository;
 import charity.model.CharityEvent;
+import charity.utils.DBUtils;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -196,7 +198,7 @@ public class CharityEventRepository implements ICharityEventRepository {
         try {
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 events.add(new CharityEvent(
                         rs.getInt("eventId"),
                         rs.getString("eventName"),
@@ -210,7 +212,7 @@ public class CharityEventRepository implements ICharityEventRepository {
             }
         } catch (SQLException ex) {
             Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             closeResources(connection, ps, rs);
         }
         return events;
@@ -218,13 +220,13 @@ public class CharityEventRepository implements ICharityEventRepository {
 
     @Override
     public List<CharityEvent> getExpiredEventList() {
-            List<CharityEvent> events = new ArrayList<>();
+        List<CharityEvent> events = new ArrayList<>();
         connection = ConnectionDB.getConnection();
         String sql = "SELECT * FROM event WHERE dateEnd < CURRENT_DATE";
         try {
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 events.add(new CharityEvent(
                         rs.getInt("eventId"),
                         rs.getString("eventName"),
@@ -237,11 +239,33 @@ public class CharityEventRepository implements ICharityEventRepository {
                 ));
             }
         } catch (SQLException ex) {
+            DBUtils.showSQLError(ex, "Lỗi");
+        } finally {
+            closeResources(connection, ps, rs);
+        }
+        return events;
+    }
+
+    @Override
+    public String getEventNameById(int eventId) {
+        connection = ConnectionDB.getConnection();
+        String sql = "SELECT eventname FROM event WHERE eventId=?";
+
+        try {
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, eventId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("eventName");
+            }else{
+                return null;
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             closeResources(connection, ps, rs);
         }
-        return events;
+        return null;
     }
 
 }

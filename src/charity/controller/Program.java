@@ -13,8 +13,8 @@ import charity.viewUser.UserUI;
 public class Program {
         public Program() {
 
-        int userId = 1;
-        UserUI userUI = new UserUI();
+        int userId = 4;
+        UserUI userUI = new UserUI(userId);
         userUI.setVisible(true);
     }
 }

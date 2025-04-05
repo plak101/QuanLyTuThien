@@ -1,8 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package UI;
+
+import charity.model.User;
+import charity.service.UserService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,7 +17,30 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     public Main() {
-        initComponents();
+        User user = new User();
+        user.setName("Nguyễn Văn A");
+        user.setAddress("123 Đường ABC");
+        user.setPhone("0987654321");
+        user.setGender("Nam"); // Dùng Enum
+         // Chuyển từ String thành java.sql.Date
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            java.util.Date utilDate;
+        try {
+            utilDate = sdf.parse("10/01/2005");
+                        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            user.setBirthday(sqlDate);
+        } catch (ParseException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        UserService u = new UserService();
+        boolean success = u.addUser(user);
+        if (success) {
+            System.out.println("Thêm người dùng thành công!");
+        } else {
+            System.out.println("Lỗi khi thêm người dùng.");
+        }
+
     }
 
     /**
@@ -67,7 +93,7 @@ public class Main extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
- 
+
     /**
      * @param args the command line arguments
      */

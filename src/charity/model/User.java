@@ -4,7 +4,7 @@
  */
 package charity.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -15,13 +15,13 @@ public class User {
     private String name;
     private String address;
     private String phone;
-    private Gender gender;
+    private String gender;
     private Date birthday;
 
     public User() {
     }
 
-    public User(int id, String name, String address, String phone, Gender gender, Date birthday) {
+    public User(int id, String name, String address, String phone, String gender, Date birthday) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -64,11 +64,11 @@ public class User {
         this.phone = phone;
     }
 
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

@@ -182,9 +182,6 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="L&#xe0;m m&#x1edb;i"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtResetActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jbtDonate">
               <Properties>
@@ -194,9 +191,6 @@
                 <Property name="text" type="java.lang.String" value="Quy&#xea;n g&#xf3;p"/>
                 <Property name="opaque" type="boolean" value="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtDonateActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -267,9 +261,6 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="H&#x1ebf;t h&#x1ea1;n"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtExpiredActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton5">
               <Properties>
@@ -283,9 +274,6 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;ang ho&#x1ea1;t &#x111;&#x1ed9;ng"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtActiveActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>

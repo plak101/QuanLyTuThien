@@ -1,5 +1,6 @@
 package charity.viewUser;
 
+import charity.formatData.IFormatData;
 import charity.model.CharityEvent;
 import charity.model.User;
 import charity.repository.CharityEventRepository;
@@ -17,7 +18,7 @@ import javax.swing.*;
  *
  * @author phaml
  */
-public class UserUI extends javax.swing.JFrame {
+public class UserUI extends javax.swing.JFrame implements IFormatData{
 
     private List<CharityEvent> eventList = new ArrayList();
     DefaultTableModel eventModel;
@@ -26,11 +27,10 @@ public class UserUI extends javax.swing.JFrame {
     private int pos = -1;
     private int userId = 1;
     private int selectedEventId = -1;
-    //định dạng số và ngày
-    DecimalFormat numberFormat = new DecimalFormat("#,###");
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
 
-    public UserUI() {
+
+    public UserUI(int userId) {
+        this.userId = userId;
         initComponents();
         loadData();
         setupCardLayout();
@@ -41,12 +41,13 @@ public class UserUI extends javax.swing.JFrame {
     public void loadData() {
         //hien thi ten user
         User user = userDAO.getUserById(userId);
-        txtUserName.setText(user.getName());
 
-        //hien thi du lieu len table
-//        showEventTable();
-//        showDonationListTable();
-//        showMyDonationTable();
+        if (user == null) {
+            txtUserName.setText("USER00" + userId);
+        } else {
+            txtUserName.setText(user.getName());
+        }
+
     }
 
     //2. cai dat cardlayout
@@ -56,18 +57,19 @@ public class UserUI extends javax.swing.JFrame {
         //1. Main 
         MainPanel mainPanel = new MainPanel(this, userId);
         jpnRight.add(mainPanel, "mainPanel");
-        
+
         //2.Donation List
         DonationListPanel donationListPanel = new DonationListPanel(this, userId);
         jpnRight.add(donationListPanel, "donationListPanel");
-        
-        jpnRight.add(jpnDonation, "donationList");
-        jpnRight.add(jpnMyDonation, "myDonationList");
-//        jpnRight.add(jpnAccount, "account");
 
-        //Profile
-        ProfilePanel profilePanel = new ProfilePanel(userId);
-        jpnRight.add(profilePanel, "profilePanel");
+        //3.MyDonation
+        MyDonationPanel myDonationPanel = new MyDonationPanel(this, userId);
+        jpnRight.add(myDonationPanel, "myDonationPanel");
+
+        //4 profile
+        InforPanel inforPanel = new InforPanel(this, userId);
+        jpnRight.add(inforPanel, "inforPanel");
+
     }
 
 //    //#HIEN THI DONATION LIST
@@ -171,8 +173,6 @@ public class UserUI extends javax.swing.JFrame {
 
         popupMenu1 = new java.awt.PopupMenu();
         jpnRight = new javax.swing.JPanel();
-        jpnMyDonation = new javax.swing.JPanel();
-        jpnDonation = new javax.swing.JPanel();
         jpnLeft = new charity.viewUser.GradientPanel();
         jPanel2 = new javax.swing.JPanel();
         txtUserName = new javax.swing.JTextField();
@@ -188,40 +188,9 @@ public class UserUI extends javax.swing.JFrame {
         popupMenu1.setLabel("popupMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1300, 600));
 
         jpnRight.setPreferredSize(new java.awt.Dimension(1300, 840));
         jpnRight.setLayout(new java.awt.CardLayout());
-
-        jpnMyDonation.setBackground(new java.awt.Color(204, 204, 255));
-
-        javax.swing.GroupLayout jpnMyDonationLayout = new javax.swing.GroupLayout(jpnMyDonation);
-        jpnMyDonation.setLayout(jpnMyDonationLayout);
-        jpnMyDonationLayout.setHorizontalGroup(
-            jpnMyDonationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jpnMyDonationLayout.setVerticalGroup(
-            jpnMyDonationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jpnRight.add(jpnMyDonation, "card4");
-
-        jpnDonation.setBackground(new java.awt.Color(204, 255, 255));
-
-        javax.swing.GroupLayout jpnDonationLayout = new javax.swing.GroupLayout(jpnDonation);
-        jpnDonation.setLayout(jpnDonationLayout);
-        jpnDonationLayout.setHorizontalGroup(
-            jpnDonationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jpnDonationLayout.setVerticalGroup(
-            jpnDonationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jpnRight.add(jpnDonation, "card3");
 
         jPanel2.setOpaque(false);
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 40));
@@ -363,9 +332,7 @@ public class UserUI extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jpnInforOption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jpnLeftLayout.createSequentialGroup()
-                .addComponent(jpnMyDonationOption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(jpnMyDonationOption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpnLeftLayout.setVerticalGroup(
             jpnLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,13 +341,13 @@ public class UserUI extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(113, 113, 113)
                 .addComponent(jpnMainOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
+                .addGap(2, 2, 2)
                 .addComponent(jpnDonationOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(2, 2, 2)
                 .addComponent(jpnMyDonationOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(2, 2, 2)
                 .addComponent(jpnInforOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(231, Short.MAX_VALUE))
+                .addContainerGap(242, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -455,7 +422,7 @@ public class UserUI extends javax.swing.JFrame {
 
     private void jpnMyDonationOptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnMyDonationOptionMouseClicked
         CardLayout cardLayout = (CardLayout) jpnRight.getLayout();
-        cardLayout.show(jpnRight, "myDonationList");
+        cardLayout.show(jpnRight, "myDonationPanel");
 
         jpnMainOption.setOpaque(false);
         jpnDonationOption.setOpaque(false);
@@ -472,7 +439,7 @@ public class UserUI extends javax.swing.JFrame {
 
     private void jpnInforOptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnInforOptionMouseClicked
         CardLayout cardLayout = (CardLayout) jpnRight.getLayout();
-        cardLayout.show(jpnRight, "profilePanel");
+        cardLayout.show(jpnRight, "inforPanel");
 
         jpnMainOption.setOpaque(false);
         jpnDonationOption.setOpaque(false);
@@ -493,12 +460,10 @@ public class UserUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jpnDonation;
     private javax.swing.JPanel jpnDonationOption;
     private javax.swing.JPanel jpnInforOption;
     private charity.viewUser.GradientPanel jpnLeft;
     private javax.swing.JPanel jpnMainOption;
-    private javax.swing.JPanel jpnMyDonation;
     private javax.swing.JPanel jpnMyDonationOption;
     private javax.swing.JPanel jpnRight;
     private java.awt.PopupMenu popupMenu1;

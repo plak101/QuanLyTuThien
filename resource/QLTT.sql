@@ -53,10 +53,34 @@ CREATE TABLE Donation (
     FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE, 
     FOREIGN KEY (eventId) REFERENCES Event(eventId) ON DELETE CASCADE
 );
+-- Tao bang to chuc
+CREATE TABLE Organization (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    hotline VARCHAR(20) NOT NULL,
+    address VARCHAR(255) NOT NULL
+);
+
+-- tao bang su kien da ban giao
+CREATE TABLE AssignedEvent (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    eventId int NOT NULL,
+    organizationId INT NOT NULL,
+    assignedDate DATE NOT NULL,
+	FOREIGN KEY (eventId) REFERENCES Event(eventId) ON DELETE CASCADE,
+    FOREIGN KEY (organizationId) REFERENCES Organization(id) ON DELETE CASCADE
+);
+
+
 -- xóa dữ liêu để tạo mới 
 DELETE FROM Donation;
 DELETE FROM Event;
 DELETE FROM User;
+DELETE FROM AssignedEvent;
+DELETE FROM Organization;
+
+
 -- thêm dữ liệu vào bảng User
 INSERT INTO User (userName, address, phone, gender, birthDay) VALUES
 ('Nguyễn Văn A', 'Hà Nội', '0123456789', 'Nam', '1990-05-10'),
@@ -70,6 +94,8 @@ INSERT INTO Event (eventName, category, description, targetAmount, currentAmount
 ('Quyên góp xây nhà tình thương', 'Nhà ở', 'Xây nhà cho hộ nghèo', 100000000,300000,  '2025-03-10', '2025-06-01');
 INSERT INTO Event (eventName, category, description, targetAmount, currentAmount, dateBegin, dateEnd) VALUES
 ('Quyên góp từ thiện 2', 'Giáo dục', 'Hỗ trợ trẻ em nghèo đến trường', 50000000, 1000000, '2025-03-01', '2025-04-01');
+ 
+ 
  -- thêm dữ liệu vào bảng donation
  INSERT INTO Donation (userId, eventId, amount, donationDate) VALUES
 (1, 1, 5000000, '2025-03-05'),
@@ -79,11 +105,25 @@ INSERT INTO Event (eventName, category, description, targetAmount, currentAmount
 (2, 2, 5000000, '2025-03-15'),
 (3, 3, 15000000, '2025-03-20');
 
+-- Them du lieu vao bang to chuc
+INSERT INTO Organization (name, email, hotline, address) VALUES
+('Tổ chức A', 'contact@orga.com', '0901234567', '123 Đường ABC, Hà Nội'),
+('Tổ chức B', 'info@orgb.com', '0912345678', '456 Đường XYZ, TP HCM'),
+('Tổ chức C', 'support@orgc.com', '0987654321', '789 Đường LMN, Đà Nẵng');
+
+-- Them du lieu vao bang su kien da ban giao
+INSERT INTO AssignedEvent (organizationId, assignedDate) VALUES
+(1, '2024-04-01'),
+(2, '2024-04-02'),
+(3, '2024-04-03'),
+(1, '2024-04-04'); -- Tổ chức A nhận thêm một sự kiện khác
+
 -- Xem dữ liệu trong bảng Event
 SELECT * FROM Event;
 SELECT * FROM User;
 SELECT * FROM Donation;
-
+SELECT * FROM organization;
+SELECT * FROM assignedevent;
 -- donation list
 SELECT donationId, eventName, userName, amount, donationDate
 FROM donation d
@@ -99,10 +139,10 @@ where d.userId =1
 order by donationId asc;
 
 -- get donationByUserId
-SELECT *
-FROM qltt.donation d
-where d.userId = ?
-order by donationId asc;
+-- SELECT *
+-- FROM qltt.donation d
+-- where d.userId = ?
+-- order by donationId asc;
 
 INSERT INTO Event (eventName, category, description, targetAmount, currentAmount, dateBegin, dateEnd) VALUES
 ('Quyên góp từ thiện 4', 'Giáo dục', 'Hỗ trợ trẻ em nghèo đến trường', 50000000, 1000000, '2025-03-01', '2025-04-01');

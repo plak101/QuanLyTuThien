@@ -4,6 +4,7 @@
  */
 package charity.repository;
 
+import charity.repository.IRepository.IDonationRepository;
 import charity.model.Donation;
 import java.sql.*;
 import java.util.ArrayList;
@@ -110,16 +111,15 @@ public class DonationRepository implements IDonationRepository {
 
     @Override
     public boolean addDonation(Donation donation) {
-        String query = "INSERT INTO donation (donationId, eventId, userId, amount, donationDate)"+
-                "VALUES(?,?,?,?,?)";
+        String query = "INSERT INTO donation ( eventId, userId, amount, donationDate)"+
+                "VALUES(?,?,?,?)";
         conn = ConnectionDB.getConnection();
         try {
             ps = conn.prepareStatement(query);
-            ps.setInt(1, donation.getId());
-            ps.setInt(2, donation.getEventId());
-            ps.setInt(3, donation.getUserId());
-            ps.setLong(4, donation.getAmount());
-            ps.setDate(5, (Date) donation.getDonationDate());
+            ps.setInt(1, donation.getEventId());
+            ps.setInt(2, donation.getUserId());
+            ps.setLong(3, donation.getAmount());
+            ps.setDate(4, (Date) donation.getDonationDate());
             return ps.executeUpdate()>0;
         } catch (SQLException ex) {
             Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);

@@ -1,15 +1,20 @@
-
 package charity.viewUser;
+
+import charity.UserController.DonationListController;
+import com.sun.source.tree.DoWhileLoopTree;
 import javax.swing.JFrame;
 
-
 public class DonationListPanel extends javax.swing.JPanel {
-    
+
     private int userId;
-    
+    private DonationListController controller = null;
+
     public DonationListPanel(JFrame parent, int userID) {
         initComponents();
-        
+        this.userId = userID;
+        controller= new DonationListController(txtSearch, jrbtId, jrbtEvent, jrbtUser, jbtReset, jpnTable);
+        controller.setDonationListTable();
+        controller.setEvent();
     }
 
     /**
@@ -21,45 +26,21 @@ public class DonationListPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        gradientPanel1 = new charity.viewUser.GradientPanel();
-        jLabel1 = new javax.swing.JLabel();
+        typeSearch = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         gradientPanel2 = new charity.viewUser.GradientPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
+        jrbtId = new javax.swing.JRadioButton();
+        jrbtEvent = new javax.swing.JRadioButton();
+        jrbtUser = new javax.swing.JRadioButton();
+        jButton1 = new javax.swing.JButton();
+        jbtReset = new javax.swing.JButton();
         jpnTable = new javax.swing.JPanel();
 
         setLayout(null);
-
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Danh sách quyên góp");
-
-        javax.swing.GroupLayout gradientPanel1Layout = new javax.swing.GroupLayout(gradientPanel1);
-        gradientPanel1.setLayout(gradientPanel1Layout);
-        gradientPanel1Layout.setHorizontalGroup(
-            gradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(gradientPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jLabel1)
-                .addContainerGap(826, Short.MAX_VALUE))
-        );
-        gradientPanel1Layout.setVerticalGroup(
-            gradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientPanel1Layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(21, 21, 21))
-        );
-
-        add(gradientPanel1);
-        gradientPanel1.setBounds(0, 0, 1026, 69);
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -73,7 +54,7 @@ public class DonationListPanel extends javax.swing.JPanel {
             .addGroup(gradientPanel2Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addComponent(jLabel2)
-                .addContainerGap(801, Short.MAX_VALUE))
+                .addContainerGap(803, Short.MAX_VALUE))
         );
         gradientPanel2Layout.setVerticalGroup(
             gradientPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -87,41 +68,57 @@ public class DonationListPanel extends javax.swing.JPanel {
         jPanel3.setPreferredSize(new java.awt.Dimension(149, 79));
         jPanel3.setLayout(null);
 
-        jTextField1.setText("jTextField1");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtSearchActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextField1);
-        jTextField1.setBounds(100, 10, 170, 30);
+        jPanel3.add(txtSearch);
+        txtSearch.setBounds(100, 10, 170, 30);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Tìm kiếm");
         jPanel3.add(jLabel3);
         jLabel3.setBounds(20, 10, 70, 30);
 
-        jRadioButton1.setText("Id");
-        jPanel3.add(jRadioButton1);
-        jRadioButton1.setBounds(300, 11, 50, 30);
+        jrbtId.setBackground(new java.awt.Color(255, 255, 255));
+        typeSearch.add(jrbtId);
+        jrbtId.setSelected(true);
+        jrbtId.setText("Id");
+        jPanel3.add(jrbtId);
+        jrbtId.setBounds(300, 11, 50, 30);
 
-        jRadioButton2.setText("Sự kiện");
-        jPanel3.add(jRadioButton2);
-        jRadioButton2.setBounds(350, 10, 70, 30);
+        jrbtEvent.setBackground(new java.awt.Color(255, 255, 255));
+        typeSearch.add(jrbtEvent);
+        jrbtEvent.setText("Sự kiện");
+        jPanel3.add(jrbtEvent);
+        jrbtEvent.setBounds(350, 10, 70, 30);
 
-        jRadioButton3.setText("Người quyên góp");
-        jPanel3.add(jRadioButton3);
-        jRadioButton3.setBounds(430, 10, 130, 30);
+        jrbtUser.setBackground(new java.awt.Color(255, 255, 255));
+        typeSearch.add(jrbtUser);
+        jrbtUser.setText("Người quyên góp");
+        jPanel3.add(jrbtUser);
+        jrbtUser.setBounds(420, 10, 130, 30);
+
+        jButton1.setText("jButton1");
+        jPanel3.add(jButton1);
+        jButton1.setBounds(860, 10, 75, 23);
+
+        jbtReset.setText("Làm mới");
+        jPanel3.add(jbtReset);
+        jbtReset.setBounds(945, 10, 80, 23);
+
+        jpnTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jpnTableLayout = new javax.swing.GroupLayout(jpnTable);
         jpnTable.setLayout(jpnTableLayout);
         jpnTableLayout.setHorizontalGroup(
             jpnTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 900, Short.MAX_VALUE)
         );
         jpnTableLayout.setVerticalGroup(
             jpnTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 295, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -129,11 +126,11 @@ public class DonationListPanel extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(gradientPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jpnTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
+                .addGap(64, 64, 64)
+                .addComponent(jpnTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,32 +138,33 @@ public class DonationListPanel extends javax.swing.JPanel {
                 .addComponent(gradientPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(jpnTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53))
+                .addGap(27, 27, 27))
         );
 
         add(jPanel2);
-        jPanel2.setBounds(0, 0, 1026, 501);
+        jPanel2.setBounds(0, 0, 1028, 512);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtSearchActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private charity.viewUser.GradientPanel gradientPanel1;
     private charity.viewUser.GradientPanel gradientPanel2;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton jbtReset;
     private javax.swing.JPanel jpnTable;
+    private javax.swing.JRadioButton jrbtEvent;
+    private javax.swing.JRadioButton jrbtId;
+    private javax.swing.JRadioButton jrbtUser;
+    private javax.swing.JTextField txtSearch;
+    private javax.swing.ButtonGroup typeSearch;
     // End of variables declaration//GEN-END:variables
 }

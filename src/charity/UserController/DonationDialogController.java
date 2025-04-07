@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.sql.Date;
+import java.sql.*;
 import java.util.Calendar;
 import javax.swing.*;
 
@@ -61,8 +61,6 @@ public class DonationDialogController implements IFormatData {
         this.jbtDonate = jbtDonate;
     }
 
-
-
     public void loadEventData() {
         CharityEvent event2 = eventService.getEventById(event.getId());
         event = event2;
@@ -104,12 +102,12 @@ public class DonationDialogController implements IFormatData {
         jbtDonate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
-                if (!accountService.isUserExist(accountId)){
+
+                if (!accountService.isUserExist(accountId)) {
                     MessageDialog.showError("Bạn chưa xác thực thông tin");
                     return;
                 }
-                
+
                 String moneyStr = txtMoney.getText().trim();
                 //kiem tra chuoi rong
                 if (moneyStr.isEmpty()) {
@@ -132,10 +130,10 @@ public class DonationDialogController implements IFormatData {
                 if (accept == JOptionPane.OK_OPTION) { //Dong y
                     //lấy thời gian hiện tại
                     long currentTimeMillis = Calendar.getInstance().getTimeInMillis();
-                    //Tạo date của sql
-                    Date currentDate = new Date(currentTimeMillis);
-
-                    Donation donation = new Donation(event.getId(), userId, money, currentDate);
+                    
+                    // Tạo timestamp của SQL
+                    Timestamp currentTimestamp = new Timestamp(currentTimeMillis);
+                    Donation donation = new Donation(event.getId(), userId, money, currentTimestamp);
                     //them vao danh sach quyen gop
                     if (donationService.addDonation(donation)) {
 

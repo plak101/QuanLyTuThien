@@ -16,7 +16,7 @@ import javax.swing.table.*;
 
 public class MainPanelController {
 
-    private int userId;
+    private int userId, accountId;
     private JFrame parent;
     private JTextField txtSearch;
     private JRadioButton jrbtId;
@@ -36,7 +36,7 @@ public class MainPanelController {
 
     private int selectedEventId = -1;
 
-    public MainPanelController(JFrame parent, int userId, JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtCategory, JButton jbtReset, JButton jbtDonate, JButton jbtActive, JButton jbtExpired, JPanel jpnTable) {
+    public MainPanelController(JFrame parent,int accountId, int userId, JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtCategory, JButton jbtReset, JButton jbtDonate, JButton jbtActive, JButton jbtExpired, JPanel jpnTable) {
         this.txtSearch = txtSearch;
         this.jrbtId = jrbtId;
         this.jrbtEvent = jrbtEvent;
@@ -47,6 +47,7 @@ public class MainPanelController {
         this.jbtExpired = jbtExpired;
         this.jpnTable = jpnTable;
         this.userId = userId;
+        this.accountId = accountId;
         this.parent = parent;
 
         eventService = new CharityEventService();
@@ -168,13 +169,19 @@ public class MainPanelController {
         table.getColumnModel().getColumn(0).setPreferredWidth(40);
 
         table.getColumnModel().getColumn(1).setMaxWidth(500);
-        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+        table.getColumnModel().getColumn(1).setPreferredWidth(150);
 
         table.getColumnModel().getColumn(2).setMaxWidth(500);
-        table.getColumnModel().getColumn(2).setPreferredWidth(100);
+        table.getColumnModel().getColumn(2).setPreferredWidth(200);
+        
+        table.getColumnModel().getColumn(3).setMaxWidth(500);
+        table.getColumnModel().getColumn(3).setPreferredWidth(100);
 
         table.getColumnModel().getColumn(5).setMaxWidth(500);
-        table.getColumnModel().getColumn(5).setPreferredWidth(90);
+        table.getColumnModel().getColumn(5).setPreferredWidth(150);
+        
+        table.getColumnModel().getColumn(6).setMaxWidth(500);
+        table.getColumnModel().getColumn(6).setPreferredWidth(70);
 
         //show
         table.validate();
@@ -240,7 +247,7 @@ public class MainPanelController {
                         JOptionPane.showMessageDialog(null, "Không tìm thấy sự kiện!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     }
 
-                    DonateJDialog dialog = new DonateJDialog(parent, true, event, userId);
+                    DonateJDialog dialog = new DonateJDialog(parent, true, event,accountId, userId);
                     dialog.setVisible(true);
                 }
             }

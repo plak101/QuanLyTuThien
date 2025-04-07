@@ -138,4 +138,51 @@ public class OrganizationRepository implements IOrganizationRepository {
         }
     }
 
+    @Override
+    public Organization getOrganizationById(int id) {
+        try {
+            conn = ConnectionDB.getConnection();
+            String query = "SELECT * FROM Organization WHERE id = ?";
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Organization(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("hotline"),
+                        rs.getString("address")
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrganizationRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeResources(conn, ps, rs);
+        }
+
+        return null;
+    }
+
+    @Override
+    public String getNameById(int id) {
+        try {
+        conn = ConnectionDB.getConnection();
+        String query = "SELECT name FROM Organization WHERE id = ?";
+        ps = conn.prepareStatement(query);
+        ps.setInt(1, id);
+        rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return rs.getString("name");
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(OrganizationRepository.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+        closeResources(conn, ps, rs);
+    }
+        return null;
+    }
+
 }

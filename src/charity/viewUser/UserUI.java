@@ -1,167 +1,30 @@
 package charity.viewUser;
 
+import charity.UserController.UserUIController;
 import charity.formatData.IFormatData;
-import charity.model.CharityEvent;
-import charity.model.User;
-import charity.repository.CharityEventRepository;
-import charity.repository.UserRepository;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import javax.swing.*;
+import charity.service.UserService;
 
 /**
  *
  * @author phaml
  */
-public class UserUI extends javax.swing.JFrame implements IFormatData{
+public class UserUI extends javax.swing.JFrame implements IFormatData {
 
-    private List<CharityEvent> eventList = new ArrayList();
-    DefaultTableModel eventModel;
-    CharityEventRepository eventDAO = new CharityEventRepository();
-    UserRepository userDAO = new UserRepository();
-    private int pos = -1;
-    private int userId = 1;
-    private int selectedEventId = -1;
+    private int accountId;
+    private UserService userService;
+    private UserUIController controller;
 
-
-    public UserUI(int userId) {
-        this.userId = userId;
+    public UserUI(int accountId) {
+        this.accountId = accountId;
         initComponents();
-        loadData();
-        setupCardLayout();
-        setLocationRelativeTo(null);
-    }
-
-    //1. load data
-    public void loadData() {
-        //hien thi ten user
-        User user = userDAO.getUserById(userId);
-
-        if (user == null) {
-            txtUserName.setText("USER00" + userId);
-        } else {
-            txtUserName.setText(user.getName());
-        }
+        
+        controller = new UserUIController(this, accountId, jpnMainOption, jpnDonationOption, jpnMyDonationOption, jpnInforOption, jpnRight, txtUserName);
+        controller.loadData();
+        controller.setMouseEvent();
 
     }
 
-    //2. cai dat cardlayout
-    public void setupCardLayout() {
-        jpnRight.setLayout(new CardLayout());
 
-        //1. Main 
-        MainPanel mainPanel = new MainPanel(this, userId);
-        jpnRight.add(mainPanel, "mainPanel");
-
-        //2.Donation List
-        DonationListPanel donationListPanel = new DonationListPanel(this, userId);
-        jpnRight.add(donationListPanel, "donationListPanel");
-
-        //3.MyDonation
-        MyDonationPanel myDonationPanel = new MyDonationPanel(this, userId);
-        jpnRight.add(myDonationPanel, "myDonationPanel");
-
-        //4 profile
-        InforPanel inforPanel = new InforPanel(this, userId);
-        jpnRight.add(inforPanel, "inforPanel");
-
-    }
-
-//    //#HIEN THI DONATION LIST
-//    public void showDonationListTable() {
-//        Connection conn = null;
-//        ResultSet rs = null;
-//
-//        try {
-//            conn = ConnectionDB.getConnection();
-//            String cauLenhSQL = ""
-//                    + "SELECT donationId, eventName, userName, amount, donationDate\n"
-//                    + "FROM qltt.donation d\n"
-//                    + "join user u on d.userId= u.userId\n"
-//                    + "join event e on e.eventId = d.eventId\n"
-//                    + "order by donationId asc";
-//
-//            rs = ConnectionDB.executeSelect(cauLenhSQL);
-//
-//            DefaultTableModel donationListModel = (DefaultTableModel) donationListTable.getModel();
-//            Object[] obj = new Object[9];
-//            while (rs.next()) {
-//
-//                obj[0] = rs.getInt("donationId");
-//                obj[1] = rs.getString("eventName");
-//                obj[2] = rs.getString("userName");
-//                obj[3] = numberFormat.format(rs.getLong("amount"));
-//                obj[4] = dateFormat.format(rs.getDate("donationDate"));
-//
-//                donationListTable.setModel(donationListModel);
-//                donationListModel.addRow(obj);
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserUI.class.getName()).log(Level.SEVERE, null, ex);
-//            JOptionPane.showMessageDialog(new JFrame(), "Lỗi truy xuất");
-//        } finally {
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//                if (conn != null) {
-//                    conn.close();
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(UserUI.class.getName()).log(Level.SEVERE, "Lỗi đóng kết nối!", ex);
-//            }
-//        }
-//
-//    }
-//    public void showMyDonationTable() {
-//        Connection conn = null;
-//        ResultSet rs = null;
-//
-//        try {
-//            conn = ConnectionDB.getConnection();
-//            String cauLenhSQL = "SELECT donationId, eventName, userName, amount, donationDate\n"
-//                    + "FROM qltt.donation d\n"
-//                    + "join user u on d.userId= u.userId\n"
-//                    + "join event e on e.eventId = d.eventId\n"
-//                    + "where d.userId =1\n"
-//                    + "order by donationId asc;";
-//            rs = ConnectionDB.executeSelect(cauLenhSQL);
-//
-//            DefaultTableModel myDonationModel = (DefaultTableModel) myDonationTable.getModel();
-//            Object[] obj = new Object[9];
-//            while (rs.next()) {
-//
-//                obj[0] = rs.getInt("donationId");
-//                obj[1] = rs.getString("eventName");
-//                obj[2] = rs.getString("userName");
-//                obj[3] = numberFormat.format(rs.getLong("amount"));
-//                obj[4] = dateFormat.format(rs.getDate("donationDate"));
-//
-//                myDonationTable.setModel(myDonationModel);
-//                myDonationModel.addRow(obj);
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserUI.class.getName()).log(Level.SEVERE, null, ex);
-//            JOptionPane.showMessageDialog(new JFrame(), "Lỗi truy xuất");
-//        } finally {
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//                if (conn != null) {
-//                    conn.close();
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(UserUI.class.getName()).log(Level.SEVERE, "Lỗi đóng kết nối!", ex);
-//            }
-//        }
-//
-//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -194,11 +57,6 @@ public class UserUI extends javax.swing.JFrame implements IFormatData{
 
         jPanel2.setOpaque(false);
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 40));
-        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel2MouseClicked(evt);
-            }
-        });
 
         txtUserName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtUserName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -225,11 +83,6 @@ public class UserUI extends javax.swing.JFrame implements IFormatData{
         );
 
         jpnMainOption.setOpaque(false);
-        jpnMainOption.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jpnMainOptionMouseClicked(evt);
-            }
-        });
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -273,11 +126,6 @@ public class UserUI extends javax.swing.JFrame implements IFormatData{
         );
 
         jpnMyDonationOption.setOpaque(false);
-        jpnMyDonationOption.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jpnMyDonationOptionMouseClicked(evt);
-            }
-        });
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -297,11 +145,6 @@ public class UserUI extends javax.swing.JFrame implements IFormatData{
         );
 
         jpnInforOption.setOpaque(false);
-        jpnInforOption.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jpnInforOptionMouseClicked(evt);
-            }
-        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -328,11 +171,11 @@ public class UserUI extends javax.swing.JFrame implements IFormatData{
                 .addGroup(jpnLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jpnDonationOption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpnMainOption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addComponent(jpnInforOption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jpnMyDonationOption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jpnLeftLayout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jpnInforOption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jpnMyDonationOption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpnLeftLayout.setVerticalGroup(
             jpnLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -369,90 +212,27 @@ public class UserUI extends javax.swing.JFrame implements IFormatData{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //click vao panel trong menu
-    private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
-        //        CardLayout cardLayout = (CardLayout) jpnRight.getLayout();
-        //        cardLayout.show(jpnRight, "donationList");
-        //        jbtTrangChu.setBackground(Color.WHITE);
-        //        jbtDonationList.setBackground(Color.LIGHT_GRAY);
-        //        jbtMyDonationList.setBackground(Color.WHITE);
-    }//GEN-LAST:event_jPanel2MouseClicked
-
     //
     private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUserNameActionPerformed
 
-    private void jpnMainOptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnMainOptionMouseClicked
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                CardLayout cardLayout = (CardLayout) jpnRight.getLayout();
-                cardLayout.show(jpnRight, "mainPanel");
-
-                jpnMainOption.setOpaque(true);
-                jpnDonationOption.setOpaque(false);
-                jpnMyDonationOption.setOpaque(false);
-                jpnInforOption.setOpaque(false);
-
-                jpnMainOption.setBackground(Color.decode("#006666"));
-                jpnMainOption.repaint();
-                jpnDonationOption.repaint();
-                jpnMyDonationOption.repaint();
-                jpnInforOption.repaint();
-            }
-        });
-    }//GEN-LAST:event_jpnMainOptionMouseClicked
-
     private void jpnDonationOptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnDonationOptionMouseClicked
-        CardLayout cardLayout = (CardLayout) jpnRight.getLayout();
-        cardLayout.show(jpnRight, "donationListPanel");
-
-        jpnMainOption.setOpaque(false);
-        jpnDonationOption.setOpaque(true);
-        jpnMyDonationOption.setOpaque(false);
-        jpnInforOption.setOpaque(false);
-
-        jpnDonationOption.setBackground(Color.decode("#006666"));
-        //ve lai
-        jpnMainOption.repaint();
-        jpnDonationOption.repaint();
-        jpnMyDonationOption.repaint();
-        jpnInforOption.repaint();
+//        CardLayout cardLayout = (CardLayout) jpnRight.getLayout();
+//        cardLayout.show(jpnRight, "donationListPanel");
+//
+//        jpnMainOption.setOpaque(false);
+//        jpnDonationOption.setOpaque(true);
+//        jpnMyDonationOption.setOpaque(false);
+//        jpnInforOption.setOpaque(false);
+//
+//        jpnDonationOption.setBackground(Color.decode("#006666"));
+//        //ve lai
+//        jpnMainOption.repaint();
+//        jpnDonationOption.repaint();
+//        jpnMyDonationOption.repaint();
+//        jpnInforOption.repaint();
     }//GEN-LAST:event_jpnDonationOptionMouseClicked
-
-    private void jpnMyDonationOptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnMyDonationOptionMouseClicked
-        CardLayout cardLayout = (CardLayout) jpnRight.getLayout();
-        cardLayout.show(jpnRight, "myDonationPanel");
-
-        jpnMainOption.setOpaque(false);
-        jpnDonationOption.setOpaque(false);
-        jpnMyDonationOption.setOpaque(true);
-        jpnInforOption.setOpaque(false);
-
-        jpnMyDonationOption.setBackground(Color.decode("#006666"));
-        //ve lai
-        jpnMainOption.repaint();
-        jpnDonationOption.repaint();
-        jpnMyDonationOption.repaint();
-        jpnInforOption.repaint();
-    }//GEN-LAST:event_jpnMyDonationOptionMouseClicked
-
-    private void jpnInforOptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnInforOptionMouseClicked
-        CardLayout cardLayout = (CardLayout) jpnRight.getLayout();
-        cardLayout.show(jpnRight, "inforPanel");
-
-        jpnMainOption.setOpaque(false);
-        jpnDonationOption.setOpaque(false);
-        jpnMyDonationOption.setOpaque(false);
-        jpnInforOption.setOpaque(true);
-
-        jpnInforOption.setBackground(Color.decode("#006666"));
-        //ve lai
-        jpnMainOption.repaint();
-        jpnDonationOption.repaint();
-        jpnMyDonationOption.repaint();
-        jpnInforOption.repaint();
-    }//GEN-LAST:event_jpnInforOptionMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

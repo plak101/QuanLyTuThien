@@ -1,15 +1,11 @@
 package charity.repository;
 
 import charity.repository.IRepository.IUserRepository;
-import charity.model.Gender;
 import charity.model.User;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -61,23 +57,16 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public boolean addUser(User user) {
-        String query = "INSERT INTO User (userName, address, phone, gender, birthday) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO User (accountId, userName, address, phone, gender, birthday) VALUES (?, ?, ?, ?, ?,?)";
         conn = ConnectionDB.getConnection();
         try {
             ps = conn.prepareStatement(query);
-            ps.setString(1, user.getName());
-            ps.setString(2, user.getAddress());
-            ps.setString(3, user.getPhone());
-            ps.setObject(4, user.getGender());
-//            ps.setDate(5, (Date) user.getBirthday());
-            
-             // Chuyển đổi java.util.Date thành java.sql.Date
-        if (user.getBirthday() != null) {
-            LocalDate localDate = user.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            ps.setDate(5, Date.valueOf(localDate)); // Chuyển đổi sang java.sql.Date
-        } else {
-            ps.setNull(5, java.sql.Types.DATE);
-        }
+            ps.setInt(1, user.getAccountId());
+            ps.setString(2, user.getName());
+            ps.setString(3, user.getAddress());
+            ps.setString(4, user.getPhone());
+            ps.setString(5, user.getGender());
+            ps.setDate(6, user.getBirthday());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,15 +78,16 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public boolean updateUser(User user) {
-        String query = "UPDATE user SET userName = ?, address=?, phone=?, gender=?, birthday=?";
+        String query = "UPDATE user SET userName = ?, address=?, phone=?, gender=?, birthday=? WHERE userid= ?";
         conn = ConnectionDB.getConnection();
         try {
             ps = conn.prepareStatement(query);
             ps.setString(1, user.getName());
             ps.setString(2, user.getAddress());
             ps.setString(3, user.getPhone());
-            ps.setObject(4, user.getGender());
-            ps.setDate(4, (Date) user.getBirthday());
+            ps.setString(4, user.getGender());
+            ps.setDate(5, user.getBirthday());
+            ps.setInt(6, user.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -204,6 +194,33 @@ public class UserRepository implements IUserRepository {
             closeResources(conn, ps, rs);
         }
         return null;
+    }
+
+    @Override
+    public User getUserByAcountId(int accountId) {
+        User user = null;
+        String sql = "SELECT a.* FROM user u JOIN account a ON a.id=u.accountId WHERE accountId =?";
+        conn = ConnectionDB.getConnection();
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, accountId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                user = new User(
+                        rs.getInt("userId"),
+                        rs.getString("userName"),
+                        rs.getString("address"),
+                        rs.getString("phone"),
+                        rs.getString("gender"),
+                        rs.getDate("birthday")
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeResources(conn, ps, rs);
+            return user;
+        }
     }
 
 }

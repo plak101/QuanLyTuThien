@@ -4,22 +4,23 @@ package charity.model;
  * @author Admin
  */
 public class Account {
-
+    private int id;
     private String username;
     private String password;
     private String email;
     private Role role;
-    private int userId;
+//    private int userId;
 
     public Account() {
     }
 
-    public Account(String username, String password, String email, Role role, int userId) {
+    public Account(int id, String username, String password, String email, Role role) {
+        this.id= id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
-        this.userId = userId;
+//        this.userId = userId;
     }
 
     public String getUsername() {
@@ -38,6 +39,14 @@ public class Account {
         this.password = password;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -54,22 +63,16 @@ public class Account {
         this.role = role;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+//    public int getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(int userId) {
+//        this.userId = userId;
+//    }
 
     @Override
     public String toString() {
-        return "Account{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                ", userId=" + userId +
-                '}';
+        return "Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + '}';
     }
 }

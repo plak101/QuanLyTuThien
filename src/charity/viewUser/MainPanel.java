@@ -12,6 +12,7 @@ import javax.swing.table.TableRowSorter;
 public class MainPanel extends javax.swing.JPanel {
     private JFrame parent;
     private int userId;
+    private int accountId;
 
     private CharityEventRepository eventDAO = new CharityEventRepository();
 
@@ -22,9 +23,10 @@ public class MainPanel extends javax.swing.JPanel {
     private int selectedEventId = -1;
 
 //    private 
-    public MainPanel(JFrame parent, int userId) {
-        eventModel = classTableModel.getActiveEventTable();
+    public MainPanel(JFrame parent,int accountId, int userId) {
+//        eventModel = classTableModel.getActiveEventTable();
         
+        this.accountId= accountId;
         this.userId = userId;
         this.parent = parent;
 
@@ -32,7 +34,7 @@ public class MainPanel extends javax.swing.JPanel {
         header.changeColor("#74ebd5", "#ACB6E5");
         
         
-        MainPanelController controller =new MainPanelController(parent, userId, txtSearch, jrbtId, jrbtName, jrbtCategory, jbtReset, jbtDonate, jbtActive, jbtExpired, jpnTable);
+        MainPanelController controller =new MainPanelController(parent,accountId, userId, txtSearch, jrbtId, jrbtName, jrbtCategory, jbtReset, jbtDonate, jbtActive, jbtExpired, jpnTable);
         controller.loadButton();
         controller.loadJbtEvent();
         controller.showEventTable();

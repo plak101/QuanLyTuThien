@@ -1,53 +1,40 @@
 package charity.viewUser;
 
+import charity.UserController.DonationDialogController;
 import charity.model.CharityEvent;
-import charity.model.Donation;
-import charity.repository.CharityEventRepository;
-import charity.repository.DonationRepository;
-import java.awt.Color;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.text.*;
-import java.sql.Date;
-import java.util.Calendar;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class DonateJDialog extends javax.swing.JDialog {
-
     private CharityEvent event;
-    private int userId;
-    private CharityEventRepository eventDAO = new CharityEventRepository();
-    private DonationRepository donationDAO = new DonationRepository();
-
-    //Định dạng số và ngày
-    DecimalFormat moneyFormat = new DecimalFormat("#,###");
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-    public DonateJDialog(JFrame parent, boolean modal, CharityEvent event, int userId) {
+    private int userId, accountId;
+    public DonateJDialog(JFrame parent, boolean modal, CharityEvent event,int accountId, int userId) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(parent);// set vi tri giua phan tu cha
         
         this.event = event;
         this.userId = userId;
-        loadEventData();
-        settingTxtMoney();
+        this.accountId= accountId;
+        DonationDialogController controller = new DonationDialogController(accountId, userId, event, txtEventId, txtEventName, txtCategory, txtTargetAmount, txtCurrentAmount, txtProcess, txtDateBegin, txtDateEnd, txtDateBegin, txtMoney, jbtDonate);
+        
+        controller.loadEventData();
+        controller.settingTxtMoney();
+        controller.setJbtDonateEvent();
     }
 
-    public void loadEventData() {
-        CharityEvent event2 = eventDAO.getEventById(event.getId());
-        event=event2;
-        txtEventId.setText(String.valueOf(event2.getId()));
-        txtEventName.setText((event2.getName()));
-        txtCategory.setText((event2.getCategory()));
-        txtCurrentAmount.setText((String.valueOf(moneyFormat.format(event2.getCurrentAmount()))));
-        txtTargetAmount.setText((String.valueOf(moneyFormat.format(event2.getTargetAmount()))));
-        txtDateBegin.setText(dateFormat.format(event2.getDateBegin()));
-        txtDateEnd.setText(dateFormat.format(event2.getDateEnd()));
-        txtProcess.setText(String.format("%.2f%%", (float) event2.getCurrentAmount() / event2.getTargetAmount() * 100));
-        txtDescription.setText(event2.getDescription());
-    }
+//    public void loadEventData() {
+//        CharityEvent event2 = eventDAO.getEventById(event.getId());
+//        event=event2;
+//        txtEventId.setText(String.valueOf(event2.getId()));
+//        txtEventName.setText((event2.getName()));
+//        txtCategory.setText((event2.getCategory()));
+//        txtCurrentAmount.setText((String.valueOf(moneyFormat.format(event2.getCurrentAmount()))));
+//        txtTargetAmount.setText((String.valueOf(moneyFormat.format(event2.getTargetAmount()))));
+//        txtDateBegin.setText(dateFormat.format(event2.getDateBegin()));
+//        txtDateEnd.setText(dateFormat.format(event2.getDateEnd()));
+//        txtProcess.setText(String.format("%.2f%%", (float) event2.getCurrentAmount() / event2.getTargetAmount() * 100));
+//        txtDescription.setText(event2.getDescription());
+//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -323,80 +310,80 @@ public class DonateJDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //setting txt money
-    public void settingTxtMoney() {
-        txtMoney.setText("0");
-        txtMoney.setForeground(Color.GRAY);
-
-        txtMoney.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (txtMoney.getText().equals("0")) {
-                    txtMoney.setText("");
-                    txtMoney.setForeground(Color.BLACK);
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (txtMoney.getText().equals("")) {
-                    txtMoney.setText("0");
-                    txtMoney.setForeground(Color.GRAY);
-                }
-            }
-        });
-        {
-
-        };
-    }
-
+////    //setting txt money
+////    public void settingTxtMoney() {
+////        txtMoney.setText("0");
+////        txtMoney.setForeground(Color.GRAY);
+////
+////        txtMoney.addFocusListener(new FocusListener() {
+////            @Override
+////            public void focusGained(FocusEvent e) {
+////                if (txtMoney.getText().equals("0")) {
+////                    txtMoney.setText("");
+////                    txtMoney.setForeground(Color.BLACK);
+////                }
+////            }
+////
+////            @Override
+////            public void focusLost(FocusEvent e) {
+////                if (txtMoney.getText().equals("")) {
+////                    txtMoney.setText("0");
+////                    txtMoney.setForeground(Color.GRAY);
+////                }
+////            }
+////        });
+////        {
+////
+////        };
+////    }
+////
     private void jbtDonateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDonateActionPerformed
-        // TODO add your handling code here:
-
-        String moneyStr = txtMoney.getText().trim();
-        //kiem tra chuoi rong
-        if (moneyStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền quyên góp!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        //kiem tra so tien hop le
-        if (moneyStr.matches(".*[a-zA-Z].*")) {
-            JOptionPane.showMessageDialog(this, "Số tiền nhập vào không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        Long money = Long.parseLong(moneyStr);
-
-        if (money < 2000) {
-            JOptionPane.showMessageDialog(this, "Số tiền quyên góp không bé hơn 2 000 !", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        //hien thi thong bao xac nhan
-        int accept = JOptionPane.showConfirmDialog(null, "Xác nhận quyên góp!", "Xác nhận quyên góp!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (accept == JOptionPane.OK_OPTION) { //Dong y
-            //lấy thời gian hiện tại
-            long currentTimeMillis = Calendar.getInstance().getTimeInMillis();
-            //Tạo date của sql
-            Date currentDate = new Date(currentTimeMillis);
-            
-            Donation donation = new Donation(event.getId(), userId, money, currentDate);
-            //them vao danh sach quyen gop
-            if (donationDAO.addDonation(donation)) {
-
-                // cap nhap so tien hien tai cua event
-                CharityEvent event2 = eventDAO.getEventById(event.getId());
-                event2.setCurrentAmount(event2.getCurrentAmount() + money);
-                if (eventDAO.updateEvent(event2)) {
-                    JOptionPane.showMessageDialog(this, "Quyên góp thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                    loadEventData();//cập nhật giao diện
-                }else{
-                    JOptionPane.showMessageDialog(this, "Cập nhật số tiền thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                }
-            }else{
-                JOptionPane.showMessageDialog(this, "Thêm quyên góp thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-
-        System.out.print(moneyStr);
+//        // TODO add your handling code here:
+//
+//        String moneyStr = txtMoney.getText().trim();
+//        //kiem tra chuoi rong
+//        if (moneyStr.isEmpty()) {
+//            JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền quyên góp!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
+//        //kiem tra so tien hop le
+//        if (moneyStr.matches(".*[a-zA-Z].*")) {
+//            JOptionPane.showMessageDialog(this, "Số tiền nhập vào không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
+//        Long money = Long.parseLong(moneyStr);
+//
+//        if (money < 2000) {
+//            JOptionPane.showMessageDialog(this, "Số tiền quyên góp không bé hơn 2 000 !", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
+//        //hien thi thong bao xac nhan
+//        int accept = JOptionPane.showConfirmDialog(null, "Xác nhận quyên góp!", "Xác nhận quyên góp!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+//        if (accept == JOptionPane.OK_OPTION) { //Dong y
+//            //lấy thời gian hiện tại
+//            long currentTimeMillis = Calendar.getInstance().getTimeInMillis();
+//            //Tạo date của sql
+//            Date currentDate = new Date(currentTimeMillis);
+//            
+//            Donation donation = new Donation(event.getId(), userId, money, currentDate);
+//            //them vao danh sach quyen gop
+//            if (donationDAO.addDonation(donation)) {
+//
+//                // cap nhap so tien hien tai cua event
+//                CharityEvent event2 = eventDAO.getEventById(event.getId());
+//                event2.setCurrentAmount(event2.getCurrentAmount() + money);
+//                if (eventDAO.updateEvent(event2)) {
+//                    JOptionPane.showMessageDialog(this, "Quyên góp thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//                    loadEventData();//cập nhật giao diện
+//                }else{
+//                    JOptionPane.showMessageDialog(this, "Cập nhật số tiền thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//                }
+//            }else{
+//                JOptionPane.showMessageDialog(this, "Thêm quyên góp thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            }
+//        }
+//
+//        System.out.print(moneyStr);
     }//GEN-LAST:event_jbtDonateActionPerformed
 
 
@@ -406,16 +393,16 @@ public class DonateJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_txtMoneyFocusGained
 
     private void txtMoneyFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMoneyFocusLost
-        // TODO add your handling code here:
-        if (txtMoney.getText().equals("2000")) {
-            txtMoney.setText("");
-            txtMoney.setForeground(Color.GRAY);
-        }
+//        // TODO add your handling code here:
+//        if (txtMoney.getText().equals("2000")) {
+//            txtMoney.setText("");
+//            txtMoney.setForeground(Color.GRAY);
+//        }
     }//GEN-LAST:event_txtMoneyFocusLost
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        // TODO add your handling code here:
-        this.requestFocus();
+//        // TODO add your handling code here:
+//        this.requestFocus();
     }//GEN-LAST:event_formMouseClicked
 
 

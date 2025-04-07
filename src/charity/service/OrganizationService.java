@@ -27,4 +27,11 @@ public class OrganizationService {
     public boolean deleteOrganization(int id){
         return organizationRepository.deleteOrganization(id);
     }
+    
+    public Organization getOrganizationById(int id){
+        return organizationRepository.getOrganizationById(id);
+    }
+    public String getNameById(int id){
+        return organizationRepository.getNameById(id);
+    }
 }

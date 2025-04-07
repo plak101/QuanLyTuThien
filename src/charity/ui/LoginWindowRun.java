@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package charity.ui;
-import charity.controller.LoginWindow;
+import charity.viewLogin.LoginWindow;
 
 /**
  *

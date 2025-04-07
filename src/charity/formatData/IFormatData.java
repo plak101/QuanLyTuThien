@@ -14,4 +14,5 @@ import java.text.SimpleDateFormat;
 public interface IFormatData {
     DecimalFormat moneyFormat = new DecimalFormat("#,###");
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat dateTimeFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 }

@@ -4,7 +4,7 @@
  */
 package charity.controller;
 
-import charity.viewUser.UserUI;
+import charity.viewLogin.LoginWindow;
 
 /**
  *
@@ -12,9 +12,9 @@ import charity.viewUser.UserUI;
  */
 public class Program {
         public Program() {
+            LoginWindow login = new LoginWindow();
+            login.setVisible(true);
+            
 
-        int userId = 4;
-        UserUI userUI = new UserUI(userId);
-        userUI.setVisible(true);
     }
 }

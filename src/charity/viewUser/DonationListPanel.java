@@ -5,13 +5,14 @@ import com.sun.source.tree.DoWhileLoopTree;
 import javax.swing.JFrame;
 
 public class DonationListPanel extends javax.swing.JPanel {
-
+    private int accountId;
     private int userId;
     private DonationListController controller = null;
 
-    public DonationListPanel(JFrame parent, int userID) {
+    public DonationListPanel(JFrame parent,int accountId, int userId) {
         initComponents();
-        this.userId = userID;
+        this.accountId = accountId;
+        this.userId = userId;
         controller= new DonationListController(txtSearch, jrbtId, jrbtEvent, jrbtUser, jbtReset, jpnTable);
         controller.setDonationListTable();
         controller.setEvent();

@@ -39,5 +39,7 @@ public class UserService {
     public String getUserNameById(int userId) {
         return userRepository.getUserNameById(userId);
     }
-
+    public User getUserByAccountId(int accountId) {
+        return userRepository.getUserById(accountId);
+    }
 }

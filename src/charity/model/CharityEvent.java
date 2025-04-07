@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class CharityEvent {
     private int id; // ID tự tăng
+    private int organizationId;
     private String name;
     private String category;
     private String description;
@@ -20,13 +21,14 @@ public class CharityEvent {
     private long currentAmount;
 
     private Date dateBegin, dateEnd;
-    private List<Donation> donations;// Danh sách đóng góp
+//    private List<Donation> donations;// Danh sách đóng góp
 
     public CharityEvent() {
     }
 
-    public CharityEvent(int id, String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
+    public CharityEvent(int id,int organizationId, String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
         this.id = id;
+        this.organizationId=organizationId;
         this.name = name;
         this.category = category;
         this.description = description;
@@ -45,6 +47,17 @@ public class CharityEvent {
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
     }
+    
+//    public CharityEvent(int organizationId, String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
+//        this.organizationId=organizationId;
+//        this.name = name;
+//        this.category = category;
+//        this.description = description;
+//        this.targetAmount = targetAmount;
+//        this.currentAmount = currentAmount;
+//        this.dateBegin = dateBegin;
+//        this.dateEnd = dateEnd;
+//    }
 
     public Date getDateBegin() {
         return dateBegin;
@@ -52,6 +65,14 @@ public class CharityEvent {
 
     public void setDateBegin(Date dateBegin) {
         this.dateBegin = dateBegin;
+    }
+
+    public int getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(int organizationId) {
+        this.organizationId = organizationId;
     }
 
     public Date getDateEnd() {
@@ -111,12 +132,11 @@ public class CharityEvent {
         this.currentAmount = currentAmount;
     }
 
-    public List<Donation> getDonations() {
-        return donations;
+    @Override
+    public String toString() {
+        return "CharityEvent{" + "id=" + id + ", organizationId=" + organizationId + ", name=" + name + ", category=" + category + ", description=" + description + ", targetAmount=" + targetAmount + ", currentAmount=" + currentAmount + ", dateBegin=" + dateBegin + ", dateEnd=" + dateEnd + '}';
     }
 
-    public void setDonations(List<Donation> donations) {
-        this.donations = donations;
-    }
+
     
 }

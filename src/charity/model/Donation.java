@@ -5,6 +5,7 @@
 package charity.model;
 
 import java.util.Date;
+import java.sql.*;
 
 /**
  *
@@ -16,26 +17,43 @@ public class Donation {
     private int eventId; // ID của sự kiện từ thiện
     private int userId;  // ID của người quyên góp
     private long amount;
-    private Date donationDate;
+    private Timestamp donationDate;
+    private String description;
 
     public Donation() {
     }
 
-    public Donation(int id, int eventId, int userId, long amount, Date donationDate) {
+    public Donation(int id, int eventId, int userId, long amount, Timestamp donationDate, String description) {
         this.id = id;
         this.userId = userId;
         this.eventId = eventId;
         this.amount = amount;
         this.donationDate = donationDate;
+        this.description= description;
     }
 
-    public Donation(int eventId, int userId, long amount, Date donationDate) {
+    public Donation(int eventId, int userId, long amount, Timestamp donationDate) {
         this.eventId = eventId;
         this.userId = userId;
         this.amount = amount;
         this.donationDate = donationDate;
     }
+    
+    public Donation(int eventId, int userId, long amount, Timestamp donationDate, String desciption) {
+        this.eventId = eventId;
+        this.userId = userId;
+        this.amount = amount;
+        this.donationDate = donationDate;
+        this.description= desciption;
+    }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
     public int getId() {
         return id;
     }
@@ -72,7 +90,7 @@ public class Donation {
         return donationDate;
     }
 
-    public void setDonationDate(Date donationDate) {
+    public void setDonationDate(Timestamp donationDate) {
         this.donationDate = donationDate;
     }
 

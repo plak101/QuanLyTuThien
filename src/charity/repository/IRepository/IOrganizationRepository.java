@@ -14,6 +14,9 @@ import java.util.List;
 public interface IOrganizationRepository {
 
     public List<Organization> getAllOrganization();
+    
+    public Organization getOrganizationById(int id);
+    public String getNameById(int id);
 
     public boolean addOrganization(Organization organization);
 

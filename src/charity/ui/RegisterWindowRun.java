@@ -4,7 +4,7 @@
  */
 package charity.ui;
 
-import charity.controller.RegisterWindow;
+import charity.viewLogin.RegisterWindow;
 
 /**
  *

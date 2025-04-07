@@ -67,12 +67,12 @@
                       <Component id="jpnMainOption" max="32767" attributes="0"/>
                   </Group>
               </Group>
+              <Component id="jpnInforOption" alignment="0" max="32767" attributes="0"/>
+              <Component id="jpnMyDonationOption" alignment="0" max="32767" attributes="0"/>
               <Group type="102" attributes="0">
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
-              <Component id="jpnInforOption" alignment="0" max="32767" attributes="0"/>
-              <Component id="jpnMyDonationOption" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -101,9 +101,6 @@
               <Dimension value="[250, 40]"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jPanel2MouseClicked"/>
-          </Events>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -141,9 +138,6 @@
           <Properties>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jpnMainOptionMouseClicked"/>
-          </Events>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -217,9 +211,6 @@
           <Properties>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jpnMyDonationOptionMouseClicked"/>
-          </Events>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -255,9 +246,6 @@
           <Properties>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jpnInforOptionMouseClicked"/>
-          </Events>
 
           <Layout>
             <DimensionLayout dim="0">

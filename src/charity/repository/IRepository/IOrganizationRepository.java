@@ -23,6 +23,8 @@ public interface IOrganizationRepository {
     public boolean updateOrganization(Organization organization);
 
     public boolean deleteOrganization(int id);
+    
+    public int getTotalEvent(int id);
 
     //Dong ket noi
     public void closeResources(Connection conn, PreparedStatement ps);

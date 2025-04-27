@@ -20,6 +20,8 @@ public class ClassTableModel implements IFormatData {
     private List<CharityEvent> events = null;
     private String[] listEventColumn = {"ID","Tên tổ chức", "Tên sự kiện", "Loại", "Mục tiêu", "Số tiền hiện tại", "Tiến độ", "Ngày kết thúc"};
     private String[] listDonationColumn = {"ID", "Người quyên góp", "Sự kiện", "Số tiền", "Ngày quyên góp", "Nội dung"};
+    private String[] listOrganizationColumn = {"ID", "Tên tổ chức", "Email", "Hotline", "Địa chỉ", "Số sự kiện"};
+    
 
 //    public DefaultTableModel getEventTable() {
 //        events = eventService.getEventList();
@@ -153,6 +155,29 @@ public class ClassTableModel implements IFormatData {
             obj[3] = moneyFormat.format(donation.getAmount());
             obj[4] = dateTimeFormat.format(donation.getDonationDate());
             obj[5] = donation.getDescription();
+            dtm.addRow(obj);
+        }
+        return dtm;
+    }
+
+    public DefaultTableModel getOrganizationTable(List<Organization> organizations) {
+        int columnCount = listDonationColumn.length;
+        DefaultTableModel dtm = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        dtm.setColumnIdentifiers(listOrganizationColumn);
+        Object[] obj;
+        for (Organization organization : organizations) {
+            obj = new Object[columnCount + 1];
+            obj[0] = organization.getId();
+            obj[1] = organization.getName();
+            obj[2] = organization.getEmail();
+            obj[3] = organization.getHotline();
+            obj[4] = organization.getAddress();
+            obj[5] = organizationService.getTotalEvent(organization.getId());
             dtm.addRow(obj);
         }
         return dtm;

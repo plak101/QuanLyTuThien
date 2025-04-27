@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminUI extends javax.swing.JFrame {
-    public AdminUI(int accountId) {
+    public AdminUI() {
         initComponents();
 
         setTitle("QUẢN LÍ TỪ THIỆN");
@@ -55,7 +55,7 @@ public class AdminUI extends javax.swing.JFrame {
         jpnView.setLayout(jpnViewLayout);
         jpnViewLayout.setHorizontalGroup(
             jpnViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 812, Short.MAX_VALUE)
+            .addGap(0, 818, Short.MAX_VALUE)
         );
         jpnViewLayout.setVerticalGroup(
             jpnViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,12 +203,12 @@ public class AdminUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jpnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jpnView, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jpnView, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jpnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jpnView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+            .addComponent(jpnView, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
         );
 
         pack();
@@ -249,16 +249,12 @@ public class AdminUI extends javax.swing.JFrame {
     private javax.swing.JLabel jibQuanLyChuongTrinh;
     private javax.swing.JLabel jibQuanLyQuyenGop;
     private javax.swing.JLabel jibQuanNhaTaiTro;
-    private javax.swing.JLabel jibTrangchu;
-    private javax.swing.JLabel jibTrangchu1;
     private javax.swing.JLabel jibTrangchu2;
     private javax.swing.JPanel jpnBaoCao;
     private charity.viewMain.GradientPanel jpnMenu;
     private javax.swing.JPanel jpnQuanLyChuongTrinh;
     private javax.swing.JPanel jpnQuanLyQuyenGop;
     private javax.swing.JPanel jpnQuanNhaTaiTro;
-    private javax.swing.JPanel jpnTrangchu;
-    private javax.swing.JPanel jpnTrangchu1;
     private javax.swing.JPanel jpnTrangchu2;
     private javax.swing.JPanel jpnView;
     // End of variables declaration//GEN-END:variables

@@ -74,8 +74,41 @@ CREATE TABLE Donation (
     FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE, 
     FOREIGN KEY (eventId) REFERENCES Event(eventId) ON DELETE CASCADE
 );
+-- Tao bảng nhà tài trợ
+CREATE TABLE nha_tai_tro(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    ten NVARCHAR(100) NOT NULL,
+    dia_chi NVARCHAR(255),
+    so_dien_thoai NVARCHAR(20),
+    email NVARCHAR(100)
+);
 
+CREATE TABLE chuong_trinh (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    ten_chuong_trinh NVARCHAR(255) NOT NULL,
+    mo_ta TEXT,
+    ngay_bat_dau DATE,
+    ngay_ket_thuc DATE,
+    tong_kinh_phi DOUBLE DEFAULT 0,
+    trang_thai NVARCHAR(50)
+);
+drop table chuong_trinh;
+drop table nha_tai_tro;
 
+INSERT INTO chuong_trinh (ten_chuong_trinh, mo_ta, ngay_bat_dau, ngay_ket_thuc, tong_kinh_phi, trang_thai)
+VALUES
+('Chương trình Mùa hè xanh', 'Tham gia hỗ trợ cộng đồng vùng sâu vùng xa.', '2025-06-01', '2025-08-01', 50000000, 'Đang thực hiện'),
+('Chương trình Hiến máu nhân đạo', 'Tổ chức vận động hiến máu cứu người.', '2025-05-15', '2025-05-20', 20000000, 'Đã hoàn thành'),
+('Chương trình Tết cho người nghèo', 'Gây quỹ và tặng quà cho hộ nghèo dịp Tết.', '2024-12-01', '2025-01-31', 100000000, 'Đang chuẩn bị'),
+('Chương trình Bảo vệ môi trường', 'Tuyên truyền và tổ chức hoạt động bảo vệ môi trường.', '2025-09-01', '2025-11-30', 30000000, 'Chưa bắt đầu');
+
+INSERT INTO nha_tai_tro (ten, dia_chi, so_dien_thoai, email)
+VALUES
+('Công ty ABC', '123 Đường Lê Lợi, Quận 1, TP.HCM', '0901234567', 'lienhe@abc.com'),
+('Tập đoàn XYZ', '456 Đường Nguyễn Trãi, Quận 5, TP.HCM', '0912345678', 'contact@xyz.vn'),
+('Nhà tài trợ Thiện Nguyện', '789 Đường Lý Thường Kiệt, Quận 10, TP.HCM', '0923456789', 'support@thiennguyen.org'),
+('Công ty TNHH Phúc An', '12 Đường Hoàng Văn Thụ, Quận Tân Bình, TP.HCM', '0934567890', 'phucan@gmail.com'),
+('Tập đoàn Bảo Minh', '88 Đường Trường Chinh, Quận Tân Phú, TP.HCM', '0945678901', 'info@baominh.vn');
 
 
 -- xóa dữ liêu để tạo mới 

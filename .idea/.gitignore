@@ -2,3 +2,8 @@
 /shelf/
 /workspace.xml
 /build/
+/out/
+*.class
+*.jar
+*.war
+*.log

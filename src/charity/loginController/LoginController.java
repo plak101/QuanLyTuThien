@@ -64,10 +64,10 @@ public class LoginController {
                             ui.setVisible(true);
                         } else {
                             //mo admin ui
-                            AdminUI ui = new AdminUI(account.getId());
-                            ui.setLocationRelativeTo(null);
-                            ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                            ui.setVisible(true);
+//                            AdminUI ui = new AdminUI(account.getId());
+//                            ui.setLocationRelativeTo(null);
+//                            ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//                            ui.setVisible(true);
                         }
                     }
 

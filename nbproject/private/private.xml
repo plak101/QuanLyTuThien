@@ -3,28 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewUser/UserUI.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewUser/DonateJDialog.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/model/CharityEvent.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewUser/MyDonationPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewUser/DonationListPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/model/User.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/model/Donation.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/AccountController.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/service/DonationService.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/resource/database.properties</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/build.xml</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewLogin/LoginWindow.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/loginController/LoginController.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/nbproject/private/private.xml</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/nbproject/project.properties</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/.idea/.gitignore</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/Admin.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewMain/AdminUI.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/.gitignore</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewMain/QuanLyNhaTaiTro.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewUser/OrganizationPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewMain/QuanLyChuongTrinh.java</file>
+            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/viewMain/QuanLyNhaTaiTro.java</file>
+            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/UserController/OrganizationPanelController.java</file>
         </group>
     </open-files>
 </project-private>

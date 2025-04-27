@@ -40,6 +40,7 @@ public class CharityEventRepository implements ICharityEventRepository {
             while (rs.next()) {
                 CharityEvent event = new CharityEvent(
                         rs.getInt("eventId"),
+                        rs.getInt("organizationId"),
                         rs.getString("eventName"),
                         rs.getString("category"),
                         rs.getLong("targetAmount"),
@@ -48,7 +49,7 @@ public class CharityEventRepository implements ICharityEventRepository {
                         rs.getDate("dateEnd"),
                         rs.getString("description")
                 );
-
+                System.out.println(rs.getInt("eventId"));
                 eventList.add(event);
             }
         } catch (SQLException ex) {
@@ -172,6 +173,7 @@ public class CharityEventRepository implements ICharityEventRepository {
             if (rs.next()) {
                 event = new CharityEvent(
                         rs.getInt("eventId"),
+                        rs.getInt("organizationId"),
                         rs.getString("eventName"),
                         rs.getString("category"),
                         rs.getLong("targetAmount"),
@@ -201,6 +203,7 @@ public class CharityEventRepository implements ICharityEventRepository {
             while (rs.next()) {
                 events.add(new CharityEvent(
                         rs.getInt("eventId"),
+                        rs.getInt("organizationId"),
                         rs.getString("eventName"),
                         rs.getString("category"),
                         rs.getLong("targetAmount"),
@@ -229,6 +232,7 @@ public class CharityEventRepository implements ICharityEventRepository {
             while (rs.next()) {
                 events.add(new CharityEvent(
                         rs.getInt("eventId"),
+                        rs.getInt("organizationId"),
                         rs.getString("eventName"),
                         rs.getString("category"),
                         rs.getLong("targetAmount"),
@@ -257,12 +261,12 @@ public class CharityEventRepository implements ICharityEventRepository {
             rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getString("eventName");
-            }else{
+            } else {
                 return null;
             }
         } catch (SQLException ex) {
             Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             closeResources(connection, ps, rs);
         }
         return null;

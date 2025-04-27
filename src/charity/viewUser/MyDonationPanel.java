@@ -9,10 +9,12 @@ import javax.swing.JFrame;
  */
 public class MyDonationPanel extends javax.swing.JPanel {
     private int userId;
+    private int accountId;
     MyDonationController controller =null;
 
-    public MyDonationPanel(JFrame parent, int userId) {
+    public MyDonationPanel(JFrame parent, int accountId,int userId) {
         initComponents();
+        this.accountId= accountId;
         this.userId = userId;
         controller = new MyDonationController(userId,txtSearch, jrbtId, jrbtEvent, jtbtUser, jbtReset, jbtPrint, jpnTable);
         controller.setDonationListTable();

@@ -21,8 +21,8 @@ public class DonationRepository implements IDonationRepository {
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
-    
-    public DonationRepository(){
+
+    public DonationRepository() {
         conn = ConnectionDB.getConnection();
     }
 
@@ -41,13 +41,14 @@ public class DonationRepository implements IDonationRepository {
                         rs.getInt("eventId"),
                         rs.getInt("userId"),
                         rs.getLong("amount"),
-                        rs.getDate("donationDate")
+                        rs.getTimestamp("donationDate"),
+                        rs.getString("description")
                 );
                 donations.add(donation);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             closeResources(conn, ps, rs);
             return donations;
         }
@@ -69,13 +70,14 @@ public class DonationRepository implements IDonationRepository {
                         rs.getInt("eventId"),
                         rs.getInt("userId"),
                         rs.getLong("amount"),
-                        rs.getDate("donationDate")
+                        rs.getTimestamp("donationDate"),
+                        rs.getString("description")
                 );
                 donations.add(donation);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             closeResources(conn, ps, rs);
             return donations;
         }
@@ -97,13 +99,14 @@ public class DonationRepository implements IDonationRepository {
                         rs.getInt("eventId"),
                         rs.getInt("userId"),
                         rs.getLong("amount"),
-                        rs.getDate("donationDate")
+                        rs.getTimestamp("donationDate"),
+                        rs.getString("description")
                 );
                 donations.add(donation);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             closeResources(conn, ps, rs);
             return donations;
         }
@@ -111,20 +114,20 @@ public class DonationRepository implements IDonationRepository {
 
     @Override
     public boolean addDonation(Donation donation) {
-        String query = "INSERT INTO donation ( eventId, userId, amount, donationDate)"+
-                "VALUES(?,?,?,?)";
+        String query = "INSERT INTO donation ( eventId, userId, amount, donationDate)"
+                + "VALUES(?,?,?,?)";
         conn = ConnectionDB.getConnection();
         try {
             ps = conn.prepareStatement(query);
             ps.setInt(1, donation.getEventId());
             ps.setInt(2, donation.getUserId());
             ps.setLong(3, donation.getAmount());
-            ps.setDate(4, (Date) donation.getDonationDate());
-            return ps.executeUpdate()>0;
+            ps.setTimestamp(4, (Timestamp) donation.getDonationDate());
+            return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        } finally{
+        } finally {
             closeResources(conn, ps);
         }
 
@@ -140,31 +143,31 @@ public class DonationRepository implements IDonationRepository {
             ps.setInt(2, donation.getUserId());
             ps.setLong(3, donation.getAmount());
             ps.setDate(4, (Date) donation.getDonationDate());
-            return ps.executeUpdate()>0;
+            return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             closeResources(conn, ps);
         }
-        
+
     }
 
     @Override
     public boolean deleteDonation(int donationId) {
         String query = "DELETE FROM donation WHERE donationId=?";
-        conn=ConnectionDB.getConnection();
+        conn = ConnectionDB.getConnection();
         try {
-            ps= conn.prepareStatement(query);
+            ps = conn.prepareStatement(query);
             ps.setInt(1, donationId);
-            return ps.executeUpdate()>0;
+            return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
-            Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);    
+            Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             closeResources(conn, ps);
         }
-        
+
     }
 
     @Override
@@ -182,7 +185,7 @@ public class DonationRepository implements IDonationRepository {
     }
 
     @Override
-    public void closeResources(Connection conn,PreparedStatement ps,  ResultSet rs) {
+    public void closeResources(Connection conn, PreparedStatement ps, ResultSet rs) {
         try {
             if (rs != null) {
                 rs.close();

@@ -19,13 +19,12 @@ public class Login extends JFrame {
 //    private JLabel messageLabel;
 
     public Login() {
-        //initComponents();
         super.setUndecorated(true);
         super.setSize(400, 470);
         super.setShape(new RoundRectangle2D.Double(0, 0, 400, 470, 40, 40));
         super.setLocationRelativeTo(null);
-        FormSignUp form = new FormSignUp();
-        add(form);
+//        FormSignUp form = new FormSignUp();
+//        add(form);
     }
 
     public static void main(String args[]) {

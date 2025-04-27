@@ -4,8 +4,12 @@
  */
 package charity.controller;
 
+import java.awt.Dialog;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -27,14 +31,14 @@ public class AccountController {
     }
     
     private void setEvent(){
-        btnSubmit.addMouseListener(new MouseAdapter(){
-            
-            @Override
-            public void mouseClicked(MouseEvent e){
-                if(jtfUsername.getText().length() == 0 || if(jtfPassword.getText().length() == 0 || ){
-                     jlbMsg.setText("")
-                }
-            }
-        }
+//        btnSubmit.addMouseListener(new MouseAdapter(){
+//            
+////            @Override
+////            public void mouseClicked(MouseEvent e){
+//////                if(jtfUsername.getText().length() == 0 || if(jtfPassword.getText().length() == 0 || ){
+//////                     jlbMsg.setText("")
+//////                }
+////            }
+//        }
     }
 }

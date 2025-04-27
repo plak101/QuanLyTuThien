@@ -11,6 +11,7 @@ import java.sql.Date;
  * @author phaml
  */
 public class User {
+    private int accountId;
     private int id;
     private String name;
     private String address;
@@ -30,7 +31,32 @@ public class User {
         this.birthday = birthday;
     }
 
-    
+    public User(int accountId, int id, String name, String address, String phone, String gender, Date birthday) {
+        this.accountId = accountId;
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.gender = gender;
+        this.birthday = birthday;
+    }
+
+    public User(int accountId, String name, String address, String phone, Date birthday) {
+        this.accountId = accountId;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.gender = gender;
+        this.birthday = birthday;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
 
     public int getId() {
         return id;

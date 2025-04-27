@@ -4,3 +4,5 @@
 *.jar
 *.war
 *.log
+/nbproject/private/
+/dist/

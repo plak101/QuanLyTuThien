@@ -1,5 +1,6 @@
 package charity.UserController;
 
+import charity.component.GButton;
 import charity.controller.ClassTableModel;
 import charity.model.Donation;
 import charity.service.DonationService;
@@ -28,7 +29,7 @@ public class DonationListController {
     private JRadioButton jrbtId;
     private JRadioButton jrbtEvent;
     private JRadioButton jrbtUser;
-    private JButton jbtReset;
+    private GButton gbtReset;
     private JPanel jpnTable;
 
     private ClassTableModel classTableModel = null;
@@ -36,12 +37,12 @@ public class DonationListController {
 
     private TableRowSorter<TableModel> rowSorter = null;
 
-    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, JButton jbtReset, JPanel tablePanel) {
+    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JPanel tablePanel) {
         this.txtSearch = txtSearch;
         this.jrbtId = jrbtId;
         this.jrbtEvent = jrbtEvent;
         this.jrbtUser = jrbtUser;
-        this.jbtReset = jbtReset;
+        this.gbtReset = gbtReset;
         this.jpnTable = tablePanel;
 
         this.classTableModel = new ClassTableModel();
@@ -105,7 +106,7 @@ public class DonationListController {
         //hien thi ra jpnTable
         JScrollPane scroll = new JScrollPane(donationTable);
         scroll.setViewportView(donationTable);
-        scroll.setPreferredSize(new Dimension(800, 400));
+        scroll.setPreferredSize(new Dimension(900, 400));
         jpnTable.removeAll();
         jpnTable.setLayout(new CardLayout());
         jpnTable.add(scroll);
@@ -155,7 +156,7 @@ public class DonationListController {
     }
     
     public void setEvent(){
-        jbtReset.addActionListener(new ActionListener() {
+        gbtReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setDonationListTable();

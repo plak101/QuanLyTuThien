@@ -8,17 +8,24 @@ import javax.swing.JFrame;
  * @author phaml
  */
 public class MyDonationPanel extends javax.swing.JPanel {
+
     private int userId;
     private int accountId;
-    MyDonationController controller =null;
+    MyDonationController controller = null;
 
-    public MyDonationPanel(JFrame parent, int accountId,int userId) {
+    public MyDonationPanel(JFrame parent, int accountId, int userId) {
         initComponents();
-        this.accountId= accountId;
+        this.accountId = accountId;
         this.userId = userId;
-        controller = new MyDonationController(userId,txtSearch, jrbtId, jrbtEvent, jtbtUser, jbtReset, jbtPrint, jpnTable);
+        controller = new MyDonationController(userId, txtSearch, jrbtId, jrbtEvent, jtbtUser, gbtReset, gbtPrint, jpnTable);
         controller.setDonationListTable();
         controller.setEvent();
+        init();
+    }
+
+    public void init() {
+        gbtPrint.changeColor("#71bbb2");
+        gbtReset.changeColor("#71bbb2");
     }
 
     /**
@@ -39,104 +46,153 @@ public class MyDonationPanel extends javax.swing.JPanel {
         jrbtId = new javax.swing.JRadioButton();
         jrbtEvent = new javax.swing.JRadioButton();
         jtbtUser = new javax.swing.JRadioButton();
-        jbtReset = new javax.swing.JButton();
-        jbtPrint = new javax.swing.JButton();
+        gbtReset = new charity.component.GButton();
+        gbtPrint = new charity.component.GButton();
         jpnTable = new javax.swing.JPanel();
 
-        setLayout(null);
+        setBackground(new java.awt.Color(255, 255, 255));
 
-        gradientPanel1.setLayout(null);
+        gradientPanel1.setPreferredSize(new java.awt.Dimension(191, 55));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Lịch sử quyên góp");
-        gradientPanel1.add(jLabel1);
-        jLabel1.setBounds(25, 23, 155, 25);
 
-        add(gradientPanel1);
-        gradientPanel1.setBounds(0, 0, 1025, 70);
+        javax.swing.GroupLayout gradientPanel1Layout = new javax.swing.GroupLayout(gradientPanel1);
+        gradientPanel1.setLayout(gradientPanel1Layout);
+        gradientPanel1Layout.setHorizontalGroup(
+            gradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gradientPanel1Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        gradientPanel1Layout.setVerticalGroup(
+            gradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+        );
 
-        jPanel1.setBackground(new java.awt.Color(153, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
+        txtSearch.setPreferredSize(new java.awt.Dimension(64, 30));
+
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Tìm kiếm");
 
+        jrbtId.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(jrbtId);
+        jrbtId.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jrbtId.setSelected(true);
-        jrbtId.setText("Id");
+        jrbtId.setText("ID");
 
+        jrbtEvent.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(jrbtEvent);
+        jrbtEvent.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jrbtEvent.setText("Sự kiện");
 
+        jtbtUser.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(jtbtUser);
+        jtbtUser.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jtbtUser.setText("Người quyên góp");
 
-        jbtReset.setText("Làm mới");
+        gbtReset.setText("Làm mới");
+        gbtReset.setPreferredSize(new java.awt.Dimension(79, 30));
 
-        jbtPrint.setText("Xuất danh sách");
+        gbtPrint.setText("Xuất danh sách");
+        gbtPrint.setPreferredSize(new java.awt.Dimension(79, 30));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(11, 11, 11)
+                .addGap(17, 17, 17)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addComponent(jrbtId)
                 .addGap(18, 18, 18)
-                .addComponent(jrbtEvent)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jtbtUser)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 329, Short.MAX_VALUE)
-                .addComponent(jbtPrint)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jbtReset)
-                .addGap(23, 23, 23))
+                .addGap(18, 18, 18)
+                .addComponent(jrbtEvent)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
+                .addComponent(gbtPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(gbtReset, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jrbtId)
-                    .addComponent(jrbtEvent)
-                    .addComponent(jtbtUser)
-                    .addComponent(jbtReset)
-                    .addComponent(jbtPrint))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jrbtId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jtbtUser)
+                                .addComponent(jrbtEvent))
+                            .addGap(1, 1, 1))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(gbtReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(gbtPrint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        add(jPanel1);
-        jPanel1.setBounds(0, 90, 1030, 40);
+        jpnTable.setBackground(new java.awt.Color(255, 255, 255));
+        jpnTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout jpnTableLayout = new javax.swing.GroupLayout(jpnTable);
         jpnTable.setLayout(jpnTableLayout);
         jpnTableLayout.setHorizontalGroup(
             jpnTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 950, Short.MAX_VALUE)
+            .addGap(0, 941, Short.MAX_VALUE)
         );
         jpnTableLayout.setVerticalGroup(
             jpnTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 280, Short.MAX_VALUE)
+            .addGap(0, 267, Short.MAX_VALUE)
         );
 
-        add(jpnTable);
-        jpnTable.setBounds(40, 150, 950, 280);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(gradientPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1045, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jpnTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(gradientPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jpnTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(54, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private charity.component.GButton gbtPrint;
+    private charity.component.GButton gbtReset;
     private charity.viewUser.GradientPanel gradientPanel1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton jbtPrint;
-    private javax.swing.JButton jbtReset;
     private javax.swing.JPanel jpnTable;
     private javax.swing.JRadioButton jrbtEvent;
     private javax.swing.JRadioButton jrbtId;

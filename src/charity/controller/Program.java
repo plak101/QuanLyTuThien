@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package charity.controller;
 
-import charity.viewLogin.LoginWindow;
+import charity.viewLogin.LoginFrame;
 
 /**
  *
@@ -12,9 +8,7 @@ import charity.viewLogin.LoginWindow;
  */
 public class Program {
         public Program() {
-            LoginWindow login = new LoginWindow();
+            LoginFrame login = new LoginFrame();
             login.setVisible(true);
-            
-
     }
 }

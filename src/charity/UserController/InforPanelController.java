@@ -1,5 +1,6 @@
 package charity.UserController;
 
+import charity.component.GButton;
 import charity.model.Account;
 import charity.model.User;
 import charity.service.AccountService;
@@ -8,7 +9,6 @@ import charity.utils.ScannerUtils;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 //import java.sql.Date;
 import javax.swing.*;
 
@@ -19,7 +19,7 @@ public class InforPanelController {
     private JTextField txtName, txtAddress, txtPhone, txtUsername, txtEmail, txtPassword, txtNewPassword, txtPasswordConfirm;
     private JDateChooser jdcBirthday;
     private JRadioButton jrbtMale, jrbtFemale;
-    private JButton jbtUserSave, jbtUserCancel, jbtAccountSave, jbtAccountCancel, jbtReset, jbtUserUpdate, jbtPasswordUpdate, jbtEmailUpdate;
+    private GButton gbtReset, gbtUserUpdate, gbtPasswordUpdate, gbtEmailUpdate, gbtUserSave, gbtUserCancel, gbtAccountSave, gbtAccountCancel;
     private JPanel jpnPasswordConfirm;
 
     private AccountService accountService;
@@ -31,7 +31,7 @@ public class InforPanelController {
     ScannerUtils scu = new ScannerUtils();
     private int choice;
 
-    public InforPanelController(int accountId, int userId, JFrame parent, JTextField txtName, JTextField txtAddress, JTextField txtPhone, JTextField txtUsername, JTextField txtEmail, JTextField txtPassword, JTextField txtNewPassword, JTextField txtPasswordConfirm, JDateChooser jdcBirthday, JRadioButton jrbtMale, JRadioButton jrbtFemale, JButton jbtUserSave, JButton jbtUserCancel, JButton jbtAccountSave, JButton jbtAccountCancel, JButton jbtReset, JButton jbtUserUpdate, JButton jbtPasswordUpdate, JButton jbtEmailUpdate, JPanel jpnPasswordConfirm) {
+    public InforPanelController(int accountId, int userId, JFrame parent, JTextField txtName, JTextField txtAddress, JTextField txtPhone, JTextField txtUsername, JTextField txtEmail, JTextField txtPassword, JTextField txtNewPassword, JTextField txtPasswordConfirm, JDateChooser jdcBirthday, JRadioButton jrbtMale, JRadioButton jrbtFemale, GButton gbtUserSave, GButton gbtUserCancel, GButton gbtAccountSave, GButton gbtAccountCancel, GButton gbtReset, GButton gbtUserUpdate, GButton gbtPasswordUpdate, GButton gbtEmailUpdate, JPanel jpnPasswordConfirm) {
         this.accountId = accountId;
         this.userId = userId;
         this.parent = parent;
@@ -46,14 +46,14 @@ public class InforPanelController {
         this.jdcBirthday = jdcBirthday;
         this.jrbtMale = jrbtMale;
         this.jrbtFemale = jrbtFemale;
-        this.jbtUserSave = jbtUserSave;
-        this.jbtUserCancel = jbtUserCancel;
-        this.jbtAccountSave = jbtAccountSave;
-        this.jbtAccountCancel = jbtAccountCancel;
-        this.jbtReset = jbtReset;
-        this.jbtUserUpdate = jbtUserUpdate;
-        this.jbtPasswordUpdate = jbtPasswordUpdate;
-        this.jbtEmailUpdate = jbtEmailUpdate;
+        this.gbtUserSave = gbtUserSave;
+        this.gbtUserCancel = gbtUserCancel;
+        this.gbtAccountSave = gbtAccountSave;
+        this.gbtAccountCancel = gbtAccountCancel;
+        this.gbtReset = gbtReset;
+        this.gbtUserUpdate = gbtUserUpdate;
+        this.gbtPasswordUpdate = gbtPasswordUpdate;
+        this.gbtEmailUpdate = gbtEmailUpdate;
         this.jpnPasswordConfirm = jpnPasswordConfirm;
 
         accountService = new AccountService();
@@ -94,13 +94,13 @@ public class InforPanelController {
     }
 
     public void showUserButton(boolean b) {
-        jbtUserSave.setVisible(b);
-        jbtUserCancel.setVisible(b);
+        gbtUserSave.setVisible(b);
+        gbtUserCancel.setVisible(b);
     }
 
     public void showAccountButton(boolean b) {
-        jbtAccountSave.setVisible(b);
-        jbtAccountCancel.setVisible(b);
+        gbtAccountSave.setVisible(b);
+        gbtAccountCancel.setVisible(b);
     }
 
     public void showPasswordConfirm(boolean b) {
@@ -126,19 +126,18 @@ public class InforPanelController {
     }
 
     public void setEvent() {
-        setJbtResetEvent();
-        setJbtEmailUpdate();
-        setJbtPasswordUpdate();
-        setJbtUserUpdate();
-        setJbtUserSaveEvent();
-        setJbtAccountCancelEvent();
-        setJbtAccountSaveEvent();
-        setJbtUserSaveEvent();
-        setJbtUserCancelEvent();
+        setGbtResetEvent();
+        setGbtEmailUpdate();
+        setGbtPasswordUpdate();
+        setGbtUserUpdate();
+        setGbtAccountCancelEvent();
+        setGbtAccountSaveEvent();
+        setGbtUserSaveEvent();
+        setGbtUserCancelEvent();
     }
 
-    public void setJbtResetEvent() {
-        jbtReset.addActionListener(new ActionListener() {
+    public void setGbtResetEvent() {
+        gbtReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadData();
@@ -146,8 +145,8 @@ public class InforPanelController {
         });
     }
 
-    public void setJbtUserUpdate() {
-        jbtUserUpdate.addActionListener(new ActionListener() {
+    public void setGbtUserUpdate() {
+        gbtUserUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadData();
@@ -158,8 +157,8 @@ public class InforPanelController {
 
     }
 
-    public void setJbtPasswordUpdate() {
-        jbtPasswordUpdate.addActionListener(new ActionListener() {
+    public void setGbtPasswordUpdate() {
+        gbtPasswordUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadData();
@@ -174,8 +173,8 @@ public class InforPanelController {
 
     }
 
-    public void setJbtEmailUpdate() {
-        jbtEmailUpdate.addActionListener(new ActionListener() {
+    public void setGbtEmailUpdate() {
+        gbtEmailUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadData();
@@ -185,56 +184,58 @@ public class InforPanelController {
         });
     }
 
-    public void setJbtUserSaveEvent() {
-        jbtUserSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+    public void setGbtUserSaveEvent() {
+    gbtUserSave.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
 
-                if (!validateInput()) {
-                    return;
-                }
+            if (!validateInput()) {
+                return;
+            }
 
-                String name = capitalizeFirstLetter(txtName.getText().trim());
-                String address = capitalizeFirstLetter(txtAddress.getText().trim());
-                String phone = txtPhone.getText().trim();
+            // Lấy dữ liệu từ giao diện người dùng
+            String name = capitalizeFirstLetter(txtName.getText().trim());
+            String address = capitalizeFirstLetter(txtAddress.getText().trim());
+            String phone = txtPhone.getText().trim();
+            java.util.Date utilDate = jdcBirthday.getDate();
+            java.sql.Date birthday = new java.sql.Date(utilDate.getTime());
+            String gender = jrbtMale.isSelected() ? "Nam" : "Nữ";
 
-                // Lấy ngày sinh
-                java.util.Date utilDate = jdcBirthday.getDate();
-                java.sql.Date birthday = new java.sql.Date(utilDate.getTime());
+            User u = new User(accountId, userId, name, address, phone, gender, birthday);
 
-                // Giới tính
-                String gender = jrbtMale.isSelected() ? "Nam" : "Nữ";
+            boolean success;
 
-                User u = new User(accountId, userId, name, address, phone, gender, birthday);
-                if (user == null) {
-                    //neu user chua co thi them moi
-                    if (userService.addUser(u)) {
-                        JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công");
-//                       cap nhat user va userid
-                        user = userService.getUserByAccountId(accountId);
-                        if (user != null) {
-                            userId = user.getId();
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
+            if (user == null) {
+                // Thêm mới người dùng
+                success = userService.addUser(u);
+                if (success) {
+                    user = userService.getUserByAccountId(accountId);
+                    if (user != null) {
+                        userId = user.getId();
                     }
+                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công");
                 } else {
-                    if (userService.updateUser(u)) {
-                        JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
-                    }
+                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
                 }
-
-                //an nut
-                showUserButton(false);
+            } else {
+                // Cập nhật người dùng hiện tại
+                success = userService.updateUser(u);
+                if (success) {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
+                }
             }
+
+            // Ẩn nút sau khi lưu
+            showUserButton(false);
         }
-        );
-    }
+    });
+}
 
-    public void setJbtUserCancelEvent() {
-        jbtUserCancel.addActionListener(new ActionListener() {
+
+    public void setGbtUserCancelEvent() {
+        gbtUserCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadData();
@@ -242,8 +243,8 @@ public class InforPanelController {
         });
     }
 
-    public void setJbtAccountCancelEvent() {
-        jbtAccountCancel.addActionListener(new ActionListener() {
+    public void setGbtAccountCancelEvent() {
+        gbtAccountCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadData();
@@ -251,8 +252,8 @@ public class InforPanelController {
         });
     }
 
-    public void setJbtAccountSaveEvent() {
-        jbtAccountSave.addActionListener(new ActionListener() {
+    public void setGbtAccountSaveEvent() {
+        gbtAccountSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (choice == 1) {

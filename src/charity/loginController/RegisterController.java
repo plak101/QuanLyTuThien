@@ -1,9 +1,11 @@
 package charity.loginController;
 
+import charity.component.GButton;
 import charity.model.Account;
 import charity.model.Role;
 import charity.service.AccountService;
-import charity.viewLogin.LoginWindow;
+import charity.viewLogin.LoginFrame;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
@@ -14,29 +16,30 @@ import javax.swing.*;
  */
 public class RegisterController {
 
+    private JFrame frame;
     private JTextField txtUsername, txtEmail, txtPassword, txtPassword2;
-    private JButton jbtRegister, jbtBackLogin;
-
+    private GButton gbtRegister;
+    private JLabel jlbBackLogin;
     private AccountService accountService;
 
-    public RegisterController(JTextField txtUsername, JTextField txtEmail, JTextField txtPassword, JTextField txtPassword2, JButton jbtRegister, JButton jbtBackLogin) {
+    public RegisterController(JFrame frame, JTextField txtUsername, JTextField txtEmail, JTextField txtPassword, JTextField txtPassword2, GButton gbtRegister, JLabel jlbBackLogin) {
         this.txtUsername = txtUsername;
         this.txtEmail = txtEmail;
         this.txtPassword = txtPassword;
         this.txtPassword2 = txtPassword2;
-        this.jbtRegister = jbtRegister;
-        this.jbtBackLogin = jbtBackLogin;
-
+        this.gbtRegister = gbtRegister;
+        this.jlbBackLogin = jlbBackLogin;
+        this.frame = frame;
         accountService = new AccountService();
     }
 
     public void setEvent() {
         setJbtRegisterEvent();
-        setJbtBackLogin();
+        setJlbBackLogin();
     }
 
     public void setJbtRegisterEvent() {
-        jbtRegister.addMouseListener(new MouseAdapter() {
+        gbtRegister.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 String username = txtUsername.getText().trim();
@@ -62,15 +65,26 @@ public class RegisterController {
                         txtPassword2.setText("");
 
                         //chuuyen sang login
-                        LoginWindow ui = new LoginWindow();
-                        ui.setVisible(true);
-                        SwingUtilities.getWindowAncestor(jbtRegister).dispose();
-
+                        frame.dispose();
+                        new LoginFrame().setVisible(true);
                     } else {
                         JOptionPane.showMessageDialog(null, "Đăng ký thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     }
                 }
 
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                gbtRegister.setForeground(Color.BLACK);
+                gbtRegister.changeColor("#2d99ae");
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                gbtRegister.setForeground(Color.WHITE);
+                gbtRegister.changeColor("#0c5776");
+                
             }
         });
     }
@@ -98,9 +112,19 @@ public class RegisterController {
             return false;
         }
 
-        // Kiểm tra password dài hơn 6 ký tự và chứa ít nhất 1 số
-        if (password.length() <= 5 || !password.matches(".*\\d.*")) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu phải lớn hơn 5 ký tự và chứa ít nhất 1 số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        // Kiểm tra password dài hơn 6 
+        if (password.length() <= 4) {
+            JOptionPane.showMessageDialog(null, "Mật khẩu phải lớn hơn 4 ký tự !", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        //co it nhat ký tự và chứa ít nhất 1 số
+        //^ — bắt đầu chuỗi
+        //(?=.*[A-Za-z]) — chứa ít nhất một chữ cái (hoa hoặc thường)
+        //(?=.*\\d) — chứa ít nhất một chữ số
+        //.+ — ít nhất một ký tự bất kỳ để đảm bảo chuỗi không trống
+        //$ — kết thúc chuỗi
+        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d).+$")) {
+            JOptionPane.showMessageDialog(null, "Mật khẩu phải có ít nhất 1 cái và 1 chữ số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
@@ -117,14 +141,25 @@ public class RegisterController {
         return true;
     }
 
-    private void setJbtBackLogin() {
-        jbtBackLogin.addMouseListener(new MouseAdapter() {
+    private void setJlbBackLogin() {
+        jlbBackLogin.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                LoginWindow ui = new LoginWindow();
-                ui.setVisible(true);
-                SwingUtilities.getWindowAncestor(jbtRegister).dispose();
+                frame.dispose();
+                new LoginFrame().setVisible(true);
             }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                jlbBackLogin.setForeground(Color.BLACK);
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                jlbBackLogin.setForeground(Color.WHITE);
+            }
+
         });
 
     }

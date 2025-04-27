@@ -168,21 +168,43 @@ public class OrganizationRepository implements IOrganizationRepository {
     @Override
     public String getNameById(int id) {
         try {
-        conn = ConnectionDB.getConnection();
-        String query = "SELECT name FROM Organization WHERE id = ?";
-        ps = conn.prepareStatement(query);
-        ps.setInt(1, id);
-        rs = ps.executeQuery();
+            conn = ConnectionDB.getConnection();
+            String query = "SELECT name FROM Organization WHERE id = ?";
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
 
-        if (rs.next()) {
-            return rs.getString("name");
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrganizationRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeResources(conn, ps, rs);
         }
-    } catch (SQLException ex) {
-        Logger.getLogger(OrganizationRepository.class.getName()).log(Level.SEVERE, null, ex);
-    } finally {
-        closeResources(conn, ps, rs);
-    }
         return null;
+    }
+
+    @Override
+    public int getTotalEvent(int id) {
+        String sql = "SELECT COUNT(e.eventId) AS totalEvent\n"
+                + "FROM Organization o\n"
+                + "LEFT JOIN Event e ON o.id = e.organizationId\n"
+                + "where o.id =?";
+        conn = ConnectionDB.getConnection();
+        try {
+            ps= conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs= ps.executeQuery();
+            if (rs.next()){
+                return rs.getInt("totalEvent");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrganizationRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            closeResources(conn, ps, rs);
+        }
+        return 0;
     }
 
 }

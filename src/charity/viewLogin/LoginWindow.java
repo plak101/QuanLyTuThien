@@ -15,8 +15,8 @@ public class LoginWindow extends javax.swing.JDialog {
     public LoginWindow() {
         initComponents();
         setLocationRelativeTo(null);
-        controller = new LoginController(this, txtUsername, txtPassword, jbtLogin, jbtRegister);
-                controller.setJbtLoginEvent();
+//        controller = new LoginController(this, txtUsername, txtPassword, jbtLogin, jbtRegister);
+//                controller.setJbtLoginEvent();
 
     }
 

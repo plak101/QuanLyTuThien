@@ -123,7 +123,8 @@ INSERT INTO account (username, password, email, role) VALUES
 ('admin01', 'admin', 'admin01@example.com', 'Admin'),
 ('user01', 'user', 'user01@example.com', 'User'),
 ('user02', 'user', 'user02@example.com', 'User'),
-('user03', 'user', 'user03@example.com', 'User');
+('user03', 'user', 'user03@example.com', 'User'),
+('1', '1', 'user03@example.com', 'User');
 
 -- thêm dữ liệu vào bảng User
 INSERT INTO User (accountId, userName, address, phone, gender, birthDay) VALUES
@@ -142,7 +143,8 @@ INSERT INTO Organization (name, email, hotline, address) VALUES
 INSERT INTO Event (organizationId, eventname, category, description, targetAmount, currentAmount, dateBegin, dateEnd) VALUES
 (1,'Quyên góp từ thiện 1', 'Giáo dục', 'Hỗ trợ trẻ em nghèo đến trường', 50000000, 1000000, '2025-03-01', '2025-04-01'),
 (2,'Hỗ trợ đồng bào miền Trung', 'Cứu trợ', 'Giúp đỡ người dân bị lũ lụt', 70000000,200000,  '2025-02-15', '2025-05-01'),
-(3,'Quyên góp xây nhà tình thương', 'Nhà ở', 'Xây nhà cho hộ nghèo', 100000000,300000,  '2025-03-10', '2025-06-01'); 
+(3,'Quyên góp xây nhà tình thương', 'Nhà ở', 'Xây nhà cho hộ nghèo', 100000000,300000,  '2025-03-10', '2025-06-01'),
+(1,'Quyên góp xây nhà tình thương 3', 'Nhà ở', 'Xây nhà cho hộ nghèo', 100000000,300000,  '2025-03-10', '2025-06-01');
  
  -- thêm dữ liệu vào bảng donation
  INSERT INTO Donation (userId, eventId, amount, donationDate, description) VALUES

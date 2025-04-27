@@ -19,7 +19,7 @@ public class ConnectionDB {
     private static Properties properties;
     private static Connection connection;
 
-    public ConnectionDB() {
+    public ConnectionDB() { 
         getConnection();
     }
 

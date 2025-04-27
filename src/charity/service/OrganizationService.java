@@ -34,4 +34,7 @@ public class OrganizationService {
     public String getNameById(int id){
         return organizationRepository.getNameById(id);
     }
+    public int getTotalEvent(int id){
+        return organizationRepository.getTotalEvent(id);
+    }
 }

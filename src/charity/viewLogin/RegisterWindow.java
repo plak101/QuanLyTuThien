@@ -17,8 +17,8 @@ public class RegisterWindow extends javax.swing.JFrame {
     public RegisterWindow() {
         //super(parent, modal);
         initComponents();
-        controller = new RegisterController(txtUsername, txtEmail, txtPassword, txtPassword2, jbtRegister, jbtBackLogin);
-        controller.setEvent();
+//        controller = new RegisterController(txtUsername, txtEmail, txtPassword, txtPassword2, jbtRegister, jbtBackLogin);
+//        controller.setEvent();
     }
     //public RegisterWindow(Object object, boolean b)
 //    public RegisterWindow() {

@@ -1,8 +1,10 @@
 package charity.UserController;
 
+import charity.component.GButton;
 import charity.controller.ClassTableModel;
 import charity.model.CharityEvent;
 import charity.service.CharityEventService;
+import charity.viewUser.DonateDialog;
 import charity.viewUser.DonateJDialog;
 import java.awt.CardLayout;
 import java.awt.*;
@@ -13,7 +15,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-
 public class MainPanelController {
 
     private int userId, accountId;
@@ -22,8 +23,8 @@ public class MainPanelController {
     private JRadioButton jrbtId;
     private JRadioButton jrbtEvent;
     private JRadioButton jrbtCategory;
-    private JButton jbtReset;
-    private JButton jbtDonate;
+    private GButton gbtReset;
+    private GButton gbtDonate;
     private JButton jbtActive;
     private JButton jbtExpired;
     private JPanel jpnTable;
@@ -36,13 +37,13 @@ public class MainPanelController {
 
     private int selectedEventId = -1;
 
-    public MainPanelController(JFrame parent,int accountId, int userId, JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtCategory, JButton jbtReset, JButton jbtDonate, JButton jbtActive, JButton jbtExpired, JPanel jpnTable) {
+    public MainPanelController(JFrame parent, int accountId, int userId, JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtCategory, GButton gbtReset, GButton gbtDonate, JButton jbtActive, JButton jbtExpired, JPanel jpnTable) {
         this.txtSearch = txtSearch;
         this.jrbtId = jrbtId;
         this.jrbtEvent = jrbtEvent;
         this.jrbtCategory = jrbtCategory;
-        this.jbtReset = jbtReset;
-        this.jbtDonate = jbtDonate;
+        this.gbtReset = gbtReset;
+        this.gbtDonate = gbtDonate;
         this.jbtActive = jbtActive;
         this.jbtExpired = jbtExpired;
         this.jpnTable = jpnTable;
@@ -57,7 +58,7 @@ public class MainPanelController {
 
     public void loadButton() {
         //set enabled
-//        jbtDonate.setEnabled(false);
+//        gbtDonate.setEnabled(false);
         jbtActive.setEnabled(false);
         jbtExpired.setEnabled(true);
 
@@ -133,8 +134,13 @@ public class MainPanelController {
 
         //hien thi ra jpnTable
         JScrollPane scroll = new JScrollPane(eventTable);
-        scroll.setViewportView(eventTable);
+        eventTable.setFillsViewportHeight(true);
+        eventTable.setBackground(Color.white);
+        scroll.getViewport().setBackground(Color.white);
+        scroll.setPreferredSize(new Dimension(jpnTable.getWidth(), 400));
         jpnTable.removeAll();
+        jpnTable.setBackground(Color.white);
+
         jpnTable.setLayout(new CardLayout());
         jpnTable.add(scroll);
         jpnTable.revalidate();
@@ -146,6 +152,7 @@ public class MainPanelController {
 
         //table header
         table.getTableHeader().setBackground(Color.decode("#B4EBE6"));
+//        table.getTableHeader().setBackground(Color.decode("#b8e7ea"));
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setPreferredSize(new Dimension(table.getTableHeader().getWidth(), 40));
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -173,13 +180,13 @@ public class MainPanelController {
 
         table.getColumnModel().getColumn(2).setMaxWidth(500);
         table.getColumnModel().getColumn(2).setPreferredWidth(200);
-        
+
         table.getColumnModel().getColumn(3).setMaxWidth(500);
         table.getColumnModel().getColumn(3).setPreferredWidth(100);
 
         table.getColumnModel().getColumn(5).setMaxWidth(500);
         table.getColumnModel().getColumn(5).setPreferredWidth(150);
-        
+
         table.getColumnModel().getColumn(6).setMaxWidth(500);
         table.getColumnModel().getColumn(6).setPreferredWidth(70);
 
@@ -196,9 +203,9 @@ public class MainPanelController {
         selectedEventId = -1;
     }
 
-    //click vao jbtReset
+    //click vao gbtReset
     public void setJbtResetEvent() {
-        jbtReset.addActionListener(new ActionListener() {
+        gbtReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 txtSearch.setText("");
@@ -237,7 +244,7 @@ public class MainPanelController {
 
     //click vao nut quyen gop
     public void setJbtDonate() {
-        jbtDonate.addActionListener(new ActionListener() {
+        gbtDonate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (selectedEventId != -1) {
@@ -247,7 +254,8 @@ public class MainPanelController {
                         JOptionPane.showMessageDialog(null, "Không tìm thấy sự kiện!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     }
 
-                    DonateJDialog dialog = new DonateJDialog(parent, true, event,accountId, userId);
+//                    DonateJDialog dialog = new DonateJDialog(parent, true, event,accountId, userId);
+                    DonateJDialog dialog = new DonateJDialog(parent, true, selectedEventId, accountId, userId);
                     dialog.setVisible(true);
                 }
             }
@@ -266,7 +274,7 @@ public class MainPanelController {
                         int selectedRow = eventTable.getSelectedRow();
                         if (selectedRow != -1) {
                             selectedEventId = (int) eventTable.getValueAt(selectedRow, 0);
-                            jbtDonate.setEnabled(true);
+                            gbtDonate.setEnabled(true);
                         }
                     }
                 }

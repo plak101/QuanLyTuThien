@@ -4,13 +4,15 @@
  */
 package charity.UserController;
 
+import charity.component.ImageIconCustom;
+import charity.formatData.*;
 import charity.model.CharityEvent;
 import charity.model.Donation;
 import charity.service.AccountService;
 import charity.service.CharityEventService;
 import charity.service.DonationService;
+import charity.service.OrganizationService;
 import charity.utils.MessageDialog;
-import com.utc2.charity.controller.IFormatData;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,20 +33,25 @@ public class DonationDialogController implements IFormatData {
     private CharityEventService eventService = new CharityEventService();
     private DonationService donationService = new DonationService();
     private AccountService accountService = new AccountService();
+    private OrganizationService organizationService = new OrganizationService();
 
     private JTextField txtEventId;
     private JTextField txtEventName;
     private JTextField txtCategory;
     private JTextField txtTargetAmount;
     private JTextField txtCurrentAmount;
-    private JTextField txtProgress;
+    private JLabel txtProgress;
     private JTextField txtDateBegin;
     private JTextField txtDateEnd;
-    private JTextField txtDescription;
+    private JTextArea txtDescription;
     private JTextField txtMoney;
+    private JTextField txtOrganiation;
     private JButton jbtDonate;
+    private JLabel  jlbImage;
+    private JTextArea txtMessage;
+//    private CharityEvent event2 = eventService.getEventById(event.getId());
 
-    public DonationDialogController(int accountId, int userId, CharityEvent event, JTextField txtEventId, JTextField txtEventName, JTextField txtCategory, JTextField txtTargetAmount, JTextField txtCurrentAmount, JTextField txtProgress, JTextField txtDateBegin, JTextField txtDateEnd, JTextField txtDescription, JTextField txtMoney, JButton jbtDonate) {
+    public DonationDialogController(int accountId, int userId, CharityEvent event, JTextField txtEventId, JTextField txtEventName, JTextField txtCategory, JTextField txtTargetAmount, JTextField txtCurrentAmount, JLabel txtProgress, JTextField txtDateBegin, JTextField txtDateEnd, JTextArea txtDescription, JTextField txtMoney, JButton jbtDonate, JTextField txtOrganization, JLabel jlbImage, JTextArea txtMessage) {
         this.accountId = accountId;
         this.userId = userId;
         this.event = event;
@@ -59,6 +66,9 @@ public class DonationDialogController implements IFormatData {
         this.txtDescription = txtDescription;
         this.txtMoney = txtMoney;
         this.jbtDonate = jbtDonate;
+        this.txtOrganiation = txtOrganization;
+        this.txtMessage = txtMessage;
+        this.jlbImage = jlbImage;
     }
 
     public void loadEventData() {
@@ -73,6 +83,10 @@ public class DonationDialogController implements IFormatData {
         txtDateEnd.setText(dateFormat.format(event2.getDateEnd()));
         txtProgress.setText(String.format("%.2f%%", (float) event2.getCurrentAmount() / event2.getTargetAmount() * 100));
         txtDescription.setText(event2.getDescription());
+        String organizationName =  organizationService.getNameById(event2.getOrganizationId()) ;
+        txtOrganiation.setText(organizationName);
+        String url= event2.getImageUrl();
+        jlbImage.setIcon(ImageIconCustom.getSmoothIcon(url, 130, 130));
     }
 
     public void settingTxtMoney() {

@@ -63,11 +63,11 @@ public class LoginController {
                             ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                             ui.setVisible(true);
                         } else {
-                            //mo admin ui
-//                            AdminUI ui = new AdminUI(account.getId());
-//                            ui.setLocationRelativeTo(null);
-//                            ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//                            ui.setVisible(true);
+//                            mo admin ui
+                            AdminUI ui = new AdminUI();
+                            ui.setLocationRelativeTo(null);
+                            ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            ui.setVisible(true);
                         }
                     }
 

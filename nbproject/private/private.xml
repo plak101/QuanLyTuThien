@@ -14,14 +14,17 @@
             <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/service/DonationService.java</file>
             <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/resource/database.properties</file>
             <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/build.xml</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/.idea/.gitignore</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/build/classes/.netbeans_update_resources</file>
             <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewLogin/LoginWindow.java</file>
-            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/viewMain/QuanLyNhaTaiTro.java</file>
-            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/controller/NhaTaiTroController.java</file>
-            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/viewMain/AdminUI.java</file>
-            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/utils/DBUtils.java</file>
-            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/build.xml</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/loginController/LoginController.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/nbproject/private/private.xml</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/nbproject/project.properties</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/.idea/.gitignore</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/Admin.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewMain/AdminUI.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/.gitignore</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewMain/QuanLyNhaTaiTro.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewUser/OrganizationPanel.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewMain/QuanLyChuongTrinh.java</file>
         </group>
     </open-files>
 </project-private>

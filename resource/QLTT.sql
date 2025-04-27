@@ -95,20 +95,7 @@ CREATE TABLE chuong_trinh (
 drop table chuong_trinh;
 drop table nha_tai_tro;
 
-INSERT INTO chuong_trinh (ten_chuong_trinh, mo_ta, ngay_bat_dau, ngay_ket_thuc, tong_kinh_phi, trang_thai)
-VALUES
-('Chương trình Mùa hè xanh', 'Tham gia hỗ trợ cộng đồng vùng sâu vùng xa.', '2025-06-01', '2025-08-01', 50000000, 'Đang thực hiện'),
-('Chương trình Hiến máu nhân đạo', 'Tổ chức vận động hiến máu cứu người.', '2025-05-15', '2025-05-20', 20000000, 'Đã hoàn thành'),
-('Chương trình Tết cho người nghèo', 'Gây quỹ và tặng quà cho hộ nghèo dịp Tết.', '2024-12-01', '2025-01-31', 100000000, 'Đang chuẩn bị'),
-('Chương trình Bảo vệ môi trường', 'Tuyên truyền và tổ chức hoạt động bảo vệ môi trường.', '2025-09-01', '2025-11-30', 30000000, 'Chưa bắt đầu');
 
-INSERT INTO nha_tai_tro (ten, dia_chi, so_dien_thoai, email)
-VALUES
-('Công ty ABC', '123 Đường Lê Lợi, Quận 1, TP.HCM', '0901234567', 'lienhe@abc.com'),
-('Tập đoàn XYZ', '456 Đường Nguyễn Trãi, Quận 5, TP.HCM', '0912345678', 'contact@xyz.vn'),
-('Nhà tài trợ Thiện Nguyện', '789 Đường Lý Thường Kiệt, Quận 10, TP.HCM', '0923456789', 'support@thiennguyen.org'),
-('Công ty TNHH Phúc An', '12 Đường Hoàng Văn Thụ, Quận Tân Bình, TP.HCM', '0934567890', 'phucan@gmail.com'),
-('Tập đoàn Bảo Minh', '88 Đường Trường Chinh, Quận Tân Phú, TP.HCM', '0945678901', 'info@baominh.vn');
 
 
 -- xóa dữ liêu để tạo mới 
@@ -120,18 +107,37 @@ VALUES
 
 -- them du lieu vao bang account
 INSERT INTO account (username, password, email, role) VALUES
-('admin01', 'admin', 'admin01@example.com', 'Admin'),
-('user01', 'user', 'user01@example.com', 'User'),
-('user02', 'user', 'user02@example.com', 'User'),
-('user03', 'user', 'user03@example.com', 'User'),
-('1', '1', 'user03@example.com', 'User');
+('admin01', 'khoi_Admin01', 'qltt.admin1st@gmail.com', 'Admin'),
+('admin02', 'ngan_Admin02', 'qltt.admin2nd@gmail.com', 'Admin'),
+('admin03', 'khoa_Admin03', 'qltt.admin3rd@gmail.com', 'Admin'),
+
+('namnguyen', 'namdz333', 'namnguyenvan@gmail.com', 'User'),
+('bchicute', 'bchi1007', 'bchi98@gmail.com', 'User'),
+('sydeptrai', 'sy99volunt', 'syleeeee@gmail.com', 'User'),
+('khoaloveangiang', 'khoa1001', 'khoa.angiang@gmail.com', 'User'),
+('3thuyduong', 'duong123', 'duongthuy@gmail.com', 'User'),
+('minh4vuong', 'vuong0minh', 'minh.vuong@yahoo.com', 'User'),
+('ngoclan007', 'lanngoc22', 'ngoclan.tran@outlook.com', 'User'),
+('hoanganh357', 'anhhoang90', 'hoanganh.le@gmail.com', 'User'),
+('xuanmai102', 'maixuan1khong2', 'xuan.mai@gmail.com', 'User'),
+('ductuan69', 'tuan.duc', 'ductuan1992@gmail.com', 'User');
 
 -- thêm dữ liệu vào bảng User
 INSERT INTO User (accountId, userName, address, phone, gender, birthDay) VALUES
-(1,'Nguyễn Văn Admin', 'Hà Nội', '0123456789', 'Nam', '1990-05-10'),
-(2,'Nguyễn Văn A', 'Hà Nội', '0123456789', 'Nam', '1990-05-10'),
-(3,'Trần Thị B', 'Hồ Chí Minh', '0987654321', 'Nữ', '1995-08-20'),
-(4,'Lê Văn C', 'Đà Nẵng', '0369852147', 'Nam', '1988-12-05');
+(1,'Ngô Thành Khôi', 'Bình Thuận', '0915194857', 'Nam', '2005-05-03'),
+(2,'Trần Thanh Ngân', 'Hà Nội', '0123456789', 'Nam', '2005-05-10'),
+(3,'Phạm Lê Anh Khoa', 'An Giang', '0987654321', 'Nữ', '2005-01-10'),
+
+(4,'Nguyễn Văn Nam', 'Hải Phòng', '0912345678', 'Nam', '1993-11-25'),
+(5,'Trần Thị Bích Chi', 'Bình Dương', '0336987412', 'Nữ', '2000-03-15'),
+(6,'Bùi Phạm Sỹ Thịnh', 'Cần Thơ', '0777123456', 'Nam', '1985-07-01'),
+(7,'Lê Đỗ Anh Khoa', 'An Giang', '0888555222', 'Nam', '1997-09-30'),
+(8,'Đậu Thuỳ Dương', 'Huế', '0555999111', 'Nữ', '1992-04-18'),
+(9,'Trịnh Minh Vương', 'Nha Trang', '0963214785', 'Nam', '1989-01-03'),
+(10,'Phạm Thị Ngọc Lan', 'Hà Nam', '0398765432', 'Nữ', '1998-06-12'),
+(11,'Võ Hoàng Anh', 'Thái Bình', '0707418529', 'Nam', '1994-12-22'),
+(12,'Trần Vũ Xuân Mai', 'Vũng Tàu', '0869321654', 'Nữ', '1991-02-08'),
+(13,'Ngô Đức Tuấn', 'Lạng Sơn', '0941789632', 'Nam', '1996-10-27');
 
 -- Them du lieu vao bang to chuc
 INSERT INTO Organization (name, email, hotline, address) VALUES

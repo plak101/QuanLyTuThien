@@ -13,11 +13,16 @@ public class DonationListPanel extends javax.swing.JPanel {
         initComponents();
         this.accountId = accountId;
         this.userId = userId;
-        controller= new DonationListController(txtSearch, jrbtId, jrbtEvent, jrbtUser, jbtReset, jpnTable);
+        controller= new DonationListController(txtSearch, jrbtId, jrbtEvent, jrbtUser, gbtReset, jpnTable);
         controller.setDonationListTable();
         controller.setEvent();
+        init();
     }
+    
+    public void init(){
 
+        gbtReset.changeColor("#71bbb2");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,11 +42,12 @@ public class DonationListPanel extends javax.swing.JPanel {
         jrbtId = new javax.swing.JRadioButton();
         jrbtEvent = new javax.swing.JRadioButton();
         jrbtUser = new javax.swing.JRadioButton();
-        jButton1 = new javax.swing.JButton();
-        jbtReset = new javax.swing.JButton();
+        gbtReset = new charity.component.GButton();
         jpnTable = new javax.swing.JPanel();
 
-        setLayout(null);
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        gradientPanel2.setPreferredSize(new java.awt.Dimension(1028, 55));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -55,59 +61,83 @@ public class DonationListPanel extends javax.swing.JPanel {
             .addGroup(gradientPanel2Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addComponent(jLabel2)
-                .addContainerGap(803, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         gradientPanel2Layout.setVerticalGroup(
             gradientPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientPanel2Layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(20, 20, 20))
+            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
         );
 
-        jPanel3.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(149, 79));
-        jPanel3.setLayout(null);
 
+        txtSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchActionPerformed(evt);
             }
         });
-        jPanel3.add(txtSearch);
-        txtSearch.setBounds(100, 10, 170, 30);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Tìm kiếm");
-        jPanel3.add(jLabel3);
-        jLabel3.setBounds(20, 10, 70, 30);
 
         jrbtId.setBackground(new java.awt.Color(255, 255, 255));
         typeSearch.add(jrbtId);
+        jrbtId.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jrbtId.setSelected(true);
-        jrbtId.setText("Id");
-        jPanel3.add(jrbtId);
-        jrbtId.setBounds(300, 11, 50, 30);
+        jrbtId.setText("ID");
 
         jrbtEvent.setBackground(new java.awt.Color(255, 255, 255));
         typeSearch.add(jrbtEvent);
+        jrbtEvent.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jrbtEvent.setText("Sự kiện");
-        jPanel3.add(jrbtEvent);
-        jrbtEvent.setBounds(350, 10, 70, 30);
 
         jrbtUser.setBackground(new java.awt.Color(255, 255, 255));
         typeSearch.add(jrbtUser);
+        jrbtUser.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jrbtUser.setText("Người quyên góp");
-        jPanel3.add(jrbtUser);
-        jrbtUser.setBounds(420, 10, 130, 30);
 
-        jButton1.setText("jButton1");
-        jPanel3.add(jButton1);
-        jButton1.setBounds(860, 10, 75, 23);
+        gbtReset.setText("Làm mới");
+        gbtReset.setPreferredSize(new java.awt.Dimension(74, 30));
+        gbtReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gbtResetActionPerformed(evt);
+            }
+        });
 
-        jbtReset.setText("Làm mới");
-        jPanel3.add(jbtReset);
-        jbtReset.setBounds(945, 10, 80, 23);
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap(7, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jrbtId, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jrbtEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jrbtUser)
+                .addGap(265, 265, 265)
+                .addComponent(gbtReset, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(57, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jrbtId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jrbtEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jrbtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(gbtReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(15, 15, 15))
+        );
 
         jpnTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
@@ -115,7 +145,7 @@ public class DonationListPanel extends javax.swing.JPanel {
         jpnTable.setLayout(jpnTableLayout);
         jpnTableLayout.setHorizontalGroup(
             jpnTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
+            .addGap(0, 950, Short.MAX_VALUE)
         );
         jpnTableLayout.setVerticalGroup(
             jpnTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,41 +156,54 @@ public class DonationListPanel extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(gradientPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(64, 64, 64)
+            .addComponent(gradientPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1034, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jpnTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1018, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(gradientPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(36, 36, 36)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jpnTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
 
-        add(jPanel2);
-        jPanel2.setBounds(0, 0, 1028, 512);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
 
+    private void gbtResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gbtResetActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gbtResetActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private charity.component.GButton gbtReset;
     private charity.viewUser.GradientPanel gradientPanel2;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JButton jbtReset;
     private javax.swing.JPanel jpnTable;
     private javax.swing.JRadioButton jrbtEvent;
     private javax.swing.JRadioButton jrbtId;

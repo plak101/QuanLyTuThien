@@ -1,17 +1,20 @@
 package charity.UserController;
 
+import charity.component.GButton;
 import charity.controller.ClassTableModel;
 import charity.model.Donation;
 import charity.service.DonationService;
 import charity.service.UserService;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -34,8 +37,8 @@ public class MyDonationController {
     private JRadioButton jrbtId;
     private JRadioButton jrbtEvent;
     private JRadioButton jrbtUser;
-    private JButton jbtReset;
-    private JButton jbtPrint;
+    private GButton gbtReset;
+    private GButton gbtPrint;
     private JPanel jpnTable;
 
     private ClassTableModel classTableModel = null;
@@ -44,14 +47,14 @@ public class MyDonationController {
 
     private TableRowSorter<TableModel> rowSorter = null;
 
-    public MyDonationController(int userId, JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, JButton jbtReset, JButton jbtPrint, JPanel tablePanel) {
+    public MyDonationController(int userId, JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, GButton gbtPrint, JPanel tablePanel) {
         this.userId = userId;
         this.txtSearch = txtSearch;
         this.jrbtId = jrbtId;
         this.jrbtEvent = jrbtEvent;
         this.jrbtUser = jrbtUser;
-        this.jbtReset = jbtReset;
-        this.jbtPrint = jbtPrint;
+        this.gbtReset = gbtReset;
+        this.gbtPrint = gbtPrint;
         this.jpnTable = tablePanel;
 
         this.classTableModel = new ClassTableModel();
@@ -114,39 +117,47 @@ public class MyDonationController {
         designTable(donationTable);
 
 //        -------------------------------------------
-//        Kiểm tra trạng thái user, thiet dat nut jbtPrint
+//        Kiểm tra trạng thái user, thiet dat nut gbtPrint
 //      ---------------------------------------------
         if (userService.getUserNameById(userId) == null) {
             JLabel text = new JLabel("Bạn chưa xác minh thông tin", SwingConstants.CENTER);
-            text.setFont(new Font("Segoe UI", Font.BOLD, 30));   
+            text.setFont(new Font("Segoe UI", Font.BOLD, 30));
             text.setForeground(Color.LIGHT_GRAY);
             jpnTable.removeAll();
-            jpnTable.setLayout(new CardLayout());
-            jpnTable.add(text);
+            jpnTable.setLayout(new BorderLayout());
+            jpnTable.setPreferredSize(new Dimension(800, 300));
+            jpnTable.add(text, BorderLayout.CENTER);
             jpnTable.revalidate();
             jpnTable.repaint();
-            jbtPrint.setEnabled(false);
+            gbtPrint.setEnabled(false);
         } else if (model.getRowCount() == 0) {
             JLabel text = new JLabel("Danh sách trống", SwingConstants.CENTER);
             text.setFont(new Font("Segoe UI", Font.BOLD, 30));
             text.setForeground(Color.LIGHT_GRAY);
             jpnTable.removeAll();
-            jpnTable.setLayout(new CardLayout());
-            jpnTable.add(text);
+            jpnTable.setLayout(new BorderLayout());
+            jpnTable.setPreferredSize(new Dimension(800, 300));
+            jpnTable.add(text, BorderLayout.CENTER);
+
             jpnTable.revalidate();
             jpnTable.repaint();
-            jbtPrint.setEnabled(false);
+            gbtPrint.setEnabled(false);
         } else {
             //hien thi ra jpnTable
             JScrollPane scroll = new JScrollPane(donationTable);
             scroll.setViewportView(donationTable);
+            donationTable.setFillsViewportHeight(true);
+            donationTable.setBackground(Color.white);
+            scroll.getViewport().setBackground(Color.white);
+
             scroll.setPreferredSize(new Dimension(800, 400));
+            jpnTable.setBackground(Color.white);
             jpnTable.removeAll();
             jpnTable.setLayout(new CardLayout());
             jpnTable.add(scroll);
             jpnTable.revalidate();
             jpnTable.repaint();
-            jbtPrint.setEnabled(true);
+            gbtPrint.setEnabled(true);
         }
     }
 
@@ -192,7 +203,7 @@ public class MyDonationController {
     }
 
     public void setEvent() {
-        jbtReset.addActionListener(new ActionListener() {
+        gbtReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setDonationListTable();

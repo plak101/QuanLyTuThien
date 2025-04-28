@@ -71,7 +71,6 @@ public class RegisterController {
                         JOptionPane.showMessageDialog(null, "Đăng ký thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-
             }
 
             @Override
@@ -112,7 +111,7 @@ public class RegisterController {
             return false;
         }
 
-        // Kiểm tra password dài hơn 6 
+        // Kiểm tra password dài hơn 5 
         if (password.length() <= 4) {
             JOptionPane.showMessageDialog(null, "Mật khẩu phải lớn hơn 4 ký tự !", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;

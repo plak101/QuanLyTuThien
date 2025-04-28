@@ -230,11 +230,11 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
             .addGroup(jpnLeftLayout.createSequentialGroup()
                 .addGroup(jpnLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpnLeftLayout.createSequentialGroup()
-                        .addGap(83, 83, 83)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpnLeftLayout.createSequentialGroup()
                         .addGap(53, 53, 53)
-                        .addComponent(jlbLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jlbLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpnLeftLayout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jpnLeftLayout.setVerticalGroup(

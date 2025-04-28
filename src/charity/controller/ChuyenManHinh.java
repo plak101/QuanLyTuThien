@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import charity.viewMain.QuanLyQuyenGop;
 import charity.viewMain.QuanLyChuongTrinh;
 import charity.viewMain.BaoCao;
+import charity.viewMain.CharityEventPanel;
 import charity.viewMain.QuanLyNhaTaiTro;
 import charity.viewMain.TrangChu;
 
@@ -68,7 +69,9 @@ public class ChuyenManHinh {
                     node = new QuanLyNhaTaiTro();
                     break;
                 case "QuanLyChuongTrinh":
-                    node = new QuanLyChuongTrinh();
+//                    node = new QuanLyChuongTrinh();
+                    node = new CharityEventPanel();
+                    
                     break;
                 case "QuanLyQuyenGop":
                     node = new QuanLyQuyenGop();

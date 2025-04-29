@@ -22,7 +22,7 @@ public class DonateJDialog extends javax.swing.JDialog {
         this.accountId= accountId;
         
         this.event = eventService.getEventById(eventId);
-        DonationDialogController controller = new DonationDialogController(accountId, userId, event, txtEventId, txtEventName, txtCategory, txtTargetAmount, txtCurrentAmount,txtProgress,  txtDateBegin, txtDateEnd, txtDescription, txtMoney, gbtDonate, txtOrganization, jlbImage, txtMessage);
+        DonationDialogController controller = new DonationDialogController(accountId, userId, event, txtEventId, txtEventName, txtCategory, txtTargetAmount, txtCurrentAmount,txtProgress,  txtDateBegin, txtDateEnd, txtDescription, txtMoney, gbtDonate, txtOrganization, jlbImage, txtMessage, jpbProgress);
         
         controller.loadEventData();
         controller.settingTxtMoney();
@@ -205,7 +205,7 @@ public class DonateJDialog extends javax.swing.JDialog {
         );
 
         jpbProgress.setBackground(new java.awt.Color(255, 255, 255));
-        jpbProgress.setForeground(new java.awt.Color(204, 255, 255));
+        jpbProgress.setForeground(new java.awt.Color(255, 204, 204));
         jpbProgress.setBorder(null);
         jpbProgress.setPreferredSize(new java.awt.Dimension(146, 22));
 

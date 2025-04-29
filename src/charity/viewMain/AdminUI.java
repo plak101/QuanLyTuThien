@@ -3,6 +3,7 @@ package charity.viewMain;
 import charity.controller.ChuyenManHinh;
 import charity.bean.DanhMuc;
 import charity.component.ImageIconCustom;
+import charity.controller.AdminUIController;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class AdminUI extends javax.swing.JFrame {
         listItem.add(new DanhMuc("BaoCao", jpnBaoCao, jibBaoCao));
 
         controler.setEvent(listItem);
+        
+        AdminUIController adminUIController = new AdminUIController(jlbLogout);
         init();
     }
 
@@ -37,7 +40,7 @@ public class AdminUI extends javax.swing.JFrame {
 
         jlbLogout.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/logout2.png", 20, 20));
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

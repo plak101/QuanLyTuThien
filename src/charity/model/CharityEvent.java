@@ -19,7 +19,7 @@ public class CharityEvent {
     private String description;
     private long targetAmount;
     private long currentAmount;
-    private String imageUrl= "/charity/image/tiepSucDenTruong.png";
+    private String imageUrl= "/charity/image/default.png";
     private Date dateBegin, dateEnd;
 //    private List<Donation> donations;// Danh sách đóng góp
 
@@ -37,15 +37,18 @@ public class CharityEvent {
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
     }
-
-    public String getImageUrl() {
-        return imageUrl;
+    public CharityEvent(int id,int organizationId, String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description, String imageUrl) {
+        this.id = id;
+        this.organizationId=organizationId;
+        this.name = name;
+        this.category = category;
+        this.description = description;
+        this.targetAmount = targetAmount;
+        this.currentAmount = currentAmount;
+        this.dateBegin = dateBegin;
+        this.dateEnd = dateEnd;
+        this.imageUrl= imageUrl;
     }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public CharityEvent(String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
         this.name = name;
         this.category = category;
@@ -55,6 +58,16 @@ public class CharityEvent {
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
     }
+    
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+
     
 //    public CharityEvent(int organizationId, String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
 //        this.organizationId=organizationId;

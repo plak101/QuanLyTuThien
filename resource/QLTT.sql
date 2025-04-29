@@ -47,9 +47,27 @@ CREATE TABLE Event (
     dateBegin DATE NOT NULL,
     dateEnd DATE NOT NULL,
     description TEXT,
+    imageUrl NVARCHAR(255),
     FOREIGN KEY (organizationId) REFERENCES organization(id)
 );
 
+-- Tạo bảng Donation
+CREATE TABLE Donation (
+    donationId INT PRIMARY KEY AUTO_INCREMENT, 
+    userId INT NOT NULL, 
+    eventId INT NOT NULL, 
+    amount BIGINT NOT NULL CHECK (amount>0), 
+    donationDate DATETIME NOT NULL, 
+    description TEXT,
+    FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE, 
+    FOREIGN KEY (eventId) REFERENCES Event(eventId) ON DELETE CASCADE
+);
+
+--
+-- Trigger
+--
+
+-- 1. trg kiem tra ngay tao event
 DELIMITER //
 CREATE TRIGGER before_insert_event
 BEFORE INSERT ON Event
@@ -63,40 +81,21 @@ END;
 //
 DELIMITER ;
 
--- Tạo bảng Donation
-CREATE TABLE Donation (
-    donationId INT PRIMARY KEY AUTO_INCREMENT, 
-    userId INT NOT NULL, 
-    eventId INT NOT NULL, 
-    amount BIGINT NOT NULL CHECK (amount>0), 
-    donationDate DATETIME NOT NULL, 
-    description TEXT,
-    FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE, 
-    FOREIGN KEY (eventId) REFERENCES Event(eventId) ON DELETE CASCADE
-);
--- Tao bảng nhà tài trợ
-CREATE TABLE nha_tai_tro(
-	id INT PRIMARY KEY AUTO_INCREMENT,
-    ten NVARCHAR(100) NOT NULL,
-    dia_chi NVARCHAR(255),
-    so_dien_thoai NVARCHAR(20),
-    email NVARCHAR(100)
-);
 
-CREATE TABLE chuong_trinh (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    ten_chuong_trinh NVARCHAR(255) NOT NULL,
-    mo_ta TEXT,
-    ngay_bat_dau DATE,
-    ngay_ket_thuc DATE,
-    tong_kinh_phi DOUBLE DEFAULT 0,
-    trang_thai NVARCHAR(50)
-);
-drop table chuong_trinh;
-drop table nha_tai_tro;
+-- 2. trg cap nhat so tien hien tai khi them donation
+DELIMITER //
 
+CREATE TRIGGER trg_after_insert_donation
+AFTER INSERT ON Donation
+FOR EACH ROW
+BEGIN
+    UPDATE Event
+    SET currentAmount = currentAmount + NEW.amount
+    WHERE eventId = NEW.eventId;
+END;
+//
 
-
+DELIMITER ;
 
 -- xóa dữ liêu để tạo mới 
 -- DELETE FROM Donation;
@@ -154,17 +153,17 @@ INSERT INTO Organization (name, email, hotline, address) VALUES
 ('Quỹ Hy vọng', 'hope@quyhyvong.com', '0972776776', 'Tầng 9, Tòa nhà FPT Tower, số 10 Phạm Văn Bạch, Dịch Vọng, Cầu Giấy, Hà Nội');
 
 -- thêm dữ liệu vào bảng Event
-INSERT INTO Event (organizationId, eventname, category, description, targetAmount, currentAmount, dateBegin, dateEnd) VALUES
-(1,'Tiếp sức đến trường 2025', 'Giáo dục', 'Hỗ trợ trẻ em nghèo đến trường', 50000000, 0, '2025-06-01', '2026-01-01'),
-(2,'Ôi, ai cứu gương mặt cho em', 'Cứu trợ', 'Hỗ trợ điều trị, phục hồi cho cháu', 70000000, 0,  '2025-02-15', '2025-12-01'),
-(3,'Rừng xanh lên 2025', 'Môi trường', 'Trồng cây gây rừng', 100000000,0,  '2025-03-10', '2025-12-31'),
-(4,'Lớp học Hạnh phúc', 'Giáo dục', 'Kiến tạo trường học hạnh phúc: Trang bị phòng học theo mô hình STEM', 30000000, 0, '2025-04-20', '2025-05-20'),
-(5,'Giúp em Lê Nguyễn Gia Bảo', 'Trẻ em', 'Hỗ trợ viện phí điều trị cho bé Lê Nguyễn Gia Bảo', 60000000, 0, '2025-09-20', '2025-11-30'),
-(6,'Giúp trò giỏi chữa tật mắt', 'Trẻ em', 'Chung tay để em Đỗ Hữu Dũng có cơ hội được đi khám bệnh, chữa trị mắt', 85000000, 0, '2025-03-31', '2025-10-21'),
-(7,'Gom xe đạp, góp tương lai', 'Giáo dục', 'Hỗ trợ xe đạp cho trẻ em bị ảnh hưởng bởi thiên tai bão lũ', 5000000, 0, '2025-09-20', '2025-11-11'),
-(8,'Ghép đôi trăng tròn', 'Trẻ em', 'Góp phần làm trọn vẹn niềm vui rằm tháng 8', 120000000, 0, '2025-03-25', '2025-07-31'),
-(9,'Cùng em bước qua bão Yagi, vì một Việt Nam kiên cường', 'Cứu trợ', 'Góp phần thực hiện hỗ trợ khắc phục hậu quả bão Yagi', 10000000000, 0, '2024-09-20', '2024-10-31'),
-(10,'Mang Tết Hy vọng đến các em nhỏ vùng cao', 'Trẻ em', 'Hãy chung tay cùng Quỹ mang Tết Hy vọng cho các em', 300000000, 0, '2025-06-20', '2026-01-01');
+INSERT INTO Event (organizationId, eventname, category, description, targetAmount, currentAmount, dateBegin, dateEnd, imageUrl) VALUES
+(1,'Tiếp sức đến trường 2025', 'Giáo dục', 'Hỗ trợ trẻ em nghèo đến trường', 50000000, 0, '2025-06-01', '2026-01-01', '/charity/image/tiepSucDenTruong.png'),
+(2,'Ôi, ai cứu gương mặt cho em', 'Cứu trợ', 'Hỗ trợ điều trị, phục hồi cho cháu', 70000000, 0,  '2025-02-15', '2025-12-01','/charity/image/guongMatChoEm.jpeg'),
+(3,'Rừng xanh lên 2025', 'Môi trường', 'Trồng cây gây rừng', 100000000,0,  '2025-03-10', '2025-12-31','/charity/image/rungXanhLen.jpg'),
+(4,'Lớp học Hạnh phúc', 'Giáo dục', 'Kiến tạo trường học hạnh phúc: Trang bị phòng học theo mô hình STEM', 30000000, 0, '2025-04-20', '2025-05-20','/charity/image/lopHocHanhPhuc.png'),
+(5,'Giúp em Lê Nguyễn Gia Bảo', 'Trẻ em', 'Hỗ trợ viện phí điều trị cho bé Lê Nguyễn Gia Bảo', 60000000, 0, '2025-09-20', '2025-11-30','/charity/image/leNguyenGiaBao.jpg'),
+(6,'Giúp trò giỏi chữa tật mắt', 'Trẻ em', 'Chung tay để em Đỗ Hữu Dũng có cơ hội được đi khám bệnh, chữa trị mắt', 85000000, 0, '2025-03-31', '2025-10-21','/charity/image/chuTriMat.jpeg'),
+(7,'Gom xe đạp, góp tương lai', 'Giáo dục', 'Hỗ trợ xe đạp cho trẻ em bị ảnh hưởng bởi thiên tai bão lũ', 5000000, 0, '2025-09-20', '2025-11-11','/charity/image/xeDap.png'),
+(8,'Ghép đôi trăng tròn', 'Trẻ em', 'Góp phần làm trọn vẹn niềm vui rằm tháng 8', 120000000, 0, '2025-03-25', '2025-07-31','/charity/image/ghepDoiTrangTron.png'),
+(9,'Cùng em bước qua bão Yagi, vì một Việt Nam kiên cường', 'Cứu trợ', 'Góp phần thực hiện hỗ trợ khắc phục hậu quả bão Yagi', 10000000000, 0, '2024-09-20', '2024-10-31','/charity/image/yagiCuuTro.jpg'),
+(10,'Mang Tết Hy vọng đến các em nhỏ vùng cao', 'Trẻ em', 'Hãy chung tay cùng Quỹ mang Tết Hy vọng cho các em', 300000000, 0, '2025-06-20', '2026-01-01','/charity/image/tetHyVong.jpg');
  
  -- thêm dữ liệu vào bảng donation
  INSERT INTO Donation (userId, eventId, amount, donationDate, description) VALUES

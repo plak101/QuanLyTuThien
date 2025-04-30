@@ -18,6 +18,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.*;
 import java.util.Calendar;
 import javax.swing.*;
@@ -47,12 +49,12 @@ public class DonationDialogController implements IFormatData {
     private JTextField txtMoney;
     private JTextField txtOrganiation;
     private JButton jbtDonate;
-    private JLabel  jlbImage;
+    private JLabel jlbImage;
     private JTextArea txtMessage;
     private JProgressBar jpbProgress;
 //    private CharityEvent event2 = eventService.getEventById(event.getId());
 
-    public DonationDialogController(int accountId, int userId, CharityEvent event, JTextField txtEventId, JTextField txtEventName, JTextField txtCategory, JTextField txtTargetAmount, JTextField txtCurrentAmount, JLabel txtProgress, JTextField txtDateBegin, JTextField txtDateEnd, JTextArea txtDescription, JTextField txtMoney, JButton jbtDonate, JTextField txtOrganization, JLabel jlbImage, JTextArea txtMessage,JProgressBar jpbProgress) {
+    public DonationDialogController(int accountId, int userId, CharityEvent event, JTextField txtEventId, JTextField txtEventName, JTextField txtCategory, JTextField txtTargetAmount, JTextField txtCurrentAmount, JLabel txtProgress, JTextField txtDateBegin, JTextField txtDateEnd, JTextArea txtDescription, JTextField txtMoney, JButton jbtDonate, JTextField txtOrganization, JLabel jlbImage, JTextArea txtMessage, JProgressBar jpbProgress) {
         this.accountId = accountId;
         this.userId = userId;
         this.event = event;
@@ -70,7 +72,7 @@ public class DonationDialogController implements IFormatData {
         this.txtOrganiation = txtOrganization;
         this.txtMessage = txtMessage;
         this.jlbImage = jlbImage;
-        this.jpbProgress= jpbProgress;
+        this.jpbProgress = jpbProgress;
     }
 
     public void loadEventData() {
@@ -85,11 +87,11 @@ public class DonationDialogController implements IFormatData {
         txtDateEnd.setText(dateFormat.format(event2.getDateEnd()));
         txtProgress.setText(String.format("%.2f%%", (float) event2.getCurrentAmount() / event2.getTargetAmount() * 100));
         txtDescription.setText(event2.getDescription());
-        String organizationName =  organizationService.getNameById(event2.getOrganizationId()) ;
+        String organizationName = organizationService.getNameById(event2.getOrganizationId());
         txtOrganiation.setText(organizationName);
-        String url= event2.getImageUrl();
-        jlbImage.setIcon(ImageIconCustom.getSmoothIcon(url, 130, 130));
-        
+        String url = event2.getImageUrl();
+        jlbImage.setIcon(ImageIconCustom.getSmoothIcon(url, 170, 142));
+
         jpbProgress.setMinimum(0);
         jpbProgress.setMaximum((int) event2.getTargetAmount());
         jpbProgress.setValue((int) event2.getCurrentAmount());
@@ -122,12 +124,11 @@ public class DonationDialogController implements IFormatData {
         jbtDonate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 if (!accountService.isUserExist(accountId)) {
                     MessageDialog.showError("Bạn chưa xác thực thông tin");
                     return;
                 }
-
+                System.out.println(txtMessage.getText());
                 String moneyStr = txtMoney.getText().trim();
                 //kiem tra chuoi rong
                 if (moneyStr.isEmpty()) {
@@ -150,10 +151,10 @@ public class DonationDialogController implements IFormatData {
                 if (accept == JOptionPane.OK_OPTION) { //Dong y
                     //lấy thời gian hiện tại
                     long currentTimeMillis = Calendar.getInstance().getTimeInMillis();
-                    
+
                     // Tạo timestamp của SQL
                     Timestamp currentTimestamp = new Timestamp(currentTimeMillis);
-                    Donation donation = new Donation(event.getId(), userId, money, currentTimestamp);
+                    Donation donation = new Donation(event.getId(), userId, money, currentTimestamp, txtMessage.getText());
                     //them vao danh sach quyen gop
                     if (donationService.addDonation(donation)) {
 
@@ -161,8 +162,10 @@ public class DonationDialogController implements IFormatData {
                         CharityEvent event2 = eventService.getEventById(event.getId());
                         event2.setCurrentAmount(event2.getCurrentAmount() + money);
                         if (eventService.updateEvent(event2)) {
-
                             loadEventData();//cập nhật giao diện
+                            txtMoney.setText("");
+                            txtMessage.setText("");
+                            JOptionPane.showMessageDialog(null, "Quyên góp thành công! Cảm ơn sự đóng góp của bạn!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             JOptionPane.showMessageDialog(null, "Cập nhật số tiền thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
                         }
@@ -171,6 +174,19 @@ public class DonationDialogController implements IFormatData {
                     }
                 }
             }
+        });
+    }
+
+    public void setTxtMoneyKeyListener() {
+        txtMoney.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c) && c != '\b') {
+                    e.consume();//bỏ qua nếu không phải số
+                }
+            }
+
         });
     }
 }

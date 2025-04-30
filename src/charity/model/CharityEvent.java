@@ -4,7 +4,7 @@
  */
 package charity.model;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -19,14 +19,16 @@ public class CharityEvent {
     private String description;
     private long targetAmount;
     private long currentAmount;
-    private String imageUrl= "/charity/image/default.png";
+    private String imageUrl;
     private Date dateBegin, dateEnd;
 //    private List<Donation> donations;// Danh sách đóng góp
 
     public CharityEvent() {
+        this.imageUrl = "/charity/image/default.png";
     }
 
     public CharityEvent(int id,int organizationId, String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
+        this.imageUrl = "/charity/image/default.png";
         this.id = id;
         this.organizationId=organizationId;
         this.name = name;
@@ -38,6 +40,7 @@ public class CharityEvent {
         this.dateEnd = dateEnd;
     }
     public CharityEvent(int id,int organizationId, String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description, String imageUrl) {
+        this.imageUrl = "/charity/image/default.png";
         this.id = id;
         this.organizationId=organizationId;
         this.name = name;
@@ -50,6 +53,7 @@ public class CharityEvent {
         this.imageUrl= imageUrl;
     }
     public CharityEvent(String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
+        this.imageUrl = "/charity/image/default.png";
         this.name = name;
         this.category = category;
         this.description = description;
@@ -155,8 +159,9 @@ public class CharityEvent {
 
     @Override
     public String toString() {
-        return "CharityEvent{" + "id=" + id + ", organizationId=" + organizationId + ", name=" + name + ", category=" + category + ", description=" + description + ", targetAmount=" + targetAmount + ", currentAmount=" + currentAmount + ", dateBegin=" + dateBegin + ", dateEnd=" + dateEnd + '}';
+        return "CharityEvent{" + "id=" + id + ", organizationId=" + organizationId + ", name=" + name + ", category=" + category + ", description=" + description + ", targetAmount=" + targetAmount + ", currentAmount=" + currentAmount + ", imageUrl=" + imageUrl + ", dateBegin=" + dateBegin + ", dateEnd=" + dateEnd + '}';
     }
+
 
 
     

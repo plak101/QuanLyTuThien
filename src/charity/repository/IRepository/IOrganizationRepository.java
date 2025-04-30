@@ -25,7 +25,8 @@ public interface IOrganizationRepository {
     public boolean deleteOrganization(int id);
     
     public int getTotalEvent(int id);
-
+    
+    public int getOrganizationCount();
     //Dong ket noi
     public void closeResources(Connection conn, PreparedStatement ps);
 

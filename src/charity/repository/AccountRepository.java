@@ -251,4 +251,23 @@ public class AccountRepository implements IAccountRepository {
         return false;
     }
 
+    @Override
+    public int getAccountCount() {
+        int count =0;
+        String query = "SELECT COUNT(*) FROM account";
+        conn = ConnectionDB.getConnection();
+        try {
+            ps =conn.prepareStatement(query);
+            rs= ps.executeQuery();
+            if (rs.next()){
+                count = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            closeResources(conn, ps, rs);
+        }
+        return count;
+    }
+
 }

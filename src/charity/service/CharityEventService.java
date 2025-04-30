@@ -46,5 +46,7 @@ public class CharityEventService{
     public String getEventNameById(int eventId) {
         return charityEventRepository.getEventNameById(eventId);
     }
-    
+    public int getEventCount(){
+        return charityEventRepository.getEventCount();
+    }
 }

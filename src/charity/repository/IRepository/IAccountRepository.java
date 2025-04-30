@@ -22,7 +22,7 @@ public interface IAccountRepository {
     
     public boolean isUsernameTaken(String username);
     public boolean isUserExist(int accountId);
-    
+    public int getAccountCount();
     //Dong ket noi
     public void closeResources(Connection conn, PreparedStatement ps);
 

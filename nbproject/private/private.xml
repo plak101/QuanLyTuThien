@@ -2,6 +2,16 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewMain/AdminUI.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/CharityEventController.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/model/Organization.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/model/CharityEvent.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/viewMain/BaoCao.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/UserController/DonationListController.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/ClassTableModel.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/AccountPanelController.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/UserController/MyDonationController.java</file>
+        </group>
     </open-files>
 </project-private>

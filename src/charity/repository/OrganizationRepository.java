@@ -207,4 +207,23 @@ public class OrganizationRepository implements IOrganizationRepository {
         return 0;
     }
 
+    @Override
+    public int getOrganizationCount() {
+        int count =0;
+        String query = "SELECT COUNT(*) FROM organization";
+        conn = ConnectionDB.getConnection();
+        try {
+            ps =conn.prepareStatement(query);
+            rs= ps.executeQuery();
+            if (rs.next()){
+                count = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrganizationRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            closeResources(conn, ps, rs);
+        }
+        return count;
+    }
+
 }

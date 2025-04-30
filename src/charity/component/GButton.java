@@ -50,4 +50,8 @@ public class GButton extends JButton {
             System.out.println("Mã màu không hợp lệ!");
         }
     }
+
+    public void setBackgroundColor(Color color) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

@@ -10,7 +10,6 @@ import charity.model.ChuongTrinh;
 import java.util.List;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.text.ParseException;
 import com.toedter.calendar.JDateChooser;
 
 public class QuanLyChuongTrinh extends javax.swing.JPanel {

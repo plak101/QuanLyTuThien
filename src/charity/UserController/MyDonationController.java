@@ -1,7 +1,7 @@
 package charity.UserController;
 
 import charity.component.GButton;
-import charity.controller.ClassTableModel;
+import charity.UserController.ClassTableModel;
 import charity.model.Donation;
 import charity.service.DonationService;
 import charity.service.UserService;

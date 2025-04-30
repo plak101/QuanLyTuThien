@@ -1,7 +1,7 @@
 package charity.viewUser;
 
 import charity.UserController.MainPanelController;
-import charity.controller.ClassTableModel;
+import charity.UserController.ClassTableModel;
 import charity.repository.CharityEventRepository;
 import java.awt.Color;
 import javax.swing.JFrame;

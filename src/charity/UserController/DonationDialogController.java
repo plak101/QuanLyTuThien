@@ -49,9 +49,10 @@ public class DonationDialogController implements IFormatData {
     private JButton jbtDonate;
     private JLabel  jlbImage;
     private JTextArea txtMessage;
+    private JProgressBar jpbProgress;
 //    private CharityEvent event2 = eventService.getEventById(event.getId());
 
-    public DonationDialogController(int accountId, int userId, CharityEvent event, JTextField txtEventId, JTextField txtEventName, JTextField txtCategory, JTextField txtTargetAmount, JTextField txtCurrentAmount, JLabel txtProgress, JTextField txtDateBegin, JTextField txtDateEnd, JTextArea txtDescription, JTextField txtMoney, JButton jbtDonate, JTextField txtOrganization, JLabel jlbImage, JTextArea txtMessage) {
+    public DonationDialogController(int accountId, int userId, CharityEvent event, JTextField txtEventId, JTextField txtEventName, JTextField txtCategory, JTextField txtTargetAmount, JTextField txtCurrentAmount, JLabel txtProgress, JTextField txtDateBegin, JTextField txtDateEnd, JTextArea txtDescription, JTextField txtMoney, JButton jbtDonate, JTextField txtOrganization, JLabel jlbImage, JTextArea txtMessage,JProgressBar jpbProgress) {
         this.accountId = accountId;
         this.userId = userId;
         this.event = event;
@@ -69,6 +70,7 @@ public class DonationDialogController implements IFormatData {
         this.txtOrganiation = txtOrganization;
         this.txtMessage = txtMessage;
         this.jlbImage = jlbImage;
+        this.jpbProgress= jpbProgress;
     }
 
     public void loadEventData() {
@@ -87,6 +89,10 @@ public class DonationDialogController implements IFormatData {
         txtOrganiation.setText(organizationName);
         String url= event2.getImageUrl();
         jlbImage.setIcon(ImageIconCustom.getSmoothIcon(url, 130, 130));
+        
+        jpbProgress.setMinimum(0);
+        jpbProgress.setMaximum((int) event2.getTargetAmount());
+        jpbProgress.setValue((int) event2.getCurrentAmount());
     }
 
     public void settingTxtMoney() {

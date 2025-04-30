@@ -47,9 +47,27 @@ CREATE TABLE Event (
     dateBegin DATE NOT NULL,
     dateEnd DATE NOT NULL,
     description TEXT,
+    imageUrl NVARCHAR(255),
     FOREIGN KEY (organizationId) REFERENCES organization(id)
 );
 
+-- Tạo bảng Donation
+CREATE TABLE Donation (
+    donationId INT PRIMARY KEY AUTO_INCREMENT, 
+    userId INT NOT NULL, 
+    eventId INT NOT NULL, 
+    amount BIGINT NOT NULL CHECK (amount>0), 
+    donationDate DATETIME NOT NULL, 
+    description TEXT,
+    FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE, 
+    FOREIGN KEY (eventId) REFERENCES Event(eventId) ON DELETE CASCADE
+);
+
+--
+-- Trigger
+--
+
+-- 1. trg kiem tra ngay tao event
 DELIMITER //
 CREATE TRIGGER before_insert_event
 BEFORE INSERT ON Event
@@ -63,39 +81,23 @@ END;
 //
 DELIMITER ;
 
--- Tạo bảng Donation
-CREATE TABLE Donation (
-    donationId INT PRIMARY KEY AUTO_INCREMENT, 
-    userId INT NOT NULL, 
-    eventId INT NOT NULL, 
-    amount BIGINT NOT NULL CHECK (amount>0), 
-    donationDate DATETIME NOT NULL, 
-    description TEXT,
-    FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE, 
-    FOREIGN KEY (eventId) REFERENCES Event(eventId) ON DELETE CASCADE
-);
--- Tao bảng nhà tài trợ
-CREATE TABLE nha_tai_tro(
-	id INT PRIMARY KEY AUTO_INCREMENT,
-    ten NVARCHAR(100) NOT NULL,
-    dia_chi NVARCHAR(255),
-    so_dien_thoai NVARCHAR(20),
-    email NVARCHAR(100)
-);
 
-CREATE TABLE chuong_trinh (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    ten_chuong_trinh NVARCHAR(255) NOT NULL,
-    mo_ta TEXT,
-    ngay_bat_dau DATE,
-    ngay_ket_thuc DATE,
-    tong_kinh_phi DOUBLE DEFAULT 0,
-    trang_thai NVARCHAR(50)
-);
-drop table chuong_trinh;
-drop table nha_tai_tro;
 
--- Table structure for table `organizations`
+-- 2. trg cap nhat so tien hien tai khi them donation
+DELIMITER //
+
+CREATE TRIGGER trg_after_insert_donation
+AFTER INSERT ON Donation
+FOR EACH ROW
+BEGIN
+    UPDATE Event
+    SET currentAmount = currentAmount + NEW.amount
+    WHERE eventId = NEW.eventId;
+END;
+//
+
+DELIMITER ;
+
 
 -- xóa dữ liêu để tạo mới 
 -- DELETE FROM Donation;
@@ -141,72 +143,72 @@ INSERT INTO User (accountId, userName, address, phone, gender, birthDay) VALUES
 
 -- Them du lieu vao bang to chuc
 INSERT INTO Organization (name, email, hotline, address) VALUES
-('Quỹ StudySchool Vì Trẻ Em', 'vitreem@gmail.com', '0938765432', 'Số 45 Đường Giải Phóng, Phường 4, Quận Tân Bình, TP.HCM'),
-('Nhóm Cetray Tình Nguyện', 'tinhnguyenc@cetraygroup.net', '0979123456', 'Số 78 Đường Lê Duẩn, Phường Bến Nghé, Quận 1, Đà Nẵng'),
-('CLB Doctorbook Sách và Hành Động', 'sachvahanhdong@doctorbook.edu.vn', '0911223344', 'Số 10 Đường Trần Phú, Phường Máy Chai, Quận Ngô Quyền, Hải Phòng'),
-('Trung Tâm ECOwFriend Hỗ Trợ Cộng Đồng', 'hotrocongdong@gmail.com', '0988776655', 'Số 22 Đường 30 Tháng 4, Phường Hưng Lợi, Quận Ninh Kiều, Cần Thơ'),
-('Doanh Nghiệp Xanh', 'fxanh@gmail.com', '0944556677', 'Số 33 Đường Đồng Khởi, Phường Phú Hòa, TP. Thủ Dầu Một, Bình Dương'),
-('Sáng Kiến Lightest Môi Trường', 'moitruongg@gmail.com', '0922334455', 'Số 55 Đường Phạm Văn Thuận, Phường Tam Hiệp, TP. Biên Hòa, Đồng Nai'),
-('Hội StrongWoman - Phụ Nữ Khởi Nghiệp', 'phunukhoinghiep@gmail.com', '0966554433', 'Số 66 Đường Hùng Vương, Phường Phú Nhuận, TP. Huế, Thừa Thiên Huế'),
-('Mạng Lưới ILearning', 'giaoducmangluoi@gmail.com', '0955443322', 'Số 77 Đường 2 Tháng 4, Phường Vĩnh Phước, TP. Nha Trang, Khánh Hòa'),
-('Tổ Chức Bảo Vệ Động Vật Defender', 'baovedongvat@gmail.com', '0933221100', 'Số 88 Đường Ba Cu, Phường 4, TP. Vũng Tàu, Bà Rịa - Vũng Tàu'),
-('Liên Hiệp Thanh niên Forever', 'thanhnienk@gmail.com', '0909876543', 'Số 99 Đường Nguyễn Trãi, Phường Bến Thành, Quận 1, Hà Nội');
+('Quỹ Vì Trẻ Em Khuyết Tật Việt Nam', 'quyvitreemkhuyettat@gmail.com', '0865019639', 'Số 25 Vũ Trọng Phụng, phường Thanh Xuân Trung, quận Thanh Xuân, Hà Nội'),
+('Quỹ Từ tâm Đắk Lắk', 'quytutam@quytutamdaklak.com', '0869654747', '19 Tản Đà, P.Tân Lợi, TP Buôn Ma Thuột, tỉnh Đắk Lắk'),
+('Trung tâm Con người và Thiên nhiên', 'contact@nature.org.vn', '02435564001', 'NV 31, Khu đô thị mới Trung Văn, p. Trung Văn, q. Nam Từ Liêm, Hà Nội'),
+('Quỹ Hỗ trợ đổi mới giáo dục phổ thông Việt Nam', 'info@vigef.org', '0941959922', 'Phòng 302, tầng 3, số nhà 12-14 phố Lê Thánh Tông, P. Phan Chu Trinh, Q. Hoàn Kiếm, Tp Hà Nội'),
+('Quỹ Từ thiện Nâng bước tuổi thơ', 'contact@children-of-vietnam.org', '0903035030', 'Tầng 6, SGR.O1-606, Saigon Royal, 34-35 Bến Vân Đồn, Phường 13, Quận 4, TP. Hồ Chí Minh'),
+('Quỹ Từ tâm Biên Hoà', 'quytutambienhoa@gmail.com', '0922334455', 'Số 55 Đường Phạm Văn Thuận, Phường Tam Hiệp, TP. Biên Hòa, Đồng Nai'),
+('Quỹ Bảo trợ Trẻ em', 'quytreemvn@molisa.gov.vn', '02438458568', '35 Trần Phú, Ba Đình, Hà Nội, Việt Nam'),
+('Hội Chữ thập đỏ Việt Nam', 'international@redcross.org.vn', '02438224030', 'Số 82, Nguyễn Du, Quận Hai Bà Trưng, Hà Nội'),
+('MSD United Way Vietnam', 'contact@msdvietnam.org', '02462769056', 'Phòng 1007, toà nhà 17T9 Hoàng Đạo Thuý, quận Thanh Xuân, Hà Nội, Việt Nam'),
+('Quỹ Hy vọng', 'hope@quyhyvong.com', '0972776776', 'Tầng 9, Tòa nhà FPT Tower, số 10 Phạm Văn Bạch, Dịch Vọng, Cầu Giấy, Hà Nội');
 
 -- thêm dữ liệu vào bảng Event
-INSERT INTO Event (organizationId, eventname, category, description, targetAmount, currentAmount, dateBegin, dateEnd) VALUES
-(1,'Quyên góp từ thiện 1', 'Giáo dục', 'Hỗ trợ trẻ em nghèo đến trường', 50000000, 0, '2025-03-01', '2025-04-01'),
-(2,'Hỗ trợ đồng bào miền Trung', 'Cứu trợ', 'Giúp đỡ người dân bị lũ lụt', 70000000, 0,  '2025-02-15', '2025-05-01'),
-(3,'Quyên góp xây nhà tình thương', 'Nhà ở', 'Xây nhà cho hộ nghèo', 100000000, 0,  '2025-03-10', '2025-06-01'),
-(4,'Chương trình Sách cho Em', 'Giáo dục', 'Quyên góp sách vở cho học sinh vùng cao', 30000000, 0, '2025-04-15', '2025-05-15'),
-(5,'Ủng hộ Quỹ Tấm Lòng Vàng', 'Cứu trợ', 'Hỗ trợ người già neo đơn và trẻ em mồ côi', 60000000, 0, '2025-03-20', '2025-06-30'),
-(6,'Dự án Nước sạch cho vùng sâu', 'Môi trường', 'Lắp đặt hệ thống lọc nước cho cộng đồng khó khăn', 85000000, 0, '2025-02-28', '2025-07-31'),
-(7,'Quyên góp đồ dùng học tập', 'Giáo dục', 'Trao tặng cặp sách, bút vở cho học sinh nghèo', 25000000, 0, '2025-05-01', '2025-06-15'),
-(8,'Hỗ trợ y tế cộng đồng', 'Y tế', 'Mua sắm thiết bị y tế cho trạm xá vùng xa', 120000000, 0, '2025-03-25', '2025-08-31'),
-(9,'Chương trình Áo ấm mùa đông', 'Cứu trợ', 'Quyên góp áo ấm cho người vô gia cư và người nghèo', 40000000, 0, '2025-09-01', '2025-10-31'),
-(10,'Dự án Cải thiện môi trường sống', 'Môi trường', 'Trồng cây xanh và vệ sinh khu dân cư', 55000000, 0, '2025-04-20', '2025-07-20');
+INSERT INTO Event (organizationId, eventname, category, description, targetAmount, currentAmount, dateBegin, dateEnd, imageUrl) VALUES
+(1,'Tiếp sức đến trường 2025', 'Giáo dục', 'Hỗ trợ trẻ em nghèo đến trường', 50000000, 0, '2025-06-01', '2026-01-01', '/charity/image/tiepSucDenTruong.png'),
+(2,'Ôi, ai cứu gương mặt cho em', 'Cứu trợ', 'Hỗ trợ điều trị, phục hồi cho cháu', 70000000, 0,  '2025-02-15', '2025-12-01','/charity/image/guongMatChoEm.jpeg'),
+(3,'Rừng xanh lên 2025', 'Môi trường', 'Trồng cây gây rừng', 100000000,0,  '2025-03-10', '2025-12-31','/charity/image/rungXanhLen.jpg'),
+(4,'Lớp học Hạnh phúc', 'Giáo dục', 'Kiến tạo trường học hạnh phúc: Trang bị phòng học theo mô hình STEM', 30000000, 0, '2025-04-20', '2025-05-20','/charity/image/lopHocHanhPhuc.png'),
+(5,'Giúp em Lê Nguyễn Gia Bảo', 'Trẻ em', 'Hỗ trợ viện phí điều trị cho bé Lê Nguyễn Gia Bảo', 60000000, 0, '2025-09-20', '2025-11-30','/charity/image/leNguyenGiaBao.jpg'),
+(6,'Giúp trò giỏi chữa tật mắt', 'Trẻ em', 'Chung tay để em Đỗ Hữu Dũng có cơ hội được đi khám bệnh, chữa trị mắt', 85000000, 0, '2025-03-31', '2025-10-21','/charity/image/chuTriMat.jpeg'),
+(7,'Gom xe đạp, góp tương lai', 'Giáo dục', 'Hỗ trợ xe đạp cho trẻ em bị ảnh hưởng bởi thiên tai bão lũ', 5000000, 0, '2025-09-20', '2025-11-11','/charity/image/xeDap.png'),
+(8,'Ghép đôi trăng tròn', 'Trẻ em', 'Góp phần làm trọn vẹn niềm vui rằm tháng 8', 120000000, 0, '2025-03-25', '2025-07-31','/charity/image/ghepDoiTrangTron.png'),
+(9,'Cùng em bước qua bão Yagi, vì một Việt Nam kiên cường', 'Cứu trợ', 'Góp phần thực hiện hỗ trợ khắc phục hậu quả bão Yagi', 10000000000, 0, '2024-09-20', '2024-10-31','/charity/image/yagiCuuTro.jpg'),
+(10,'Mang Tết Hy vọng đến các em nhỏ vùng cao', 'Trẻ em', 'Hãy chung tay cùng Quỹ mang Tết Hy vọng cho các em', 300000000, 0, '2025-06-20', '2026-01-01','/charity/image/tetHyVong.jpg');
  
  -- thêm dữ liệu vào bảng donation
  INSERT INTO Donation (userId, eventId, amount, donationDate, description) VALUES
-(1, 1, 2000000, '2025-03-02 10:00:00', 'Ủng hộ giáo dục'),
-(2, 1, 10000000, '2025-03-15 14:30:00', 'Góp sức nhỏ cho tương lai'),
-(3, 1, 3000000, '2025-03-28 18:00:00', 'Tấm lòng vàng'),
-(4, 1, 500000, '2025-04-01 09:45:00', 'Chúc chương trình thành công'),
-(5, 2, 1500000, '2025-02-18 11:15:00', 'Hướng về miền Trung'),
-(6, 2, 8000000, '2025-03-10 16:45:00', 'Chia sẻ khó khăn'),
-(7, 2, 2500000, '2025-04-20 20:00:00', 'Cùng nhau vượt qua lũ'),
-(8, 2, 700000, '2025-04-30 12:30:00', 'Mong mọi người bình an'),
-(9, 3, 5000000, '2025-03-12 08:30:00', 'Xây dựng mái ấm'),
-(10, 3, 12000000, '2025-04-05 15:00:00', 'Góp phần an cư'),
-(11, 3, 4000000, '2025-05-15 19:30:00', 'Tấm lòng nhân ái'),
-(12, 3, 900000, '2025-05-30 11:00:00', 'Chúc dự án thành công'),
-(13, 4, 1800000, '2025-04-18 13:45:00', 'Sách cho em đến trường'),
-(1, 4, 6500000, '2025-05-05 17:15:00', 'Chắp cánh ước mơ'),
-(2, 4, 2200000, '2025-05-10 21:00:00', 'Hỗ trợ tri thức'),
-(3, 4, 600000, '2025-05-14 10:15:00', 'Cùng em đến tương lai'),
-(4, 5, 3500000, '2025-03-22 09:00:00', 'Ủng hộ người khó khăn'),
-(5, 5, 9500000, '2025-04-10 14:30:00', 'Tấm lòng sẻ chia'),
-(6, 5, 3000000, '2025-05-20 18:00:00', 'Gửi chút ấm áp'),
-(7, 5, 800000, '2025-05-25 11:30:00', 'Chúc quỹ phát triển'),
-(8, 6, 7000000, '2025-03-05 10:30:00', 'Vì một môi trường xanh'),
-(9, 6, 15000000, '2025-04-25 15:00:00', 'Nước sạch cho mọi nhà'),
-(10, 6, 5500000, '2025-06-15 19:30:00', 'Hỗ trợ cộng đồng'),
-(11, 6, 1200000, '2025-07-01 09:00:00', 'Chúc dự án thành công tốt đẹp'),
-(12, 7, 1200000, '2025-05-03 14:15:00', 'Đồ dùng học tập cho em'),
-(13, 7, 4500000, '2025-05-15 17:45:00', 'Chắp cánh tương lai'),
-(1, 7, 1500000, '2025-06-01 21:30:00', 'Hỗ trợ học sinh nghèo'),
-(2, 7, 400000, '2025-06-10 12:00:00', 'Mong các em học tốt'),
-(3, 8, 9000000, '2025-03-28 08:45:00', 'Hỗ trợ y tế vùng xa'),
-(4, 8, 20000000, '2025-04-15 16:15:00', 'Vì sức khỏe cộng đồng'),
-(5, 8, 7000000, '2025-06-30 20:45:00', 'Gửi tấm lòng đến trạm xá'),
-(6, 8, 1800000, '2025-08-01 11:15:00', 'Chúc mọi người khỏe mạnh'),
-(7, 9, 2500000, '2025-09-05 13:00:00', 'Áo ấm cho mùa đông'),
-(8, 9, 10000000, '2025-09-20 17:30:00', 'Sưởi ấm trái tim'),
-(9, 9, 3500000, '2025-10-15 21:00:00', 'Chia sẻ hơi ấm'),
-(10, 9, 900000, '2025-10-30 12:30:00', 'Mong một mùa đông không lạnh'),
-(11, 10, 4500000, '2025-04-22 09:30:00', 'Vì môi trường xanh sạch'),
-(12, 10, 11000000, '2025-05-10 14:00:00', 'Góp sức bảo vệ hành tinh'),
-(13, 10, 3800000, '2025-06-20 18:30:00', 'Cùng nhau hành động'),
-(1, 10, 1100000, '2025-07-15 10:00:00', 'Hướng tới tương lai bền vững');
+(1, 1, 2000000, '2025-03-02 10:00:00', 'Ủng hộ Tiếp sức đến trường 2025'),
+(2, 1, 10000000, '2025-03-15 14:30:00', 'Góp sức nhỏ cho Tiếp sức đến trường 2025'),
+(3, 1, 3000000, '2025-03-28 18:00:00', 'Tấm lòng vàng cho Tiếp sức đến trường 2025'),
+(4, 1, 500000, '2025-04-01 09:45:00', 'Chúc Tiếp sức đến trường 2025 thành công'),
+(5, 2, 1500000, '2025-02-18 11:15:00', 'Ủng hộ Ôi, ai cứu gương mặt cho em'),
+(6, 2, 8000000, '2025-03-10 16:45:00', 'Chia sẻ khó khăn cùng Ôi, ai cứu gương mặt cho em'),
+(7, 2, 2500000, '2025-04-20 20:00:00', 'Cùng nhau giúp đỡ Ôi, ai cứu gương mặt cho em'),
+(8, 2, 700000, '2025-04-30 12:30:00', 'Mong em bé của Ôi, ai cứu gương mặt cho em sớm bình an'),
+(9, 3, 5000000, '2025-03-12 08:30:00', 'Góp phần vào Rừng xanh lên 2025'),
+(10, 3, 12000000, '2025-04-05 15:00:00', 'Ủng hộ dự án Rừng xanh lên 2025'),
+(11, 3, 4000000, '2025-05-15 19:30:00', 'Tấm lòng nhân ái cho Rừng xanh lên 2025'),
+(12, 3, 900000, '2025-05-30 11:00:00', 'Chúc Rừng xanh lên 2025 thành công tốt đẹp'),
+(13, 4, 1800000, '2025-04-18 13:45:00', 'Ủng hộ Lớp học Hạnh phúc'),
+(1, 4, 6500000, '2025-05-05 17:15:00', 'Chắp cánh ước mơ cho Lớp học Hạnh phúc'),
+(2, 4, 2200000, '2025-05-10 21:00:00', 'Hỗ trợ tri thức cho Lớp học Hạnh phúc'),
+(3, 4, 600000, '2025-05-14 10:15:00', 'Cùng Lớp học Hạnh phúc kiến tạo tương lai'),
+(4, 5, 3500000, '2025-03-22 09:00:00', 'Ủng hộ bé Lê Nguyễn Gia Bảo'),
+(5, 5, 9500000, '2025-04-10 14:30:00', 'Tấm lòng sẻ chia cùng bé Lê Nguyễn Gia Bảo'),
+(6, 5, 3000000, '2025-05-20 18:00:00', 'Gửi chút ấm áp đến bé Lê Nguyễn Gia Bảo'),
+(7, 5, 800000, '2025-05-25 11:30:00', 'Chúc bé Lê Nguyễn Gia Bảo mau chóng khỏe lại'),
+(8, 6, 7000000, '2025-03-05 10:30:00', 'Chung tay giúp đỡ trò giỏi chữa tật mắt'),
+(9, 6, 15000000, '2025-04-25 15:00:00', 'Vì đôi mắt sáng của em Đỗ Hữu Dũng'),
+(10, 6, 5500000, '2025-06-15 19:30:00', 'Hỗ trợ em Đỗ Hữu Dũng chữa trị mắt'),
+(11, 6, 1200000, '2025-07-01 09:00:00', 'Chúc em Đỗ Hữu Dũng sớm có đôi mắt khỏe mạnh'),
+(12, 7, 1200000, '2025-05-03 14:15:00', 'Góp xe đạp cho Gom xe đạp, góp tương lai'),
+(13, 7, 4500000, '2025-05-15 17:45:00', 'Chắp cánh tương lai cùng Gom xe đạp, góp tương lai'),
+(1, 7, 1500000, '2025-06-01 21:30:00', 'Hỗ trợ các em nhỏ của Gom xe đạp, góp tương lai'),
+(2, 7, 400000, '2025-06-10 12:00:00', 'Mong các em có thêm phương tiện đến trường'),
+(3, 8, 9000000, '2025-03-28 08:45:00', 'Góp phần làm trọn vẹn Ghép đôi trăng tròn'),
+(4, 8, 20000000, '2025-04-15 16:15:00', 'Vì niềm vui rằm tháng 8 của các em'),
+(5, 8, 7000000, '2025-06-30 20:45:00', 'Gửi tấm lòng đến Ghép đôi trăng tròn'),
+(6, 8, 1800000, '2025-08-01 11:15:00', 'Chúc Ghép đôi trăng tròn thành công tốt đẹp'),
+(7, 9, 2500000, '2025-09-05 13:00:00', 'Ủng hộ Cùng em bước qua bão Yagi'),
+(8, 9, 10000000, '2025-09-20 17:30:00', 'Sưởi ấm trái tim Việt Nam kiên cường'),
+(9, 9, 3500000, '2025-10-15 21:00:00', 'Chia sẻ hơi ấm cùng Cùng em bước qua bão Yagi'),
+(10, 9, 900000, '2025-10-30 12:30:00', 'Mong Việt Nam sớm vượt qua khó khăn'),
+(11, 10, 4500000, '2025-04-22 09:30:00', 'Góp sức cho Mang Tết Hy vọng đến các em nhỏ vùng cao'),
+(12, 10, 11000000, '2025-05-10 14:00:00', 'Mang Tết ấm áp đến các em nhỏ'),
+(13, 10, 3800000, '2025-06-20 18:30:00', 'Cùng nhau mang Tết Hy vọng'),
+(1, 10, 1100000, '2025-07-15 10:00:00', 'Hướng tới một cái Tết trọn vẹn cho các em');
 
 
 -- Xem dữ liệu trong bảng Event

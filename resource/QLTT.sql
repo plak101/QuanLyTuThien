@@ -95,7 +95,22 @@ CREATE TABLE chuong_trinh (
 drop table chuong_trinh;
 drop table nha_tai_tro;
 
+-- Table structure for table `organizations`
+DROP TABLE IF EXISTS `organizations`;
+CREATE TABLE `organizations` (
+	  `id` int NOT NULL AUTO_INCREMENT,
+	  `name` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+	  `email` varchar(100) COLLATE utf8mb3_bin DEFAULT NULL,
+	  `hotline` varchar(15) COLLATE utf8mb3_bin DEFAULT NULL,
+	  `address` varchar(255) COLLATE utf8mb3_bin DEFAULT NULL,
+	  PRIMARY KEY (`id`)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
+	-- Insert some sample data
+	INSERT INTO `organizations` (`name`, `email`, `hotline`, `address`) VALUES
+	('Red Cross Vietnam', 'contact@redcross.org.vn', '0123456789', 'Hanoi, Vietnam'),
+	('Smile Charity', 'info@smilecharity.org', '0987654321', 'Ho Chi Minh City, Vietnam'),
+	('Children Support Foundation', 'help@csf.org', '0123789456', 'Da Nang, Vietnam');
 
 
 -- xóa dữ liêu để tạo mới 

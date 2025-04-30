@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import charity.utils.JDBCUtil;
+import charity.utils.DatabaseConnection;
 
 public class OrganizationService {
     
@@ -18,8 +18,8 @@ public class OrganizationService {
         List<Organization> organizations = new ArrayList<>();
         
         try {
-            Connection connection = JDBCUtil.getConnection(); // Get DB connection
-            String sql = "SELECT * FROM organizations ORDER BY id";
+            Connection connection = DatabaseConnection.getConnection(); // Get DB connection
+            String sql = "SELECT * FROM Organization ORDER BY id";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             
@@ -34,7 +34,7 @@ public class OrganizationService {
                 organizations.add(org);
             }
             
-            JDBCUtil.closeConnection(connection); // Close connection
+            DatabaseConnection.closeConnection(connection); // Close connection
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Lỗi khi lấy danh sách tổ chức: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
@@ -48,7 +48,7 @@ public class OrganizationService {
         int totalEvents = 0;
         
         try {
-            Connection connection = JDBCUtil.getConnection();
+            Connection connection = DatabaseConnection.getConnection();
             String sql = "SELECT COUNT(*) FROM event WHERE organizationId = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             
@@ -60,10 +60,10 @@ public class OrganizationService {
                 totalEvents = rs.getInt(1);
             }
             
-            JDBCUtil.closeConnection(connection);
+            DatabaseConnection.closeConnection(connection);
         } catch (SQLException e) {
-            // The event table might not have an organizationId column yet
-            // Just return 0 instead of showing an error
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi khi đếm số sự kiện: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
             return 0;
         }
         
@@ -75,8 +75,8 @@ public class OrganizationService {
         boolean result = false;
         
         try {
-            Connection connection = JDBCUtil.getConnection();
-            String sql = "INSERT INTO organizations (name, email, hotline, address) VALUES (?, ?, ?, ?)";
+            Connection connection = DatabaseConnection.getConnection();
+            String sql = "INSERT INTO Organization (name, email, hotline, address) VALUES (?, ?, ?, ?)";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             
             pstmt.setString(1, org.getName());
@@ -87,7 +87,7 @@ public class OrganizationService {
             int rowsAffected = pstmt.executeUpdate();
             result = rowsAffected > 0;
             
-            JDBCUtil.closeConnection(connection);
+            DatabaseConnection.closeConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Lỗi khi thêm tổ chức: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
@@ -101,8 +101,8 @@ public class OrganizationService {
         boolean result = false;
         
         try {
-            Connection connection = JDBCUtil.getConnection();
-            String sql = "UPDATE organizations SET name = ?, email = ?, hotline = ?, address = ? WHERE id = ?";
+            Connection connection = DatabaseConnection.getConnection();
+            String sql = "UPDATE Organization SET name = ?, email = ?, hotline = ?, address = ? WHERE id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             
             pstmt.setString(1, org.getName());
@@ -114,7 +114,7 @@ public class OrganizationService {
             int rowsAffected = pstmt.executeUpdate();
             result = rowsAffected > 0;
             
-            JDBCUtil.closeConnection(connection);
+            DatabaseConnection.closeConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Lỗi khi cập nhật tổ chức: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
@@ -128,8 +128,8 @@ public class OrganizationService {
         boolean result = false;
         
         try {
-            Connection connection = JDBCUtil.getConnection();
-            String sql = "DELETE FROM organizations WHERE id = ?";
+            Connection connection = DatabaseConnection.getConnection();
+            String sql = "DELETE FROM Organization WHERE id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             
             pstmt.setInt(1, id);
@@ -137,7 +137,7 @@ public class OrganizationService {
             int rowsAffected = pstmt.executeUpdate();
             result = rowsAffected > 0;
             
-            JDBCUtil.closeConnection(connection);
+            DatabaseConnection.closeConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Lỗi khi xóa tổ chức: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
@@ -151,8 +151,8 @@ public class OrganizationService {
         Organization org = null;
         
         try {
-            Connection connection = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM organizations WHERE id = ?";
+            Connection connection = DatabaseConnection.getConnection();
+            String sql = "SELECT * FROM Organization WHERE id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             
             pstmt.setInt(1, id);
@@ -168,7 +168,7 @@ public class OrganizationService {
                 org.setAddress(rs.getString("address"));
             }
             
-            JDBCUtil.closeConnection(connection);
+            DatabaseConnection.closeConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Lỗi khi lấy thông tin tổ chức: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
@@ -182,8 +182,8 @@ public class OrganizationService {
         List<Organization> organizations = new ArrayList<>();
         
         try {
-            Connection connection = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM organizations WHERE name LIKE ? OR email LIKE ? OR address LIKE ? ORDER BY id";
+            Connection connection = DatabaseConnection.getConnection();
+            String sql = "SELECT * FROM Organization WHERE name LIKE ? OR email LIKE ? OR address LIKE ? ORDER BY id";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             
             String searchPattern = "%" + keyword + "%";
@@ -204,7 +204,7 @@ public class OrganizationService {
                 organizations.add(org);
             }
             
-            JDBCUtil.closeConnection(connection);
+            DatabaseConnection.closeConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Lỗi khi tìm kiếm tổ chức: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);

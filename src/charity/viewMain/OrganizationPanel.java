@@ -56,51 +56,66 @@ public class OrganizationPanel extends javax.swing.JPanel {
         topPanel.setBackground(Color.WHITE);
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
 
-        JLabel lblBranch = new JLabel("CHI NHÁNH");
-        lblBranch.setForeground(Color.RED);
-        lblBranch.setFont(new Font("Segoe UI", Font.BOLD, 14));
-
-        JComboBox<String> cmbBranch = new JComboBox<>(new String[]{"Tất cả"});
-        cmbBranch.setBackground(Color.LIGHT_GRAY);
-        cmbBranch.setPreferredSize(new java.awt.Dimension(150, 30));
+        // Sử dụng màu đen thay vì màu đỏ cho tất cả các label
+        Color labelColor = Color.BLACK;
+        Font labelFont = new Font("Segoe UI", Font.BOLD, 14);
 
         JLabel lblAddressSearch = new JLabel("ĐỊA CHỈ");
-        lblAddressSearch.setForeground(Color.RED);
-        lblAddressSearch.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblAddressSearch.setForeground(labelColor);
+        lblAddressSearch.setFont(labelFont);
 
         JTextField txtAddressSearch = new JTextField();
         txtAddressSearch.setPreferredSize(new java.awt.Dimension(150, 30));
         txtAddressSearch.setBackground(Color.LIGHT_GRAY);
 
         JLabel lblSearch = new JLabel("SEARCH");
-        lblSearch.setForeground(Color.RED);
-        lblSearch.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblSearch.setForeground(labelColor);
+        lblSearch.setFont(labelFont);
 
         txtSearch = new JTextField();
         txtSearch.setPreferredSize(new java.awt.Dimension(200, 30));
         txtSearch.setBackground(Color.LIGHT_GRAY);
 
-        topPanel.add(lblBranch);
-        topPanel.add(Box.createHorizontalStrut(10));
-        topPanel.add(cmbBranch);
-        topPanel.add(Box.createHorizontalStrut(20));
-        topPanel.add(lblAddressSearch);
-        topPanel.add(Box.createHorizontalStrut(10));
-        topPanel.add(txtAddressSearch);
-        topPanel.add(Box.createHorizontalStrut(20));
-        topPanel.add(lblSearch);
-        topPanel.add(Box.createHorizontalStrut(10));
-        topPanel.add(txtSearch);
+        // Tạo panel con để căn chỉnh các thành phần search
+        JPanel searchPanel1 = new JPanel();
+        searchPanel1.setBackground(Color.WHITE);
+        searchPanel1.setLayout(new BoxLayout(searchPanel1, BoxLayout.X_AXIS));
+        searchPanel1.add(lblAddressSearch);
+        searchPanel1.add(Box.createHorizontalStrut(10));
+        searchPanel1.add(txtAddressSearch);
 
-        // Middle panel with input fields
+        JPanel searchPanel2 = new JPanel();
+        searchPanel2.setBackground(Color.WHITE);
+        searchPanel2.setLayout(new BoxLayout(searchPanel2, BoxLayout.X_AXIS));
+        searchPanel2.add(lblSearch);
+        searchPanel2.add(Box.createHorizontalStrut(10));
+        searchPanel2.add(txtSearch);
+
+        topPanel.add(Box.createHorizontalGlue());
+        topPanel.add(searchPanel1);
+        topPanel.add(Box.createHorizontalStrut(20));
+        topPanel.add(searchPanel2);
+        topPanel.add(Box.createHorizontalGlue());
+
+        // Middle panel with input fields - sử dụng GridLayout để căn đối hơn
         JPanel middlePanel = new JPanel();
         middlePanel.setBackground(Color.WHITE);
-        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
+        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
+        
+        // Tạo các panel con để chứa từng cặp label và textfield
+        JPanel row1 = new JPanel();
+        row1.setBackground(Color.WHITE);
+        row1.setLayout(new BoxLayout(row1, BoxLayout.X_AXIS));
+        
+        JPanel row2 = new JPanel();
+        row2.setBackground(Color.WHITE);
+        row2.setLayout(new BoxLayout(row2, BoxLayout.X_AXIS));
         
         // Organization ID field
         JLabel lblOrgId = new JLabel("Mã tổ chức");
-        lblOrgId.setForeground(Color.RED);
-        lblOrgId.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblOrgId.setForeground(labelColor);
+        lblOrgId.setFont(labelFont);
+        lblOrgId.setPreferredSize(new java.awt.Dimension(100, 30));
         
         txtOrgId = new JTextField();
         txtOrgId.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -109,8 +124,9 @@ public class OrganizationPanel extends javax.swing.JPanel {
         
         // Organization Name field
         JLabel lblOrgName = new JLabel("Tên tổ chức");
-        lblOrgName.setForeground(Color.RED);
-        lblOrgName.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblOrgName.setForeground(labelColor);
+        lblOrgName.setFont(labelFont);
+        lblOrgName.setPreferredSize(new java.awt.Dimension(100, 30));
         
         txtOrgName = new JTextField();
         txtOrgName.setPreferredSize(new java.awt.Dimension(200, 30));
@@ -118,68 +134,104 @@ public class OrganizationPanel extends javax.swing.JPanel {
         
         // Email field
         JLabel lblEmail = new JLabel("Email");
-        lblEmail.setForeground(Color.RED);
-        lblEmail.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblEmail.setForeground(labelColor);
+        lblEmail.setFont(labelFont);
+        lblEmail.setPreferredSize(new java.awt.Dimension(80, 30));
         
         txtEmail = new JTextField();
-        txtEmail.setPreferredSize(new java.awt.Dimension(150, 30));
+        txtEmail.setPreferredSize(new java.awt.Dimension(200, 30));
         txtEmail.setBackground(Color.LIGHT_GRAY);
         
         // Hotline field
         JLabel lblHotline = new JLabel("Hotline");
-        lblHotline.setForeground(Color.RED);
-        lblHotline.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblHotline.setForeground(labelColor);
+        lblHotline.setFont(labelFont);
+        lblHotline.setPreferredSize(new java.awt.Dimension(80, 30));
         
         txtHotline = new JTextField();
-        txtHotline.setPreferredSize(new java.awt.Dimension(120, 30));
+        txtHotline.setPreferredSize(new java.awt.Dimension(150, 30));
         txtHotline.setBackground(Color.LIGHT_GRAY);
         
         // Address field
         JLabel lblAddress = new JLabel("Địa chỉ");
-        lblAddress.setForeground(Color.RED);
-        lblAddress.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblAddress.setForeground(labelColor);
+        lblAddress.setFont(labelFont);
+        lblAddress.setPreferredSize(new java.awt.Dimension(80, 30));
         
         txtAddress = new JTextField();
         txtAddress.setPreferredSize(new java.awt.Dimension(200, 30));
         txtAddress.setBackground(Color.LIGHT_GRAY);
         
-        // Add components to middle panel
-        middlePanel.add(lblOrgId);
-        middlePanel.add(Box.createHorizontalStrut(10));
-        middlePanel.add(txtOrgId);
-        middlePanel.add(Box.createHorizontalStrut(20));
-        middlePanel.add(lblOrgName);
-        middlePanel.add(Box.createHorizontalStrut(10));
-        middlePanel.add(txtOrgName);
-        middlePanel.add(Box.createHorizontalStrut(20));
-        middlePanel.add(lblEmail);
-        middlePanel.add(Box.createHorizontalStrut(10));
-        middlePanel.add(txtEmail);
-        middlePanel.add(Box.createHorizontalStrut(20));
-        middlePanel.add(lblHotline);
-        middlePanel.add(Box.createHorizontalStrut(10));
-        middlePanel.add(txtHotline);
-        middlePanel.add(Box.createHorizontalStrut(20));
-        middlePanel.add(lblAddress);
-        middlePanel.add(Box.createHorizontalStrut(10));
-        middlePanel.add(txtAddress);
+        // Thêm các thành phần vào hàng 1
+        JPanel orgIdPanel = new JPanel();
+        orgIdPanel.setBackground(Color.WHITE);
+        orgIdPanel.setLayout(new BoxLayout(orgIdPanel, BoxLayout.X_AXIS));
+        orgIdPanel.add(lblOrgId);
+        orgIdPanel.add(Box.createHorizontalStrut(5));
+        orgIdPanel.add(txtOrgId);
+        
+        JPanel orgNamePanel = new JPanel();
+        orgNamePanel.setBackground(Color.WHITE);
+        orgNamePanel.setLayout(new BoxLayout(orgNamePanel, BoxLayout.X_AXIS));
+        orgNamePanel.add(lblOrgName);
+        orgNamePanel.add(Box.createHorizontalStrut(5));
+        orgNamePanel.add(txtOrgName);
+        
+        JPanel emailPanel = new JPanel();
+        emailPanel.setBackground(Color.WHITE);
+        emailPanel.setLayout(new BoxLayout(emailPanel, BoxLayout.X_AXIS));
+        emailPanel.add(lblEmail);
+        emailPanel.add(Box.createHorizontalStrut(5));
+        emailPanel.add(txtEmail);
+        
+        row1.add(orgIdPanel);
+        row1.add(Box.createHorizontalStrut(20));
+        row1.add(orgNamePanel);
+        row1.add(Box.createHorizontalStrut(20));
+        row1.add(emailPanel);
+        
+        // Thêm các thành phần vào hàng 2
+        JPanel hotlinePanel = new JPanel();
+        hotlinePanel.setBackground(Color.WHITE);
+        hotlinePanel.setLayout(new BoxLayout(hotlinePanel, BoxLayout.X_AXIS));
+        hotlinePanel.add(lblHotline);
+        hotlinePanel.add(Box.createHorizontalStrut(5));
+        hotlinePanel.add(txtHotline);
+        
+        JPanel addressPanel = new JPanel();
+        addressPanel.setBackground(Color.WHITE);
+        addressPanel.setLayout(new BoxLayout(addressPanel, BoxLayout.X_AXIS));
+        addressPanel.add(lblAddress);
+        addressPanel.add(Box.createHorizontalStrut(5));
+        addressPanel.add(txtAddress);
+        
+        row2.add(hotlinePanel);
+        row2.add(Box.createHorizontalStrut(20));
+        row2.add(addressPanel);
+        row2.add(Box.createHorizontalStrut(20));
+        row2.add(Box.createHorizontalGlue());
+        
+        // Thêm các hàng vào middlePanel
+        middlePanel.add(row1);
+        middlePanel.add(Box.createVerticalStrut(15));
+        middlePanel.add(row2);
         
         // Button panel
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         
-        btnAdd = new GButton("ADD");
+        btnAdd = new GButton("THÊM");
         btnAdd.setBackground(new Color(100, 180, 100));
         btnAdd.setForeground(Color.WHITE);
         btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
-        btnEdit = new GButton("EDIT");
+        btnEdit = new GButton("SỬA");
         btnEdit.setBackground(new Color(100, 180, 100));
         btnEdit.setForeground(Color.WHITE);
         btnEdit.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
-        btnDelete = new GButton("DELETE");
+        btnDelete = new GButton("XOÁ");
         btnDelete.setBackground(new Color(100, 180, 100));
         btnDelete.setForeground(Color.WHITE);
         btnDelete.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -189,20 +241,20 @@ public class OrganizationPanel extends javax.swing.JPanel {
         btnClear.setForeground(Color.WHITE);
         btnClear.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
-        btnReset = new GButton("PRINT");
+        btnReset = new GButton("XUẤT");
         btnReset.setBackground(new Color(100, 180, 100));
         btnReset.setForeground(Color.WHITE);
         btnReset.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(btnAdd);
-        buttonPanel.add(Box.createHorizontalStrut(20));
+        buttonPanel.add(Box.createHorizontalStrut(15));
         buttonPanel.add(btnEdit);
-        buttonPanel.add(Box.createHorizontalStrut(20));
+        buttonPanel.add(Box.createHorizontalStrut(15));
         buttonPanel.add(btnDelete);
-        buttonPanel.add(Box.createHorizontalStrut(20));
+        buttonPanel.add(Box.createHorizontalStrut(15));
         buttonPanel.add(btnClear);
-        buttonPanel.add(Box.createHorizontalStrut(20));
+        buttonPanel.add(Box.createHorizontalStrut(15));
         buttonPanel.add(btnReset);
         buttonPanel.add(Box.createHorizontalGlue());
         
@@ -213,6 +265,7 @@ public class OrganizationPanel extends javax.swing.JPanel {
         
         JLabel lblTableTitle = new JLabel("DANH SÁCH TỔ CHỨC TỪ THIỆN");
         lblTableTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTableTitle.setForeground(labelColor);
         lblTableTitle.setHorizontalAlignment(SwingConstants.CENTER);
         
         // Add all panels to main panel

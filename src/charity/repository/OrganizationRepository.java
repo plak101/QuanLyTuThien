@@ -53,7 +53,7 @@ public class OrganizationRepository implements IOrganizationRepository {
     @Override
     public boolean addOrganization(Organization organization) {
         conn = ConnectionDB.getConnection();
-        String sql = "INSER INTO organization (name, email, hotline, address) VALUES (?, ?, ?, ?))";
+        String sql = "INSERT INTO organization (name, email, hotline, address) VALUES (?, ?, ?, ?)";
 
         try {
             ps = conn.prepareStatement(sql);
@@ -73,7 +73,7 @@ public class OrganizationRepository implements IOrganizationRepository {
     @Override
     public boolean updateOrganization(Organization organization) {
         conn = ConnectionDB.getConnection();
-        String sql = "UPDATE organization SET name=?, email=?, hotline=?, address=?";
+        String sql = "UPDATE organization SET name=?, email=?, hotline=?, address=? WHERE id=?";
 
         try {
             ps = conn.prepareStatement(sql);
@@ -81,6 +81,7 @@ public class OrganizationRepository implements IOrganizationRepository {
             ps.setString(2, organization.getEmail());
             ps.setString(3, organization.getHotline());
             ps.setString(4, organization.getAddress());
+            ps.setInt(5, organization.getId());  // Missing WHERE clause with ID
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(OrganizationRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -193,15 +194,15 @@ public class OrganizationRepository implements IOrganizationRepository {
                 + "where o.id =?";
         conn = ConnectionDB.getConnection();
         try {
-            ps= conn.prepareStatement(sql);
+            ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
-            rs= ps.executeQuery();
-            if (rs.next()){
+            rs = ps.executeQuery();
+            if (rs.next()) {
                 return rs.getInt("totalEvent");
             }
         } catch (SQLException ex) {
             Logger.getLogger(OrganizationRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             closeResources(conn, ps, rs);
         }
         return 0;

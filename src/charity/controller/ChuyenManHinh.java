@@ -12,6 +12,7 @@ import charity.viewMain.QuanLyQuyenGop;
 import charity.viewMain.QuanLyChuongTrinh;
 import charity.viewMain.BaoCao;
 import charity.viewMain.CharityEventPanel;
+import charity.viewMain.OrganizationPanel;
 import charity.viewMain.QuanLyNhaTaiTro;
 import charity.viewMain.TrangChu;
 
@@ -71,10 +72,13 @@ public class ChuyenManHinh {
                 case "QuanLyChuongTrinh":
 //                    node = new QuanLyChuongTrinh();
                     node = new CharityEventPanel();
-                    
+
                     break;
                 case "QuanLyQuyenGop":
                     node = new QuanLyQuyenGop();
+                    break;
+                case "QuanLyToChuc":
+                    node = new OrganizationPanel();
                     break;
                 case "BaoCao":
                     node = new BaoCao();
@@ -116,15 +120,16 @@ public class ChuyenManHinh {
                 jpbItem.setBackground(new Color(76, 175, 80));
             }
         }
-        public void setChangeBackground(String kind){
-            for(DanhMuc item : listItem){
-                if(item.getKind().equalsIgnoreCase(kind)){
-                    item.getJpn().setBackground(new Color(96,100,191));
-                    item.getJib().setBackground(new Color(96,100,191));
-                }else{ 
-                    item.getJpn().setBackground(new Color(76,175,80));
-                    item.getJib().setBackground(new Color(76,175,80));
-                } 
+
+        public void setChangeBackground(String kind) {
+            for (DanhMuc item : listItem) {
+                if (item.getKind().equalsIgnoreCase(kind)) {
+                    item.getJpn().setBackground(new Color(96, 100, 191));
+                    item.getJib().setBackground(new Color(96, 100, 191));
+                } else {
+                    item.getJpn().setBackground(new Color(76, 175, 80));
+                    item.getJib().setBackground(new Color(76, 175, 80));
+                }
             }
         }
     }

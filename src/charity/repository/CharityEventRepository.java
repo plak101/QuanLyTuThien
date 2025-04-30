@@ -47,9 +47,9 @@ public class CharityEventRepository implements ICharityEventRepository {
                         rs.getLong("currentAmount"),
                         rs.getDate("dateBegin"),
                         rs.getDate("dateEnd"),
-                        rs.getString("description")
+                        rs.getString("description"),
+                        rs.getString("imageUrl")
                 );
-                System.out.println(rs.getInt("eventId"));
                 eventList.add(event);
             }
         } catch (SQLException ex) {
@@ -64,18 +64,21 @@ public class CharityEventRepository implements ICharityEventRepository {
     public boolean addEvent(CharityEvent event) {
         Connection connection = ConnectionDB.getConnection();
         PreparedStatement ps = null;
-        String query = "INSERT INTO event (eventName, categoty, targetAmount, currentAmount, dateBegin, dateEnd, descripstion)"
-                + "VALUE (?, ?, ?, ?, ?, ?,?)";
+        String query = "INSERT INTO event (organizationId, eventName, category, targetAmount, currentAmount, dateBegin, dateEnd, description, imageUrl)"
+                + "VALUE (?,?, ?, ?, ?, ?, ?,?,?)";
 
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, event.getName());
-            ps.setString(2, event.getCategory());
-            ps.setLong(3, event.getTargetAmount());
-            ps.setLong(4, event.getCurrentAmount());
-            ps.setDate(5, (Date) event.getDateBegin());
-            ps.setDate(6, (Date) event.getDateEnd());
-            ps.setString(7, event.getDescription());
+            ps.setInt(1, event.getOrganizationId());
+            ps.setString(2, event.getName());
+            ps.setString(3, event.getCategory());
+            ps.setLong(4, event.getTargetAmount());
+            ps.setLong(5, event.getCurrentAmount());
+            ps.setDate(6, (Date) event.getDateBegin());
+            ps.setDate(7, (Date) event.getDateEnd());
+            ps.setString(8, event.getDescription());
+            ps.setString(9, event.getImageUrl());
+            
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,18 +92,20 @@ public class CharityEventRepository implements ICharityEventRepository {
     public boolean updateEvent(CharityEvent event) {
         connection = ConnectionDB.getConnection();
         ps = null;
-        String query = "UPDATE event SET eventName=?, category=?, targetAmount=?, currentAmount=?, dateBegin=?, dateEnd=?, description=?"
+        String query = "UPDATE event SET organizationId=?, eventName=?, category=?, targetAmount=?, currentAmount=?, dateBegin=?, dateEnd=?, description=?, imageUrl=?"
                 + "WHERE eventId=?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, event.getName());
-            ps.setString(2, event.getCategory());
-            ps.setLong(3, event.getTargetAmount());
-            ps.setLong(4, event.getCurrentAmount());
-            ps.setDate(5, (Date) event.getDateBegin());
-            ps.setDate(6, (Date) event.getDateEnd());
-            ps.setString(7, event.getDescription());
-            ps.setInt(8, event.getId());
+            ps.setInt(1, event.getOrganizationId());
+            ps.setString(2, event.getName());
+            ps.setString(3, event.getCategory());
+            ps.setLong(4, event.getTargetAmount());
+            ps.setLong(5, event.getCurrentAmount());
+            ps.setDate(6, (Date) event.getDateBegin());
+            ps.setDate(7, (Date) event.getDateEnd());
+            ps.setString(8, event.getDescription());
+            ps.setString(9, event.getImageUrl());
+            ps.setInt(10, event.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -271,6 +276,25 @@ public class CharityEventRepository implements ICharityEventRepository {
             closeResources(connection, ps, rs);
         }
         return null;
+    }
+
+    @Override
+    public int getEventCount() {
+        int count =0;
+        String query = "SELECT COUNT(*) FROM Event";
+        connection = ConnectionDB.getConnection();
+        try {
+            ps =connection.prepareStatement(query);
+            rs= ps.executeQuery();
+            if (rs.next()){
+                count = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            closeResources(connection, ps, rs);
+        }
+        return count;
     }
 
 }

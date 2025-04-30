@@ -18,10 +18,10 @@ public class ClassTableModel implements IFormatData {
 //    -----
 
     private List<CharityEvent> events = null;
-    private String[] listEventColumn = {"ID","Tên tổ chức", "Tên sự kiện", "Loại", "Mục tiêu", "Số tiền hiện tại", "Tiến độ", "Ngày kết thúc"};
+    private String[] listEventColumn = {"ID", "Tên tổ chức", "Tên sự kiện", "Loại", "Mục tiêu", "Số tiền hiện tại", "Tiến độ", "Ngày kết thúc"};
     private String[] listDonationColumn = {"ID", "Người quyên góp", "Sự kiện", "Số tiền", "Ngày quyên góp", "Nội dung"};
     private String[] listOrganizationColumn = {"ID", "Tên tổ chức", "Email", "Hotline", "Địa chỉ", "Số sự kiện"};
-    
+    private String[] listAccountColumn = {"ID", "Tên đăng nhập", "Email", "Mật khẩu", "Vai trò"};
 
 //    public DefaultTableModel getEventTable() {
 //        events = eventService.getEventList();
@@ -52,9 +52,6 @@ public class ClassTableModel implements IFormatData {
 //
 //        return dtm;
 //    }
-    
-     
-    
 //    public DefaultTableModel getActiveEventTable(){
 //        events = eventService.getActiveEventList();
 //        String[] listColumn = {"ID", "Tên sự kiện", "Loại", "Mục tiêu", "Số tiền hiện tại", "Tiến độ", "Ngày kết thúc", "Mô tả",};
@@ -110,7 +107,6 @@ public class ClassTableModel implements IFormatData {
 //
 //        return dtm;
 //    }
-
     public DefaultTableModel getEventTable(List<CharityEvent> listItem) {
         int columnCount = listEventColumn.length;
         DefaultTableModel dtm = new DefaultTableModel(listEventColumn, 0) {
@@ -120,7 +116,7 @@ public class ClassTableModel implements IFormatData {
             }
         };
 
-        for (CharityEvent event : listItem) {   
+        for (CharityEvent event : listItem) {
             Object[] obj = new Object[columnCount];
             obj[0] = event.getId();
             obj[1] = organizationService.getNameById(event.getOrganizationId());
@@ -136,7 +132,7 @@ public class ClassTableModel implements IFormatData {
 
         return dtm;
     }
-    
+
     public DefaultTableModel getDonationTable(List<Donation> listItem) {
         int columnCount = listDonationColumn.length;
         DefaultTableModel dtm = new DefaultTableModel() {
@@ -182,6 +178,27 @@ public class ClassTableModel implements IFormatData {
         }
         return dtm;
     }
-    
-    
+
+    public DefaultTableModel getAccountTable(List<Account> accounts) {
+        int columnCount = listAccountColumn.length;
+        DefaultTableModel dtm = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        dtm.setColumnIdentifiers(listAccountColumn);
+        Object[] obj;
+        for (Account a : accounts) {
+            obj = new Object[columnCount +1];
+            obj[0]= a.getId();
+            obj[1]= a.getUsername();
+            obj[2]= a.getEmail();
+            obj[3]= a.getPassword();
+            obj[4]= a.getRole();
+            dtm.addRow(obj);
+        }
+        return dtm;
+    }
 }

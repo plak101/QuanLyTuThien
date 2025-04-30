@@ -114,8 +114,8 @@ public class DonationRepository implements IDonationRepository {
 
     @Override
     public boolean addDonation(Donation donation) {
-        String query = "INSERT INTO donation ( eventId, userId, amount, donationDate)"
-                + "VALUES(?,?,?,?)";
+        String query = "INSERT INTO donation ( eventId, userId, amount, donationDate, description)"
+                + "VALUES(?,?,?,?,?)";
         conn = ConnectionDB.getConnection();
         try {
             ps = conn.prepareStatement(query);
@@ -123,6 +123,7 @@ public class DonationRepository implements IDonationRepository {
             ps.setInt(2, donation.getUserId());
             ps.setLong(3, donation.getAmount());
             ps.setTimestamp(4, (Timestamp) donation.getDonationDate());
+            ps.setString(5, donation.getDescription());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -180,7 +181,7 @@ public class DonationRepository implements IDonationRepository {
                 conn.close();
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -197,8 +198,27 @@ public class DonationRepository implements IDonationRepository {
                 ps.close();
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public int getDonationCount() {
+        int count =0;
+        String query = "SELECT COUNT(*) FROM donation";
+        conn = ConnectionDB.getConnection();
+        try {
+            ps =conn.prepareStatement(query);
+            rs= ps.executeQuery();
+            if (rs.next()){
+                count = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            closeResources(conn, ps, rs);
+        }
+        return count;
     }
 
 }

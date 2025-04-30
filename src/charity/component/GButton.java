@@ -41,6 +41,7 @@ public class GButton extends JButton {
         super.paintComponent(g);
 
     }
+//                    gbtAdd.changeColor("#2d99ae");
     public void changeColor( String color){
         try{
             this.startColor= Color.decode(color);

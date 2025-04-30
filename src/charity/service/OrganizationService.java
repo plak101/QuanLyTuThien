@@ -37,4 +37,7 @@ public class OrganizationService {
     public int getTotalEvent(int id){
         return organizationRepository.getTotalEvent(id);
     }
+    public int getOrganizationCount(){
+        return organizationRepository.getOrganizationCount();
+    }
 }

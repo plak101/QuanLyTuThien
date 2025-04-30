@@ -18,7 +18,7 @@ public interface IDonationRepository {
     public boolean addDonation(Donation donation);
     public boolean updateDonation(Donation donation);
     public boolean deleteDonation(int donationId);
-    
+    public int getDonationCount();
     //Dong ket noi
     public void closeResources(Connection conn, PreparedStatement ps);
     public void closeResources(Connection conn, PreparedStatement ps, ResultSet rs);

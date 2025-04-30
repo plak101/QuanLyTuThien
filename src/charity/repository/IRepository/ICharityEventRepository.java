@@ -18,7 +18,7 @@ public interface ICharityEventRepository {
     public boolean addEvent(CharityEvent event);
     public boolean updateEvent(CharityEvent event);
     public boolean deleteEvent(int eventId);
-    
+    public int getEventCount();
     //Đóng kết nối
     public void closeResources(Connection conn, PreparedStatement ps);
     public void closeResources(Connection conn, PreparedStatement ps, ResultSet rs);

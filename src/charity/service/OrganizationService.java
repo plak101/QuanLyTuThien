@@ -1,6 +1,8 @@
 package charity.service;
 
 import charity.model.Organization;
+import charity.repository.IRepository.IOrganizationRepository;
+import charity.repository.OrganizationRepository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

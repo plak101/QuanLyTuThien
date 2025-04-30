@@ -40,5 +40,7 @@ public class DonationService {
     public boolean deleteDonation(int donationId) {
         return donationRepository.deleteDonation(donationId);
     }
-
+    public int getDonationCount(){
+        return donationRepository.getDonationCount();
+    }
 }

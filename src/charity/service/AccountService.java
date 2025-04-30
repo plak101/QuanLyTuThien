@@ -45,4 +45,7 @@ public class AccountService {
     public boolean isUserExist(int accountId){
         return accountRepository.isUserExist(accountId);
     }
+    public int getAccountCount(){
+        return accountRepository.getAccountCount();
+    }
 }

@@ -4,7 +4,8 @@
  */
 package charity.viewMain;
 
-import charity.controller.CharityEventController;
+import charity.controller.CharityEventPanelController;
+import java.awt.Color;
 import java.awt.Dimension;
 
 /**
@@ -18,8 +19,11 @@ public class CharityEventPanel extends javax.swing.JPanel {
      */
     public CharityEventPanel() {
         initComponents();
-        CharityEventController controller = new CharityEventController(jpnTable, txtCurrentAmount, txtDescription, txtEventName, txtId, txtProgress, txtSearch, txtTargetAmount, jbtChoose, jbtReset, jcbCategory, jcbOrganization, jdcDateBegin, jdcDateEnd, gbtAdd, gbtCancel, gbtDelete, gbtSave, gbtUpdate, jlbImage);
+        CharityEventPanelController controller = new CharityEventPanelController(jpnTable, txtCurrentAmount, txtDescription, txtEventName, txtId, txtProgress, txtSearch, txtTargetAmount, jbtChoose, jbtReset, jcbCategory, jcbOrganization, jdcDateBegin, jdcDateEnd, gbtAdd, gbtCancel, gbtDelete, gbtSave, gbtUpdate, jlbImage);
         jpnTable.setPreferredSize(new Dimension(985, 280));
+        jbtChoose.setBackground(new Color(230, 230, 230));
+        gbtCancel.changeColor("#E53935");
+        gbtSave.changeColor("#43A047");
     }
 
     /**

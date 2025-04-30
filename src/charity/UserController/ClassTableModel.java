@@ -1,33 +1,31 @@
-package charity.controller;
+package charity.UserController;
 
+import charity.service.OrganizationService;
 import charity.formatData.IFormatData;
 import static charity.formatData.IFormatData.dateFormat;
 import static charity.formatData.IFormatData.dateTimeFormat;
 import static charity.formatData.IFormatData.moneyFormat;
-import charity.model.Account;
-import charity.model.CharityEvent;
-import charity.model.Donation;
-import charity.model.Organization;
-import charity.service.CharityEventService;
-import charity.service.OrganizationService;
+import charity.model.*;
+import charity.service.*;
+
 import charity.service.UserService;
+
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-
 
 public class ClassTableModel implements IFormatData {
 
     // service    
     private CharityEventService eventService = new CharityEventService();
-    private final OrganizationService organizationService = new OrganizationService();
+    private OrganizationService organizationService = new OrganizationService();
     private UserService userService = new UserService();
 //    -----
 
     private List<CharityEvent> events = null;
-    private String[] listEventColumn = {"ID", "Tên tổ chức", "Tên sự kiện", "Loại", "Mục tiêu", "Số tiền hiện tại", "Tiến độ", "Ngày kết thúc"};
+    private String[] listEventColumn = {"ID","Tên tổ chức", "Tên sự kiện", "Loại", "Mục tiêu", "Số tiền hiện tại", "Tiến độ", "Ngày kết thúc"};
     private String[] listDonationColumn = {"ID", "Người quyên góp", "Sự kiện", "Số tiền", "Ngày quyên góp", "Nội dung"};
     private String[] listOrganizationColumn = {"ID", "Tên tổ chức", "Email", "Hotline", "Địa chỉ", "Số sự kiện"};
-    private String[] listAccountColumn = {"ID", "Tên đăng nhập", "Email", "Mật khẩu", "Vai trò"};
+    
 
 //    public DefaultTableModel getEventTable() {
 //        events = eventService.getEventList();
@@ -58,6 +56,9 @@ public class ClassTableModel implements IFormatData {
 //
 //        return dtm;
 //    }
+    
+     
+    
 //    public DefaultTableModel getActiveEventTable(){
 //        events = eventService.getActiveEventList();
 //        String[] listColumn = {"ID", "Tên sự kiện", "Loại", "Mục tiêu", "Số tiền hiện tại", "Tiến độ", "Ngày kết thúc", "Mô tả",};
@@ -113,6 +114,7 @@ public class ClassTableModel implements IFormatData {
 //
 //        return dtm;
 //    }
+
     public DefaultTableModel getEventTable(List<CharityEvent> listItem) {
         int columnCount = listEventColumn.length;
         DefaultTableModel dtm = new DefaultTableModel(listEventColumn, 0) {
@@ -122,7 +124,7 @@ public class ClassTableModel implements IFormatData {
             }
         };
 
-        for (CharityEvent event : listItem) {
+        for (CharityEvent event : listItem) {   
             Object[] obj = new Object[columnCount];
             obj[0] = event.getId();
             obj[1] = organizationService.getNameById(event.getOrganizationId());
@@ -138,7 +140,7 @@ public class ClassTableModel implements IFormatData {
 
         return dtm;
     }
-
+    
     public DefaultTableModel getDonationTable(List<Donation> listItem) {
         int columnCount = listDonationColumn.length;
         DefaultTableModel dtm = new DefaultTableModel() {
@@ -162,57 +164,28 @@ public class ClassTableModel implements IFormatData {
         return dtm;
     }
 
-
     public DefaultTableModel getOrganizationTable(List<Organization> organizations) {
-        // Define column names
-        String[] columnNames = {"ID", "Tên tổ chức", "Email", "Hotline", "Địa chỉ"};
-        
-        // Create a default table model with specified columns
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Make all cells non-editable
-            }
-        };
-        
-        // Add data rows
-        for (Organization org : organizations) {
-            Object[] row = {
-                org.getId(),
-                org.getName(),
-                org.getEmail(),
-                org.getHotline(),
-                org.getAddress()
-            };
-            model.addRow(row);
-        }
-        
-        return model;
-    }
-
-    public DefaultTableModel getAccountTable(List<Account> accounts) {
-        int columnCount = listAccountColumn.length;
+        int columnCount = listDonationColumn.length;
         DefaultTableModel dtm = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        
-        dtm.setColumnIdentifiers(listAccountColumn);
+        dtm.setColumnIdentifiers(listOrganizationColumn);
         Object[] obj;
-        for (Account a : accounts) {
-            obj = new Object[columnCount +1];
-            obj[0]= a.getId();
-            obj[1]= a.getUsername();
-            obj[2]= a.getEmail();
-            obj[3]= a.getPassword();
-            obj[4]= a.getRole();
+        for (Organization organization : organizations) {
+            obj = new Object[columnCount + 1];
+            obj[0] = organization.getId();
+            obj[1] = organization.getName();
+            obj[2] = organization.getEmail();
+            obj[3] = organization.getHotline();
+            obj[4] = organization.getAddress();
+            obj[5] = organizationService.getTotalEvent(organization.getId());
             dtm.addRow(obj);
         }
         return dtm;
     }
+    
+    
 }
-
-
-

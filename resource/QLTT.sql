@@ -82,6 +82,7 @@ END;
 DELIMITER ;
 
 
+
 -- 2. trg cap nhat so tien hien tai khi them donation
 DELIMITER //
 
@@ -96,6 +97,7 @@ END;
 //
 
 DELIMITER ;
+
 
 -- xóa dữ liêu để tạo mới 
 -- DELETE FROM Donation;

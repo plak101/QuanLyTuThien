@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -58,6 +59,8 @@ public class AccountPanelController {
     private UserService userService = null;
     private TableRowSorter<TableModel> rowSorter = null;
 
+    private int selectedAction = -1;
+
     public AccountPanelController(JTextField txtAddress, JTextField txtEmail, JTextField txtFullName, JTextField txtId, JTextField txtPassword, JTextField txtPhoneNumber, JTextField txtSearch, JTextField txtUsername, JComboBox<Role> jcbRole, JDateChooser jdcBirthDate, JRadioButton jrbFemale, JRadioButton jrbMale, JTable tableAccount, GButton gbtAdd, GButton gbtDelete, GButton gbtReset, GButton gbtUpdate, GButton gbtSave, GButton gbtCancel) {
         this.txtAddress = txtAddress;
         this.txtEmail = txtEmail;
@@ -89,7 +92,7 @@ public class AccountPanelController {
         userService = new UserService();
         gbtCancel.setVisible(false);
         gbtSave.setVisible(false);
-        
+
         jcbRole.addItem(Role.User);
         jcbRole.addItem(Role.Admin);
         setTableAccount();
@@ -98,12 +101,13 @@ public class AccountPanelController {
     }
 
     private void initEvent() {
-        setGbtAddMouseEvent();
-//        setGbtSaveEvent();
-//    setGbtCancelEvent();
-//    setGbtDeleteEvent();
-//    setGbtResetEvent();
-//    setGbtUpdateEvent();
+//        setGbtAddMouseEvent();
+        setGbtAddEvent();
+        setGbtUpdateEvent();
+        setGbtSaveEvent();
+        setGbtCancelEvent();
+        setGbtDeleteEvent();
+        setGbtResetEvent();
     }
 
     private void setTableAccount() {
@@ -228,10 +232,10 @@ public class AccountPanelController {
 
                     txtId.setText(model.getValueAt(selectedRow, 0).toString());
                     txtUsername.setText(model.getValueAt(selectedRow, 1).toString());
-                    txtPassword.setText(model.getValueAt(selectedRow, 2).toString());
-                    txtEmail.setText(model.getValueAt(selectedRow, 3).toString());
-                    jcbRole.setSelectedItem(model.getValueAt(selectedRow, 4).toString());
-
+                    txtPassword.setText(model.getValueAt(selectedRow, 3).toString());
+                    txtEmail.setText(model.getValueAt(selectedRow, 2).toString());
+                    String roleStr = model.getValueAt(selectedRow, 4).toString();
+                    jcbRole.setSelectedItem(Role.valueOf(roleStr));
                     // Load thêm các thông tin User (FullName, Address, Phone, Gender, Birthday)
                     int accountId = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
                     User user = userService.getUserByAccountId(accountId);
@@ -284,7 +288,144 @@ public class AccountPanelController {
         user.setAddress(txtAddress.getText());
         user.setPhone(txtPhoneNumber.getText());
         user.setGender(jrbMale.isSelected() ? "Nam" : "Nữ");
-        user.setBirthday((Date) jdcBirthDate.getDate());
+        java.util.Date  utilBirthDate= jdcBirthDate.getDate();
+        java.sql.Date sqlBirthDate = new java.sql.Date(utilBirthDate.getTime());
+        user.setBirthday(sqlBirthDate);
         return user;
     }
+
+    private void setGbtAddEvent() {
+        gbtAdd.addActionListener(e -> {
+            clearForm();
+            selectedAction = 1;
+            gbtSave.setVisible(true);
+            gbtCancel.setVisible(true);
+        });
+    }
+
+    private void setGbtUpdateEvent() {
+        gbtUpdate.addActionListener(e -> {
+            if (txtId.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn một tài khoản để cập nhật!");
+                return;
+            }
+            selectedAction = 2;
+            gbtSave.setVisible(true);
+            gbtCancel.setVisible(true);
+        });
+    }
+
+    private void setGbtCancelEvent() {
+        gbtCancel.addActionListener(e -> {
+            clearForm();
+            selectedAction = -1;
+            gbtSave.setVisible(false);
+            gbtCancel.setVisible(false);
+        });
+    }
+
+    private void setGbtSaveEvent() {
+        gbtSave.addActionListener(e -> {
+                        if (!validateFormInput()) return;
+
+            if (!validateFormInput()) return;
+
+            Account acc = getAccountFromForm();
+            User user = getUserFromForm(acc.getId());
+            if (selectedAction == 1) {
+                // thêm mới
+                boolean result = accountService.addAccountWithUser(acc, user);
+                if (result) {
+                    JOptionPane.showMessageDialog(null, "Thêm tài khoản thành công!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Thêm tài khoản thất bại!");
+                }
+            } else if (selectedAction == 2) {
+                // cập nhật
+                boolean result = accountService.updateAccountWithUser(acc, user);
+                if (result) {
+                    JOptionPane.showMessageDialog(null, "Cập nhật tài khoản thành công!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cập nhật tài khoản thất bại!");
+                }
+            }
+
+            // reset form và reload
+            clearForm();
+            setTableAccount();
+            gbtSave.setVisible(false);
+            gbtCancel.setVisible(false);
+            selectedAction = -1;
+        });
+    }
+
+    private void setGbtDeleteEvent() {
+        gbtDelete.addActionListener(e -> {
+            int selectedRow = tableAccount.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn tài khoản để xóa!");
+                return;
+            }
+            int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa tài khoản này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                int accountId = Integer.parseInt(tableAccount.getValueAt(selectedRow, 0).toString());
+                boolean result = accountService.deleteAccount(accountId);
+                if (result) {
+                    JOptionPane.showMessageDialog(null, "Xóa tài khoản thành công!");
+                    setTableAccount();
+                    clearForm();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Xóa tài khoản thất bại!");
+                }
+            }
+        });
+    }
+
+    private void setGbtResetEvent() {
+        gbtReset.addActionListener(e -> {
+            clearForm();
+            gbtSave.setVisible(false);
+            gbtCancel.setVisible(false);
+            selectedAction = -1;
+        });
+    }
+    private boolean validateFormInput() {
+    String username = txtUsername.getText().trim();
+    String password = txtPassword.getText().trim();
+    String email = txtEmail.getText().trim();
+    String fullName = txtFullName.getText().trim();
+    String phone = txtPhoneNumber.getText().trim();
+
+    if (username.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Tên đăng nhập không được để trống!");
+        return false;
+    }
+
+    if (password.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống!");
+        return false;
+    }
+
+    if (!email.matches("^\\S+@\\S+\\.\\S+$")) {
+        JOptionPane.showMessageDialog(null, "Email không hợp lệ!");
+        return false;
+    }
+
+    if (fullName.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Họ tên không được để trống!");
+        return false;
+    }
+
+    if (!phone.matches("\\d{10}")) {
+        JOptionPane.showMessageDialog(null, "Số điện thoại phải là 10 chữ số!");
+        return false;
+    }
+
+    if (jdcBirthDate.getDate() == null) {
+        JOptionPane.showMessageDialog(null, "Vui lòng chọn ngày sinh!");
+        return false;
+    }
+
+    return true;
+}
 }

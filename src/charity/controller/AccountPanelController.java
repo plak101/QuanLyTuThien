@@ -6,6 +6,7 @@ import charity.model.Role;
 import charity.model.User;
 import charity.service.AccountService;
 import charity.service.UserService;
+import charity.utils.ScannerUtils;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -108,6 +109,7 @@ public class AccountPanelController {
         setGbtCancelEvent();
         setGbtDeleteEvent();
         setGbtResetEvent();
+        ScannerUtils.setOnlyInputNumber(txtPhoneNumber);
     }
 
     private void setTableAccount() {

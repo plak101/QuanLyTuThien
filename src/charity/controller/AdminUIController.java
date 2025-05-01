@@ -1,23 +1,30 @@
 package charity.controller;
 
+import charity.service.UserService;
 import charity.ui.Login;
 import charity.viewLogin.LoginFrame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public class AdminUIController {
     private JLabel jlbLogout;
-
-    public AdminUIController(JLabel jlbLogout) {
+    private int accountId;
+    private JTextField txtName;
+    private UserService userService= new UserService();
+    public AdminUIController(int accountId, JLabel jlbLogout,JTextField txtName) {
         this.jlbLogout = jlbLogout;
+        this.accountId = accountId;
+        this.txtName = txtName;
         setEvent();
     }
     
     private void setEvent(){
         setJlbLogoutEvent();
+        txtName.setText(userService.getUserNameById(accountId));
     }
     
     private void setJlbLogoutEvent(){

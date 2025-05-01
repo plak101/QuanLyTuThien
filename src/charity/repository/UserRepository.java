@@ -223,4 +223,26 @@ public class UserRepository implements IUserRepository {
         }
     }
 
+    @Override
+    public boolean isPhoneNumberExist(String phoneNumber) {
+        String query = "(SELECT 1 FROM user WHERE phone = ? LIMIT 1)\n"
+                + "UNION\n"
+                + "(SELECT 1 FROM organization WHERE hotline = ? LIMIT 1);";
+        conn= ConnectionDB.getConnection();
+        try {
+            ps =conn.prepareStatement(query);
+            ps.setString(1, phoneNumber);
+            ps.setString(2, phoneNumber);
+            rs= ps.executeQuery();
+            return rs.next();//neu co tra ve la da ton tai
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            closeResources(conn, ps, rs);
+        }
+        return false;
+        
+        
+    }
+
 }

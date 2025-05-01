@@ -59,6 +59,7 @@ public class InforPanelController {
         accountService = new AccountService();
         userService = new UserService();
 //        lockComponents();
+        ScannerUtils.setOnlyInputNumber(txtPhone);
     }
 
     public void loadData() {
@@ -286,6 +287,7 @@ public class InforPanelController {
     }
 
     private boolean validateInput() {
+        String phoneNumber =txtPhone.getText().trim();
         if (scu.isEmpty(txtName, "Vui lòng nhập họ và tên!")) {
             return false;
         }
@@ -302,6 +304,9 @@ public class InforPanelController {
             return false;
         }
         if (!scu.isPhoneValid(txtPhone, "Vui lòng nhập số điện thoại hợp lệ (10 chữ số)!")) {
+            return false;
+        }
+        if (scu.isPhoneNumberExist(phoneNumber)){
             return false;
         }
         return true;

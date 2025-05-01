@@ -42,4 +42,7 @@ public class UserService {
     public User getUserByAccountId(int accountId) {
         return userRepository.getUserById(accountId);
     }
+    public boolean isPhoneNumberExist(String phoneNumber){
+        return userRepository.isPhoneNumberExist(phoneNumber);
+    }
 }

@@ -99,21 +99,21 @@ public class RegisterController {
             return false;
         }
 
-        // Kiểm tra username dài hơn 4 ký tự
-        if (username.length() <= 3) {
-            JOptionPane.showMessageDialog(null, "Tên đăng nhập phải lớn hơn 3 ký tự!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        // Kiểm tra username dài hơn 8 ký tự
+        if (username.length() <= 6) {
+            JOptionPane.showMessageDialog(null, "Tên đăng nhập phải lớn hơn 6 ký tự!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
         // Kiểm tra email hợp lệ và phải có đuôi @gmail.com
         if (!email.matches("^[\\w-\\.]+@gmail\\.com$")) {
-            JOptionPane.showMessageDialog(null, "Email phải có định dạng @gmail.com!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Email phải có định dạng your_email@gmail.com!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
-        // Kiểm tra password dài hơn 5 
-        if (password.length() <= 4) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu phải lớn hơn 4 ký tự !", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        // Kiểm tra password ít nhất 8 
+        if (password.length() < 8) {
+            JOptionPane.showMessageDialog(null, "Mật khẩu phải ít nhất phải 8 ký tự !", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         //co it nhat ký tự và chứa ít nhất 1 số
@@ -122,10 +122,48 @@ public class RegisterController {
         //(?=.*\\d) — chứa ít nhất một chữ số
         //.+ — ít nhất một ký tự bất kỳ để đảm bảo chuỗi không trống
         //$ — kết thúc chuỗi
-        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d).+$")) {
-            JOptionPane.showMessageDialog(null, "Mật khẩu phải có ít nhất 1 cái và 1 chữ số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d).+$")) {
+//            JOptionPane.showMessageDialog(null, "Mật khẩu phải có ít nhất 1 cái và 1 chữ số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        }
+
+
+       // Kiểm tra 1 lần tất cả
+//        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+_=!])(?=.{8,}).*$")) {
+//            JOptionPane.showMessageDialog(null, "Mật khẩu phải có ít nhất 1 kí tự chữ cái in hoa, chữ cái in thường, chữ số và đặc biệt!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        }
+        
+        // Kiểm tra từng cái 1
+        boolean hasLength = password.length() >= 8;
+        boolean hasLowerCase = password.matches(".*[a-z].*");
+        boolean hasUpperCase = password.matches(".*[A-Z].*");
+        boolean hasDigit = password.matches(".*\\d.*");
+        boolean hasSpecialChar = password.matches(".*[@#$%^&+=!].*");
+
+        StringBuilder errorMessage = new StringBuilder("Mật khẩu phải có:");
+
+        if (!hasLength) {
+            errorMessage.append("\n- Ít nhất 8 ký tự");
+        }
+        if (!hasLowerCase) {
+            errorMessage.append("\n- Chữ cái thường");
+        }
+        if (!hasUpperCase) {
+            errorMessage.append("\n- Chữ cái in hoa");
+        }
+        if (!hasDigit) {
+            errorMessage.append("\n- Chữ số");
+        }
+        if (!hasSpecialChar) {
+            errorMessage.append("\n- Ký tự đặc biệt (@#$%^&+=!)");
+        }
+
+        if (!hasLength || !hasLowerCase || !hasUpperCase || !hasDigit || !hasSpecialChar) {
+            JOptionPane.showMessageDialog(null, errorMessage.toString(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+
 
         //kiem tra pass2
         if (!password.equals(password2)) {

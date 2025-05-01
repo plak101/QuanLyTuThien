@@ -108,21 +108,23 @@ DELIMITER ;
 
 -- them du lieu vao bang account
 INSERT INTO account (username, password, email, role) VALUES
-('admin01', 'admin01', 'qltt.admin1st@gmail.com', 'Admin'),
-('admin02', 'admin02', 'qltt.admin2nd@gmail.com', 'Admin'),
-('admin03', 'admin03', 'qltt.admin3rd@gmail.com', 'Admin'),
 
-('namnguyen', 'namdz333', 'namnguyenvan@gmail.com', 'User'),
-('bchicute', 'bchi1007', 'bchi98@gmail.com', 'User'),
-('sydeptrai', 'sy99volunt', 'syleeeee@gmail.com', 'User'),
-('khoaloveangiang', 'khoa1001', 'khoa.angiang@gmail.com', 'User'),
-('3thuyduong', 'duong123', 'duongthuy@gmail.com', 'User'),
-('minh4vuong', 'vuong0minh', 'minh.vuong@yahoo.com', 'User'),
-('ngoclan007', 'lanngoc22', 'ngoclan.tran@outlook.com', 'User'),
-('hoanganh357', 'anhhoang90', 'hoanganh.le@gmail.com', 'User'),
-('xuanmai102', 'maixuan1khong2', 'xuan.mai@gmail.com', 'User'),
+('admin01', 'Admin_01', 'qltt.admin1st@gmail.com', 'Admin'),
 
-('user', 'user01', 'ductuan1992@gmail.com', 'User');
+('admin02', 'Admin_02', 'qltt.admin2nd@gmail.com', 'Admin'),
+('admin03', 'Admin_03', 'qltt.admin3rd@gmail.com', 'Admin'),
+
+('namnguyen', 'namDz=33', 'namnguyenvan@gmail.com', 'User'),
+('bchicute', 'Bchi_1007', 'bchi98@gmail.com', 'User'),
+('sydeptrai', 'sy99VOLUNT', 'syleeeee@gmail.com', 'User'),
+('khoaloveangiang', 'KHOA@=1001', 'khoa.angiang@gmail.com', 'User'),
+('3thuyduong', 'Duong&123', 'duongthuy@gmail.com', 'User'),
+('minh4vuong', 'Vuong0%minH', 'minh.vuong@yahoo.com', 'User'),
+('ngoclan007', '=lanNgoc22=', 'ngoclan.tran@outlook.com', 'User'),
+('hoanganh357', 'AnhHoang#90', 'hoanganh.le@gmail.com', 'User'),
+('xuanmai102', 'MaiXuan1^2', 'xuan.mai@gmail.com', 'User'),
+
+('user', 'User_001', 'ductuan1992@gmail.com', 'User');
 
 -- thêm dữ liệu vào bảng User
 INSERT INTO User (accountId, userName, address, phone, gender, birthDay) VALUES

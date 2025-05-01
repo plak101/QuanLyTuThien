@@ -12,7 +12,25 @@ import java.util.logging.Logger;
 
 public class OrganizationService {
 
-    private IOrganizationRepository organizationRepository;
+    private OrganizationRepository organizationRepository = new OrganizationRepository();
+    // Get all organizations from the database
+    public List<Organization> getAllOrganization() {
+        List<Organization> organizations = new ArrayList<>();
+
+        try {
+            Connection connection = DatabaseConnection.getConnection(); // Get DB connection
+            String sql = "SELECT * FROM Organization ORDER BY id";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+                Organization org = new Organization();
+                org.setId(rs.getInt("id"));
+                org.setName(rs.getString("name"));
+                org.setEmail(rs.getString("email"));
+                org.setHotline(rs.getString("hotline"));
+                org.setAddress(rs.getString("address"));
+
 
     public OrganizationService() {
         this.organizationRepository = new OrganizationRepository();
@@ -136,5 +154,13 @@ public class OrganizationService {
         }
 
         return filteredOrgs;
+    }
+
+    public String getNameById(int organizationId) {
+        return organizationRepository.getNameById(organizationId);
+    }
+
+    public int getOrganizationCount() {
+        return organizationRepository.getOrganizationCount();
     }
 }

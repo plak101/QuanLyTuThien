@@ -60,14 +60,6 @@ public class OrganizationPanel extends javax.swing.JPanel {
         Color labelColor = Color.BLACK;
         Font labelFont = new Font("Segoe UI", Font.BOLD, 14);
 
-        JLabel lblAddressSearch = new JLabel("ĐỊA CHỈ");
-        lblAddressSearch.setForeground(labelColor);
-        lblAddressSearch.setFont(labelFont);
-
-        JTextField txtAddressSearch = new JTextField();
-        txtAddressSearch.setPreferredSize(new java.awt.Dimension(150, 30));
-        txtAddressSearch.setBackground(Color.LIGHT_GRAY);
-
         JLabel lblSearch = new JLabel("SEARCH");
         lblSearch.setForeground(labelColor);
         lblSearch.setFont(labelFont);
@@ -77,24 +69,15 @@ public class OrganizationPanel extends javax.swing.JPanel {
         txtSearch.setBackground(Color.LIGHT_GRAY);
 
         // Tạo panel con để căn chỉnh các thành phần search
-        JPanel searchPanel1 = new JPanel();
-        searchPanel1.setBackground(Color.WHITE);
-        searchPanel1.setLayout(new BoxLayout(searchPanel1, BoxLayout.X_AXIS));
-        searchPanel1.add(lblAddressSearch);
-        searchPanel1.add(Box.createHorizontalStrut(10));
-        searchPanel1.add(txtAddressSearch);
-
-        JPanel searchPanel2 = new JPanel();
-        searchPanel2.setBackground(Color.WHITE);
-        searchPanel2.setLayout(new BoxLayout(searchPanel2, BoxLayout.X_AXIS));
-        searchPanel2.add(lblSearch);
-        searchPanel2.add(Box.createHorizontalStrut(10));
-        searchPanel2.add(txtSearch);
+        JPanel searchPanel = new JPanel();
+        searchPanel.setBackground(Color.WHITE);
+        searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.X_AXIS));
+        searchPanel.add(lblSearch);
+        searchPanel.add(Box.createHorizontalStrut(10));
+        searchPanel.add(txtSearch);
 
         topPanel.add(Box.createHorizontalGlue());
-        topPanel.add(searchPanel1);
-        topPanel.add(Box.createHorizontalStrut(20));
-        topPanel.add(searchPanel2);
+        topPanel.add(searchPanel);
         topPanel.add(Box.createHorizontalGlue());
 
         // Middle panel with input fields - sử dụng GridLayout để căn đối hơn
@@ -241,7 +224,7 @@ public class OrganizationPanel extends javax.swing.JPanel {
         btnClear.setForeground(Color.WHITE);
         btnClear.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
-        btnReset = new GButton("XUẤT");
+        btnReset = new GButton("PRINT");
         btnReset.setBackground(new Color(100, 180, 100));
         btnReset.setForeground(Color.WHITE);
         btnReset.setFont(new Font("Segoe UI", Font.BOLD, 14));

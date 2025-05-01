@@ -1,18 +1,13 @@
 package charity.service;
 
 import charity.model.Organization;
-import charity.repository.ConnectionDB;
-import charity.repository.IRepository.IOrganizationRepository;
 import charity.repository.OrganizationRepository;
-import charity.utils.DatabaseConnection;
+import charity.service.IService.IOrganizationService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class OrganizationService {
+public class OrganizationService implements IOrganizationService{
 
     private OrganizationRepository organizationRepository = new OrganizationRepository();
 
@@ -64,6 +59,7 @@ public class OrganizationService {
     }
 
     // Get all organizations from the database using repository
+    @Override
     public List<Organization> getAllOrganization() {
         try {
             return organizationRepository.getAllOrganization();
@@ -76,6 +72,7 @@ public class OrganizationService {
     }
 
     // Get the count of events associated with a specific organization
+    @Override
     public int getTotalEvent(int organizationId) {
         try {
             return organizationRepository.getTotalEvent(organizationId);
@@ -106,6 +103,7 @@ public class OrganizationService {
     }
 
     // Add a new organization
+    @Override
     public boolean addOrganization(Organization org) {
         try {
             return organizationRepository.addOrganization(org);
@@ -118,6 +116,7 @@ public class OrganizationService {
     }
 
     // Update an existing organization
+    @Override
     public boolean updateOrganization(Organization org) {
         try {
             return organizationRepository.updateOrganization(org);
@@ -130,6 +129,7 @@ public class OrganizationService {
     }
 
     // Delete an organization
+    @Override
     public boolean deleteOrganization(int id) {
         try {
             // Check if organization has related events first
@@ -148,6 +148,7 @@ public class OrganizationService {
     }
 
     // Get an organization by ID
+    @Override
     public Organization getOrganizationById(int id) {
         try {
             return organizationRepository.getOrganizationById(id);
@@ -177,10 +178,12 @@ public class OrganizationService {
         return filteredOrgs;
     }
 
+    @Override
     public String getNameById(int organizationId) {
         return organizationRepository.getNameById(organizationId);
     }
 
+    @Override
     public int getOrganizationCount() {
         return organizationRepository.getOrganizationCount();
     }

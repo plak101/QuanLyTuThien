@@ -1,5 +1,6 @@
 package charity.utils;
 
+import charity.service.AccountService;
 import com.toedter.calendar.JDateChooser;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -11,7 +12,7 @@ import javax.swing.JTextField;
  * @author phaml
  */
 public class ScannerUtils {
-    
+    private final static AccountService accountService = new AccountService();
     public static boolean isEmpty(String s, String message) {
         if (s.isEmpty()) {
             JOptionPane.showMessageDialog(null, message);
@@ -82,6 +83,24 @@ public class ScannerUtils {
         }
         return true;
     }
+    public static boolean isEmailVaid(String email){
+        if (email.isEmpty()) {
+            MessageDialog.showPlain("Email không được để trống");
+            return false;
+        }else if (!email.matches("^[a-zA-Z0-9]+@gmail\\.com$")) {
+            MessageDialog.showPlain("Vui lòng nhập Email đúng định dạng (@gmail.com)");
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean isEmailExist(String email){
+        if (accountService.isEmailExist(email)){
+            MessageDialog.showPlain("Email đã tồn tại.");
+            return true;
+        }
+        return false;
+    }
     
     public static boolean isGenderSelected(JRadioButton male, JRadioButton female, String message) {
         if (!male.isSelected() && !female.isSelected()) {
@@ -90,4 +109,6 @@ public class ScannerUtils {
         }
         return true;
     }
+    
+//    public static void onlyInputNumber(JTextField txt)
 }

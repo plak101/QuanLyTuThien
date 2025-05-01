@@ -5,6 +5,7 @@ import charity.model.CharityEvent;
 import charity.model.Organization;
 import charity.service.CharityEventService;
 import charity.service.OrganizationService;
+import charity.utils.ScannerUtils;
 import com.toedter.calendar.JDateChooser;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -124,6 +125,7 @@ public class CharityEventPanelController {
         jbtReset.addActionListener(e -> onReset());
         jbtChoose.addActionListener(e -> onChooseImage()); // Giả sử chọn ảnhF
         setHoverButton();
+        ScannerUtils.setOnlyInputNumber(txtTargetAmount);
     }
 
     public void setHoverButton() {

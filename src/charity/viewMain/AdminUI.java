@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AdminUI extends javax.swing.JFrame {
 
-    public AdminUI() {
+    public AdminUI(int accountId) {
         initComponents();
 
         setTitle("QUẢN LÍ TỪ THIỆN");
@@ -19,25 +19,26 @@ public class AdminUI extends javax.swing.JFrame {
 
         List<DanhMuc> listItem = new ArrayList<>();
         listItem.add(new DanhMuc("TrangChu", jpnTrangchu2, jibTrangchu2));
-        listItem.add(new DanhMuc("QuanLyNhaTaiTro", jpnQuanNhaTaiTro, jibQuanNhaTaiTro));
         listItem.add(new DanhMuc("QuanLyChuongTrinh", jpnQuanLyChuongTrinh, jibQuanLyChuongTrinh));
         listItem.add(new DanhMuc("QuanLyQuyenGop", jpnQuanLyQuyenGop, jibQuanLyQuyenGop));
         listItem.add(new DanhMuc("QuanLyToChuc", jpnQuanLyToChuc, jibQuanLyToChuc));
-        listItem.add(new DanhMuc("BaoCao", jpnBaoCao, jibBaoCao));
+        listItem.add(new DanhMuc("QuanLyTaiKhoan", jpnTaiKhoan, jibTaiKhoan));
 
         controler.setEvent(listItem);
         
-        AdminUIController adminUIController = new AdminUIController(jlbLogout);
+        AdminUIController adminUIController = new AdminUIController(accountId ,jlbLogout, txtName);
+        
         init();
     }
 
     public void init() {
         jlbImage.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/AdminTrans.png", 80, 80));
         jibTrangchu2.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/home.png", 24, 24));
-//        jLabel3.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/list2.png", 24, 24));
-//        jLabel5.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/non-profit-organization (2).png", 24, 24));
-//        jLabel2.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/user2.png", 24, 24));
-//        jLabel4.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/recent.png", 24, 24));
+        jibQuanLyChuongTrinh.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/calendar.png", 24, 24));
+        jibQuanLyQuyenGop.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/list2.png", 24,24));
+        jibQuanLyToChuc.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/non-profit-organization (2).png", 30, 30));
+        jibTaiKhoan.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/people.png", 30, 30));
+
 
         jlbLogout.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/logout2.png", 20, 20));
     }
@@ -50,8 +51,6 @@ public class AdminUI extends javax.swing.JFrame {
         jpnMenu = new charity.viewMain.GradientPanel();
         jpnTrangchu2 = new javax.swing.JPanel();
         jibTrangchu2 = new javax.swing.JLabel();
-        jpnQuanNhaTaiTro = new javax.swing.JPanel();
-        jibQuanNhaTaiTro = new javax.swing.JLabel();
         jpnQuanLyChuongTrinh = new javax.swing.JPanel();
         jibQuanLyChuongTrinh = new javax.swing.JLabel();
         jpnQuanLyQuyenGop = new javax.swing.JPanel();
@@ -60,10 +59,11 @@ public class AdminUI extends javax.swing.JFrame {
         jibQuanLyToChuc = new javax.swing.JLabel();
         jlbImage = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtName = new javax.swing.JPanel();
+        jpn = new javax.swing.JPanel();
+        txtName = new javax.swing.JTextField();
         jlbLogout = new javax.swing.JLabel();
-        jpnBaoCao = new javax.swing.JPanel();
-        jibBaoCao = new javax.swing.JLabel();
+        jpnTaiKhoan = new javax.swing.JPanel();
+        jibTaiKhoan = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,30 +109,6 @@ public class AdminUI extends javax.swing.JFrame {
                 .addComponent(jibTrangchu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jpnQuanNhaTaiTro.setBackground(new java.awt.Color(76, 175, 80));
-
-        jibQuanNhaTaiTro.setBackground(new java.awt.Color(255, 255, 255));
-        jibQuanNhaTaiTro.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jibQuanNhaTaiTro.setForeground(new java.awt.Color(255, 255, 255));
-        jibQuanNhaTaiTro.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jibQuanNhaTaiTro.setText("Quản lý nhà tài trợ");
-        jibQuanNhaTaiTro.setPreferredSize(new java.awt.Dimension(163, 36));
-
-        javax.swing.GroupLayout jpnQuanNhaTaiTroLayout = new javax.swing.GroupLayout(jpnQuanNhaTaiTro);
-        jpnQuanNhaTaiTro.setLayout(jpnQuanNhaTaiTroLayout);
-        jpnQuanNhaTaiTroLayout.setHorizontalGroup(
-            jpnQuanNhaTaiTroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQuanNhaTaiTroLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jibQuanNhaTaiTro, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jpnQuanNhaTaiTroLayout.setVerticalGroup(
-            jpnQuanNhaTaiTroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQuanNhaTaiTroLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jibQuanNhaTaiTro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
         jpnQuanLyChuongTrinh.setBackground(new java.awt.Color(76, 175, 80));
 
         jibQuanLyChuongTrinh.setBackground(new java.awt.Color(255, 255, 255));
@@ -141,21 +117,6 @@ public class AdminUI extends javax.swing.JFrame {
         jibQuanLyChuongTrinh.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jibQuanLyChuongTrinh.setText("Quản lý chương trình");
         jibQuanLyChuongTrinh.setPreferredSize(new java.awt.Dimension(189, 36));
-
-        javax.swing.GroupLayout jpnQuanLyChuongTrinhLayout = new javax.swing.GroupLayout(jpnQuanLyChuongTrinh);
-        jpnQuanLyChuongTrinh.setLayout(jpnQuanLyChuongTrinhLayout);
-        jpnQuanLyChuongTrinhLayout.setHorizontalGroup(
-            jpnQuanLyChuongTrinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQuanLyChuongTrinhLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jibQuanLyChuongTrinh, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jpnQuanLyChuongTrinhLayout.setVerticalGroup(
-            jpnQuanLyChuongTrinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQuanLyChuongTrinhLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jibQuanLyChuongTrinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
 
         jpnQuanLyQuyenGop.setBackground(new java.awt.Color(76, 175, 80));
 
@@ -181,6 +142,24 @@ public class AdminUI extends javax.swing.JFrame {
                 .addComponent(jibQuanLyQuyenGop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        javax.swing.GroupLayout jpnQuanLyChuongTrinhLayout = new javax.swing.GroupLayout(jpnQuanLyChuongTrinh);
+        jpnQuanLyChuongTrinh.setLayout(jpnQuanLyChuongTrinhLayout);
+        jpnQuanLyChuongTrinhLayout.setHorizontalGroup(
+            jpnQuanLyChuongTrinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnQuanLyChuongTrinhLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jibQuanLyChuongTrinh, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jpnQuanLyQuyenGop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jpnQuanLyChuongTrinhLayout.setVerticalGroup(
+            jpnQuanLyChuongTrinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQuanLyChuongTrinhLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jibQuanLyChuongTrinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jpnQuanLyQuyenGop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
         jpnQuanLyToChuc.setBackground(new java.awt.Color(76, 175, 80));
 
         jibQuanLyToChuc.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -195,7 +174,7 @@ public class AdminUI extends javax.swing.JFrame {
             jpnQuanLyToChucLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQuanLyToChucLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jibQuanLyToChuc, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jibQuanLyToChuc, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnQuanLyToChucLayout.setVerticalGroup(
             jpnQuanLyToChucLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,19 +183,25 @@ public class AdminUI extends javax.swing.JFrame {
                 .addComponent(jibQuanLyToChuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("ADMIN");
 
-        javax.swing.GroupLayout txtNameLayout = new javax.swing.GroupLayout(txtName);
-        txtName.setLayout(txtNameLayout);
-        txtNameLayout.setHorizontalGroup(
-            txtNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        txtName.setEditable(false);
+        txtName.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtName.setText("txtName");
+        txtName.setFocusable(false);
+
+        javax.swing.GroupLayout jpnLayout = new javax.swing.GroupLayout(jpn);
+        jpn.setLayout(jpnLayout);
+        jpnLayout.setHorizontalGroup(
+            jpnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(txtName, javax.swing.GroupLayout.Alignment.TRAILING)
         );
-        txtNameLayout.setVerticalGroup(
-            txtNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
+        jpnLayout.setVerticalGroup(
+            jpnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
         );
 
         jlbLogout.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -224,44 +209,42 @@ public class AdminUI extends javax.swing.JFrame {
         jlbLogout.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jlbLogout.setText("Đăng xuất");
 
-        jpnBaoCao.setBackground(new java.awt.Color(76, 175, 80));
+        jpnTaiKhoan.setBackground(new java.awt.Color(76, 175, 80));
 
-        jibBaoCao.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jibBaoCao.setForeground(new java.awt.Color(255, 255, 255));
-        jibBaoCao.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jibBaoCao.setText("Báo cáo");
-        jibBaoCao.setPreferredSize(new java.awt.Dimension(71, 36));
+        jibTaiKhoan.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jibTaiKhoan.setForeground(new java.awt.Color(255, 255, 255));
+        jibTaiKhoan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jibTaiKhoan.setText("Quản lý tài khoản");
+        jibTaiKhoan.setPreferredSize(new java.awt.Dimension(71, 36));
 
-        javax.swing.GroupLayout jpnBaoCaoLayout = new javax.swing.GroupLayout(jpnBaoCao);
-        jpnBaoCao.setLayout(jpnBaoCaoLayout);
-        jpnBaoCaoLayout.setHorizontalGroup(
-            jpnBaoCaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnBaoCaoLayout.createSequentialGroup()
+        javax.swing.GroupLayout jpnTaiKhoanLayout = new javax.swing.GroupLayout(jpnTaiKhoan);
+        jpnTaiKhoan.setLayout(jpnTaiKhoanLayout);
+        jpnTaiKhoanLayout.setHorizontalGroup(
+            jpnTaiKhoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnTaiKhoanLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jibBaoCao, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jibTaiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        jpnBaoCaoLayout.setVerticalGroup(
-            jpnBaoCaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnBaoCaoLayout.createSequentialGroup()
+        jpnTaiKhoanLayout.setVerticalGroup(
+            jpnTaiKhoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnTaiKhoanLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jibBaoCao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jibTaiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout jpnMenuLayout = new javax.swing.GroupLayout(jpnMenu);
         jpnMenu.setLayout(jpnMenuLayout);
         jpnMenuLayout.setHorizontalGroup(
             jpnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpnQuanNhaTaiTro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jpnQuanLyChuongTrinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jpnQuanLyQuyenGop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jpnQuanLyToChuc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jpnMenuLayout.createSequentialGroup()
                 .addGroup(jpnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpnMenuLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jpnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jpn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jpnMenuLayout.createSequentialGroup()
                         .addGap(85, 85, 85)
                         .addComponent(jlbImage, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -272,7 +255,7 @@ public class AdminUI extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jlbLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(77, 77, 77))
-            .addComponent(jpnBaoCao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jpnTaiKhoan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpnMenuLayout.setVerticalGroup(
             jpnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,20 +265,16 @@ public class AdminUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jpn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64)
                 .addComponent(jpnTrangchu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jpnQuanNhaTaiTro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
                 .addComponent(jpnQuanLyChuongTrinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jpnQuanLyQuyenGop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jpnQuanLyToChuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jpnBaoCao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
+                .addComponent(jpnTaiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
                 .addComponent(jlbLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
@@ -305,8 +284,8 @@ public class AdminUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jpnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addComponent(jpnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
                 .addComponent(jpnView, javax.swing.GroupLayout.DEFAULT_SIZE, 1045, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -349,22 +328,21 @@ public class AdminUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jibBaoCao;
     private javax.swing.JLabel jibQuanLyChuongTrinh;
     private javax.swing.JLabel jibQuanLyQuyenGop;
     private javax.swing.JLabel jibQuanLyToChuc;
-    private javax.swing.JLabel jibQuanNhaTaiTro;
+    private javax.swing.JLabel jibTaiKhoan;
     private javax.swing.JLabel jibTrangchu2;
     private javax.swing.JLabel jlbImage;
     private javax.swing.JLabel jlbLogout;
-    private javax.swing.JPanel jpnBaoCao;
+    private javax.swing.JPanel jpn;
     private charity.viewMain.GradientPanel jpnMenu;
     private javax.swing.JPanel jpnQuanLyChuongTrinh;
     private javax.swing.JPanel jpnQuanLyQuyenGop;
     private javax.swing.JPanel jpnQuanLyToChuc;
-    private javax.swing.JPanel jpnQuanNhaTaiTro;
+    private javax.swing.JPanel jpnTaiKhoan;
     private javax.swing.JPanel jpnTrangchu2;
     private javax.swing.JPanel jpnView;
-    private javax.swing.JPanel txtName;
+    private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 }

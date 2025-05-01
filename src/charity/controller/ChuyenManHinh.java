@@ -8,13 +8,12 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import charity.viewMain.QuanLyQuyenGop;
-import charity.viewMain.QuanLyChuongTrinh;
 import charity.viewMain.BaoCao;
 import charity.viewMain.CharityEventPanel;
+import charity.viewMain.DonationListPanel;
 import charity.viewMain.OrganizationPanel;
-import charity.viewMain.QuanLyNhaTaiTro;
 import charity.viewMain.TrangChu;
+
 
 public class ChuyenManHinh {
 
@@ -66,21 +65,16 @@ public class ChuyenManHinh {
                 case "TrangChu":
                     node = new TrangChu();
                     break;
-                case "QuanLyNhaTaiTro":
-                    node = new QuanLyNhaTaiTro();
-                    break;
                 case "QuanLyChuongTrinh":
-//                    node = new QuanLyChuongTrinh();
                     node = new CharityEventPanel();
-
                     break;
                 case "QuanLyQuyenGop":
-                    node = new QuanLyQuyenGop();
+                    node = new DonationListPanel(null, 0, 0);
                     break;
                 case "QuanLyToChuc":
                     node = new OrganizationPanel();
                     break;
-                case "BaoCao":
+                case "QuanLyTaiKhoan":
                     node = new BaoCao();
                     break;
                 default:

@@ -2,6 +2,7 @@ package charity.controller;
 
 import charity.model.Donation;
 import charity.service.DonationService;
+import charity.utils.MessageDialog;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import java.io.*;
@@ -76,7 +77,7 @@ public class PDFExporter {
             document.add(ntn);
 
             document.close();
-            System.out.println("Xuat file pdf thanh cong");
+            MessageDialog.showSuccess("Xuất danh sách thành công!");
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PDFExporter.class.getName()).log(Level.SEVERE, null, ex);

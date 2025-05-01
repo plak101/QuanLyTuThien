@@ -4,6 +4,7 @@ import charity.UserController.DonationDialogController;
 import charity.component.GProgressBarUI;
 import charity.model.CharityEvent;
 import charity.service.CharityEventService;
+import charity.utils.ScannerUtils;
 import java.awt.Color;
 import javax.swing.JFrame;
 
@@ -27,7 +28,7 @@ public class DonateJDialog extends javax.swing.JDialog {
         controller.loadEventData();
         controller.settingTxtMoney();
         controller.setJbtDonateEvent();
-        controller.setTxtMoneyKeyListener();
+        ScannerUtils.setOnlyInputNumber(txtMoney);
         init();
     }
     

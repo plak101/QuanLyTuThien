@@ -1,7 +1,10 @@
 package charity.utils;
 
 import charity.service.AccountService;
+import charity.service.UserService;
 import com.toedter.calendar.JDateChooser;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -13,6 +16,8 @@ import javax.swing.JTextField;
  */
 public class ScannerUtils {
     private final static AccountService accountService = new AccountService();
+    private final static UserService userService = new UserService();
+            
     public static boolean isEmpty(String s, String message) {
         if (s.isEmpty()) {
             JOptionPane.showMessageDialog(null, message);
@@ -71,6 +76,22 @@ public class ScannerUtils {
         return true;
     }
     
+    public static boolean isPhoneValid(String phone){
+        if (phone.isEmpty()){
+            MessageDialog.showPlain("Số điện thoại không được để trống");
+            return false;
+        }
+        return true;
+    }
+    public static boolean isPhoneNumberExist(String phone){
+        if (userService.isPhoneNumberExist(phone)){
+            MessageDialog.showPlain("Số điện thoại đã tồn tại");
+            return true;
+        }
+        return false;
+    }
+    
+    
     //kiem tra emai
     public static boolean isEmailVaid(JTextField textField){
         String email = textField.getText().trim();
@@ -110,5 +131,16 @@ public class ScannerUtils {
         return true;
     }
     
-//    public static void onlyInputNumber(JTextField txt)
+    public static void setOnlyInputNumber(JTextField txt){
+        txt.addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c) && c!='\b'){
+                    e.consume();
+                }
+            }
+            
+        });
+    }
 }

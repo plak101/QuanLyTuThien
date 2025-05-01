@@ -1,36 +1,63 @@
 package charity.service;
 
 import charity.model.Organization;
+import charity.repository.ConnectionDB;
 import charity.repository.IRepository.IOrganizationRepository;
 import charity.repository.OrganizationRepository;
+import charity.utils.DatabaseConnection;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class OrganizationService {
 
     private OrganizationRepository organizationRepository = new OrganizationRepository();
-    // Get all organizations from the database
-    public List<Organization> getAllOrganization() {
-        List<Organization> organizations = new ArrayList<>();
 
-        try {
-            Connection connection = DatabaseConnection.getConnection(); // Get DB connection
-            String sql = "SELECT * FROM Organization ORDER BY id";
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
 
-            while (rs.next()) {
-                Organization org = new Organization();
-                org.setId(rs.getInt("id"));
-                org.setName(rs.getString("name"));
-                org.setEmail(rs.getString("email"));
-                org.setHotline(rs.getString("hotline"));
-                org.setAddress(rs.getString("address"));
-
+//    public List<Organization> getAllOrganization() {
+//        List<Organization> organizations = new ArrayList<>();
+//        Connection connection = null;
+//        Statement statement = null;
+//        ResultSet rs = null;
+//
+//        try {
+//            connection = ConnectionDB.getConnection(); // Get DB connection
+//            String sql = "SELECT * FROM Organization ORDER BY id";
+//            statement = connection.createStatement();
+//            rs = statement.executeQuery(sql);
+//
+//            while (rs.next()) {
+//                Organization org = new Organization();
+//                org.setId(rs.getInt("id"));
+//                org.setName(rs.getString("name"));
+//                org.setEmail(rs.getString("email"));
+//                org.setHotline(rs.getString("hotline"));
+//                org.setAddress(rs.getString("address"));
+//                organizations.add(org); // Thêm tổ chức vào danh sách
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(OrganizationService.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            // Đảm bảo đóng các tài nguyên sau khi sử dụng
+//            try {
+//                if (rs != null) {
+//                    rs.close();
+//                }
+//                if (statement != null) {
+//                    statement.close();
+//                }
+//                if (connection != null) {
+//                    connection.close();
+//                }
+//            } catch (SQLException ex) {
+//                Logger.getLogger(OrganizationService.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        return organizations; // Trả về danh sách các tổ chức
+//    }
 
     public OrganizationService() {
         this.organizationRepository = new OrganizationRepository();
@@ -60,12 +87,6 @@ public class OrganizationService {
         }
     }
 
-    /**
-     * Lấy danh sách các sự kiện liên quan đến một tổ chức
-     *
-     * @param organizationId ID của tổ chức cần kiểm tra
-     * @return Danh sách tên các sự kiện liên quan
-     */
     public List<String> getRelatedEvents(int organizationId) {
         List<String> events = new ArrayList<>();
         // This method needs to be implemented in the repository

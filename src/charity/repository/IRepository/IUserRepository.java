@@ -19,7 +19,7 @@ public interface IUserRepository {
     public boolean addUser(User user);
     public boolean updateUser(User user);
     public boolean deleteUser(int userId);
-    
+    public boolean isPhoneNumberExist(String phoneNumber);
     //Dong ket noi
     public void closeResources(Connection conn, PreparedStatement ps);
     public void closeResources(Connection conn, PreparedStatement ps, ResultSet rs);

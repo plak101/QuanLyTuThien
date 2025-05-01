@@ -16,6 +16,11 @@
             <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/repository/IRepository/IAccountRepository.java</file>
             <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/repository/AccountRepository.java</file>
             <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/service/AccountService.java</file>
+            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/viewMain/OrganizationPanel.java</file>
+            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/controller/OrganizationPanelController.java</file>
+            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/repository/OrganizationRepository.java</file>
+            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/service/OrganizationService.java</file>
+            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/controller/TrangChuController.java</file>
         </group>
     </open-files>
 </project-private>

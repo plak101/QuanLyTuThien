@@ -12,21 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import charity.utils.DatabaseConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class OrganizationService {
 
-    private OrganizationRepository organizationRepository = new OrganizationRepository();
-
-    public OrganizationService() {
-        //    public List<Organization> getAllOrganization(){
-        //        return organizationRepository.getAllOrganization();
-        //    }
-        // Get all organizations from the database
-    }
-    public String getNameById(int id) {
-        return organizationRepository.getNameById(id);
-    }
-
+    // Get all organizations from the database
     public List<Organization> getAllOrganization() {
         List<Organization> organizations = new ArrayList<>();
 
@@ -83,6 +74,65 @@ public class OrganizationService {
         return totalEvents;
     }
 
+    /**
+     * Lấy danh sách các sự kiện liên quan đến một tổ chức
+     *
+     * @param organizationId ID của tổ chức cần kiểm tra
+     * @return Danh sách tên các sự kiện liên quan
+     */
+    public List<String> getRelatedEvents(int organizationId) {
+        List<String> events = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            // Sửa truy vấn để phù hợp với cấu trúc bảng thực tế
+            String query = "SELECT e.eventId, e.eventName, e.description FROM event e WHERE e.organizationId = ?";
+
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, organizationId);
+
+            resultSet = statement.executeQuery();
+
+            // Duyệt qua kết quả và thêm vào danh sách
+            while (resultSet.next()) {
+                int eventId = resultSet.getInt("eventId");
+                String eventName = resultSet.getString("eventName");
+                String description = resultSet.getString("description");
+
+                // Định dạng: ID - Tên sự kiện (Mô tả)
+                String eventInfo = String.format("#%d - %s (%s)",
+                        eventId, eventName,
+                        description != null ? description.substring(0, Math.min(50, description.length())) + "..." : "Không có mô tả");
+
+                events.add(eventInfo);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi khi lấy danh sách sự kiện: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    DatabaseConnection.closeConnection(connection);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return events;
+    }
+
     // Add a new organization
     public boolean addOrganization(Organization org) {
         boolean result = false;
@@ -136,28 +186,96 @@ public class OrganizationService {
         return result;
     }
 
-    public int getOrganizationCount() {
-        return organizationRepository.getOrganizationCount();
-    }
-
     // Delete an organization
     public boolean deleteOrganization(int id) {
         boolean result = false;
+        Connection connection = null;
+        PreparedStatement pstmt = null;
 
         try {
-            Connection connection = DatabaseConnection.getConnection();
-            String sql = "DELETE FROM Organization WHERE id = ?";
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+            connection = DatabaseConnection.getConnection();
 
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Check for related events before attempting deletion
+            String checkSql = "SELECT COUNT(*) FROM event WHERE organizationId = ?";
+            pstmt = connection.prepareStatement(checkSql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next() && rs.getInt(1) > 0) {
+                // Found related events - rollback and return false
+                connection.rollback();
+                return false; // Controller will separately fetch event details using getRelatedEvents
+            }
+
+            // Close the first prepared statement
+            pstmt.close();
+
+            // No events found, proceed with deletion
+            String deleteSql = "DELETE FROM Organization WHERE id = ?";
+            pstmt = connection.prepareStatement(deleteSql);
             pstmt.setInt(1, id);
 
             int rowsAffected = pstmt.executeUpdate();
             result = rowsAffected > 0;
 
-            DatabaseConnection.closeConnection(connection);
+            // If successful, commit the transaction
+            if (result) {
+                connection.commit();
+            } else {
+                connection.rollback();
+            }
+
         } catch (SQLException e) {
+            // Log the specific SQL error
+            System.err.println("SQL State: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
+            System.err.println("Message: " + e.getMessage());
+
+            try {
+                // Rollback on error
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+            // Show a more specific error message based on the error code
+            String errorMessage = "Lỗi khi xóa tổ chức: ";
+
+            // Check for common error codes
+            if (e.getErrorCode() == 1451) {
+                // MySQL error code for foreign key constraint violation
+                errorMessage += "Không thể xóa tổ chức vì có dữ liệu liên quan đến tổ chức này trong các bảng khác.";
+            } else {
+                errorMessage += e.getMessage();
+            }
+
+            JOptionPane.showMessageDialog(null, errorMessage, "Database Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Lỗi khi xóa tổ chức: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } finally {
+            try {
+                // Reset auto-commit mode
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            // Close resources
+            DatabaseConnection.closeConnection(connection);
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return result;

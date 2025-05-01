@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class OrganizationService {
-
+    private OrganizationRepository organizationRepository = new OrganizationRepository();
     // Get all organizations from the database
     public List<Organization> getAllOrganization() {
         List<Organization> organizations = new ArrayList<>();
@@ -346,5 +346,13 @@ public class OrganizationService {
         }
 
         return organizations;
+    }
+
+    public String getNameById(int organizationId) {
+        return organizationRepository.getNameById(organizationId);
+    }
+
+    public int getOrganizationCount() {
+        return organizationRepository.getOrganizationCount();
     }
 }

@@ -1,16 +1,17 @@
-package charity.repository.IRepository;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+ */
+package charity.service.IService;
 
 import charity.model.User;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 
 /**
  *
  * @author phaml
  */
-public interface IUserRepository {
+public interface IUserService {
     public List<User> getAllUser();
     public User getUserById(int userId);
     public User getUserByAccountId(int accountId);
@@ -20,7 +21,4 @@ public interface IUserRepository {
     public boolean updateUser(User user);
     public boolean deleteUser(int userId);
     public boolean isPhoneNumberExist(String phoneNumber);
-    //Dong ket noi
-    public void closeResources(Connection conn, PreparedStatement ps);
-    public void closeResources(Connection conn, PreparedStatement ps, ResultSet rs);
 }

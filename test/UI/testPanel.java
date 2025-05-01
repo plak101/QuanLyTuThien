@@ -1,6 +1,6 @@
 package UI;
 
-import charity.viewMain.OrganizationPanel;
+import charity.view.Admin.OrganizationPanel;
 import javax.swing.*;
 import java.awt.*;
 

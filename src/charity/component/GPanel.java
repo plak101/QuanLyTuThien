@@ -1,6 +1,6 @@
 package charity.component;
 
-import charity.loginController.LoginController;
+import charity.controller.LoginController.LoginController;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;

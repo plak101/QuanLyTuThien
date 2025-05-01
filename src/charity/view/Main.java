@@ -4,8 +4,8 @@
  */
 package charity.view;
 
-import charity.controller.Program;
-import charity.viewUser.UserUI;
+import charity.controller.AdminController.Program;
+import charity.view.User.UserUI;
 
 /**
  *

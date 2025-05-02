@@ -162,16 +162,13 @@ public class DonationDialogController implements IFormatData {
                     if (donationService.addDonation(donation)) {
 
                         // cap nhap so tien hien tai cua event
-                        CharityEvent event2 = eventService.getEventById(event.getId());
-                        event2.setCurrentAmount(event2.getCurrentAmount() + money);
-                        if (eventService.updateEvent(event2)) {
-                            loadEventData();//cập nhật giao diện
-                            txtMoney.setText("");
-                            txtMessage.setText("");
-                            JOptionPane.showMessageDialog(null, "Quyên góp thành công! Cảm ơn sự đóng góp của bạn!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Cập nhật số tiền thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                        }
+//                        CharityEvent event2 = eventService.getEventById(event.getId());
+//                        event2.setCurrentAmount(event2.getCurrentAmount() + money);
+//                        if (eventService.updateEvent(event2)) {
+                        loadEventData();//cập nhật giao diện
+                        txtMoney.setText("");
+                        txtMessage.setText("");
+                        JOptionPane.showMessageDialog(null, "Quyên góp thành công! Cảm ơn sự đóng góp của bạn!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, "Thêm quyên góp thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     }
@@ -192,8 +189,9 @@ public class DonationDialogController implements IFormatData {
 
         });
     }
-    public void setHoverButtonEvent(){
-      gbtDonate.addMouseListener(new MouseAdapter() {
+
+    public void setHoverButtonEvent() {
+        gbtDonate.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
                 gbtDonate.changeColor("#2d99ae");

@@ -49,7 +49,7 @@ public class UserService implements IUserService{
     
     @Override
     public User getUserByAccountId(int accountId) {
-        return userRepository.getUserById(accountId);
+        return userRepository.getUserByAccountId(accountId);
     }
     
     @Override

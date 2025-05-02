@@ -18,7 +18,7 @@ CREATE TABLE account (
 );
 -- Tạo bảng User
 CREATE TABLE User (
-    accountId int ,
+    accountId int unique,
     userId INT PRIMARY KEY AUTO_INCREMENT,
     userName NVARCHAR(100) NOT NULL,
     address NVARCHAR(255),
@@ -109,22 +109,22 @@ DELIMITER ;
 -- them du lieu vao bang account
 INSERT INTO account (username, password, email, role) VALUES
 
-('admin01', 'Admin_01', 'qltt.admin1st@gmail.com', 'Admin'),
+('admin01', 'Admin@01', 'qltt.admin1st@gmail.com', 'Admin'),
 
-('admin02', 'Admin_02', 'qltt.admin2nd@gmail.com', 'Admin'),
-('admin03', 'Admin_03', 'qltt.admin3rd@gmail.com', 'Admin'),
+('admin02', 'Admin@02', 'qltt.admin2nd@gmail.com', 'Admin'),
+('admin03', 'Admin@03', 'qltt.admin3rd@gmail.com', 'Admin'),
 
 ('namnguyen', 'namDz=33', 'namnguyenvan@gmail.com', 'User'),
-('bchicute', 'Bchi_1007', 'bchi98@gmail.com', 'User'),
+('bchicute', 'Bchi@1007', 'bchi98@gmail.com', 'User'),
 ('sydeptrai', 'sy99VOLUNT', 'syleeeee@gmail.com', 'User'),
-('khoaloveangiang', 'KHOA@=1001', 'khoa.angiang@gmail.com', 'User'),
+('khoaloveangiang', 'Khoa@=1001', 'khoa.angiang@gmail.com', 'User'),
 ('3thuyduong', 'Duong&123', 'duongthuy@gmail.com', 'User'),
 ('minh4vuong', 'Vuong0%minH', 'minh.vuong@yahoo.com', 'User'),
 ('ngoclan007', '=lanNgoc22=', 'ngoclan.tran@outlook.com', 'User'),
 ('hoanganh357', 'AnhHoang#90', 'hoanganh.le@gmail.com', 'User'),
 ('xuanmai102', 'MaiXuan1^2', 'xuan.mai@gmail.com', 'User'),
 
-('user', 'User_001', 'ductuan1992@gmail.com', 'User');
+('user', 'User@001', 'ductuan1992@gmail.com', 'User');
 
 -- thêm dữ liệu vào bảng User
 INSERT INTO User (accountId, userName, address, phone, gender, birthDay) VALUES

@@ -6,6 +6,7 @@ import charity.model.User;
 import charity.service.AccountService;
 import charity.service.UserService;
 import charity.utils.ScannerUtils;
+import charity.view.Login.LoginFrame;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -189,54 +190,58 @@ public class InforPanelController {
     }
 
     public void setGbtUserSaveEvent() {
-    gbtUserSave.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+        gbtUserSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-            if (!validateInput()) {
-                return;
-            }
+                if (!validateInput()) {
+                    return;
+                }
 
-            // Lấy dữ liệu từ giao diện người dùng
-            String name = capitalizeFirstLetter(txtName.getText().trim());
-            String address = capitalizeFirstLetter(txtAddress.getText().trim());
-            String phone = txtPhone.getText().trim();
-            java.util.Date utilDate = jdcBirthday.getDate();
-            java.sql.Date birthday = new java.sql.Date(utilDate.getTime());
-            String gender = jrbtMale.isSelected() ? "Nam" : "Nữ";
+                // Lấy dữ liệu từ giao diện người dùng
+                String name = capitalizeFirstLetter(txtName.getText().trim());
+                String address = capitalizeFirstLetter(txtAddress.getText().trim());
+                String phone = txtPhone.getText().trim();
+                java.util.Date utilDate = jdcBirthday.getDate();
+                java.sql.Date birthday = new java.sql.Date(utilDate.getTime());
+                String gender = jrbtMale.isSelected() ? "Nam" : "Nữ";
 
-            User u = new User(accountId, userId, name, address, phone, gender, birthday);
+                User u = new User(accountId, userId, name, address, phone, gender, birthday);
+                //test
+                System.out.println(u);
+                boolean success;
 
-            boolean success;
-
-            if (user == null) {
-                // Thêm mới người dùng
-                success = userService.addUser(u);
-                if (success) {
-                    user = userService.getUserByAccountId(accountId);
-                    if (user != null) {
-                        userId = user.getId();
+                if (user == null) {
+                    // Thêm mới người dùng
+                    success = userService.addUser(u);
+                    if (success) {
+                        //test
+                        user = userService.getUserByAccountId(accountId);
+                        
+                        if (user != null) {
+                            userId = user.getId();
+                        }
+                        JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công! Vui lòng đăng nhập lại");
+                        parent.dispose();
+                        new LoginFrame().setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
                     }
-                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
+                    // Cập nhật người dùng hiện tại
+                    success = userService.updateUser(u);
+                    if (success) {
+                        JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
+                    }
                 }
-            } else {
-                // Cập nhật người dùng hiện tại
-                success = userService.updateUser(u);
-                if (success) {
-                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
-                }
+
+                // Ẩn nút sau khi lưu
+                showUserButton(false);
             }
-
-            // Ẩn nút sau khi lưu
-            showUserButton(false);
-        }
-    });
-}
-
+        });
+    }
 
     public void setGbtUserCancelEvent() {
         gbtUserCancel.addActionListener(new ActionListener() {
@@ -275,9 +280,9 @@ public class InforPanelController {
                     String newPassword = txtNewPassword.getText().trim();
                     String passwordConfirm = txtPasswordConfirm.getText().trim();
                     if (scu.isPasswordValid(newPassword)) {
-                        if (!passwordConfirm.equals(newPassword)){
+                        if (!passwordConfirm.equals(newPassword)) {
                             JOptionPane.showMessageDialog(null, "Mật khẩu nhập lại không khớp!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                            return ;
+                            return;
                         }
                         account.setPassword(newPassword);
 
@@ -294,7 +299,7 @@ public class InforPanelController {
     }
 
     private boolean validateInput() {
-        String phoneNumber =txtPhone.getText().trim();
+        String phoneNumber = txtPhone.getText().trim();
         if (scu.isEmpty(txtName, "Vui lòng nhập họ và tên!")) {
             return false;
         }
@@ -332,7 +337,8 @@ public class InforPanelController {
         }
         return result.toString().trim();
     }
-    public void setHoverButtonEvent(){
+
+    public void setHoverButtonEvent() {
         gbtEmailUpdate.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
@@ -399,7 +405,7 @@ public class InforPanelController {
                 gbtUserCancel.changeColor("#F44336");
             }
         });
-        
+
         gbtAccountSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {

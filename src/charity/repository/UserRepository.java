@@ -197,7 +197,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User getUserByAcountId(int accountId) {
+    public User getUserByAccountId(int accountId) {
         User user = null;
         String sql = "SELECT a.* FROM user u JOIN account a ON a.id=u.accountId WHERE accountId =?";
         conn = ConnectionDB.getConnection();

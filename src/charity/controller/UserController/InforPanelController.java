@@ -68,6 +68,7 @@ public class InforPanelController {
 
     public void loadData() {
         clearData();
+        user=userService.getUserByAccountId(accountId);
 
         //hien thong tin user
         user = userService.getUserById(userId);
@@ -217,7 +218,7 @@ public class InforPanelController {
                     if (success) {
                         //test
                         user = userService.getUserByAccountId(accountId);
-                        
+                        System.out.println(user.getId());
                         if (user != null) {
                             userId = user.getId();
                         }
@@ -230,6 +231,8 @@ public class InforPanelController {
                 } else {
                     // Cập nhật người dùng hiện tại
                     success = userService.updateUser(u);
+                    System.out.println(user.getId());
+
                     if (success) {
                         JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công");
                     } else {

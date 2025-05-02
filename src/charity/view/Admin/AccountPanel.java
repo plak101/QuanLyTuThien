@@ -11,12 +11,12 @@ import charity.model.Role;
  *
  * @author ngank
  */
-public class BaoCao extends javax.swing.JPanel {
+public class AccountPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form ThongKe
      */
-    public BaoCao() {
+    public AccountPanel() {
         initComponents();
         AccountPanelController controller = new AccountPanelController(txtAddress, txtEmail, txtFullName, txtId, txtPassword, txtPhoneNumber, txtSearch, txtUsername, jcbRole, jdcBirthDate, jrbFemale, jrbMale, tableAccount, gbtAdd, gbtDelete, gbtReset, gbtUpdate, gbtSave, gbtCancel);
         gbtCancel.changeColor("#E53935");

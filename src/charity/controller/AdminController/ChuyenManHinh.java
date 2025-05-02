@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import charity.view.Admin.BaoCao;
+import charity.view.Admin.AccountPanel;
 import charity.view.Admin.CharityEventPanel;
 import charity.view.Admin.DonationListPanel;
 import charity.view.Admin.OrganizationPanel;
@@ -75,7 +75,7 @@ public class ChuyenManHinh {
                     node = new OrganizationPanel();
                     break;
                 case "QuanLyTaiKhoan":
-                    node = new BaoCao();
+                    node = new AccountPanel();
                     break;
                 default:
                     node = new TrangChu();

@@ -39,18 +39,18 @@ public class DonationListController {
 
     private TableRowSorter<TableModel> rowSorter = null;
 
-    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JPanel tablePanel) {
-        this.txtSearch = txtSearch;
-        this.jrbtId = jrbtId;
-        this.jrbtEvent = jrbtEvent;
-        this.jrbtUser = jrbtUser;
-        this.gbtReset = gbtReset;
-        this.jpnTable = tablePanel;
-
-        this.classTableModel = new ClassTableModel();
-        this.donationService = new DonationService();
-        setHoverButtonEvent();
-    }
+//    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JPanel tablePanel) {
+//        this.txtSearch = txtSearch;
+//        this.jrbtId = jrbtId;
+//        this.jrbtEvent = jrbtEvent;
+//        this.jrbtUser = jrbtUser;
+//        this.gbtReset = gbtReset;
+//        this.jpnTable = tablePanel;
+//
+//        this.classTableModel = new ClassTableModel();
+//        this.donationService = new DonationService();
+//        setHoverButtonEvent();
+//    }
     public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JPanel tablePanel,GButton gbtPrint) {
         this.txtSearch = txtSearch;
         this.jrbtId = jrbtId;

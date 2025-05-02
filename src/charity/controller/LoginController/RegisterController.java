@@ -4,6 +4,7 @@ import charity.component.GButton;
 import charity.model.Account;
 import charity.model.Role;
 import charity.service.AccountService;
+import charity.utils.ScannerUtils;
 import charity.view.Login.LoginFrame;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -83,7 +84,7 @@ public class RegisterController {
             public void mouseEntered(MouseEvent e) {
                 gbtRegister.setForeground(Color.WHITE);
                 gbtRegister.changeColor("#0c5776");
-                
+
             }
         });
     }
@@ -116,54 +117,9 @@ public class RegisterController {
             JOptionPane.showMessageDialog(null, "Mật khẩu phải ít nhất phải 8 ký tự !", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        //co it nhat ký tự và chứa ít nhất 1 số
-        //^ — bắt đầu chuỗi
-        //(?=.*[A-Za-z]) — chứa ít nhất một chữ cái (hoa hoặc thường)
-        //(?=.*\\d) — chứa ít nhất một chữ số
-        //.+ — ít nhất một ký tự bất kỳ để đảm bảo chuỗi không trống
-        //$ — kết thúc chuỗi
-//        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d).+$")) {
-//            JOptionPane.showMessageDialog(null, "Mật khẩu phải có ít nhất 1 cái và 1 chữ số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//            return false;
-//        }
-
-
-       // Kiểm tra 1 lần tất cả
-//        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+_=!])(?=.{8,}).*$")) {
-//            JOptionPane.showMessageDialog(null, "Mật khẩu phải có ít nhất 1 kí tự chữ cái in hoa, chữ cái in thường, chữ số và đặc biệt!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//            return false;
-//        }
-        
-        // Kiểm tra từng cái 1
-        boolean hasLength = password.length() >= 8;
-        boolean hasLowerCase = password.matches(".*[a-z].*");
-        boolean hasUpperCase = password.matches(".*[A-Z].*");
-        boolean hasDigit = password.matches(".*\\d.*");
-        boolean hasSpecialChar = password.matches(".*[@#$%^&+=!].*");
-
-        StringBuilder errorMessage = new StringBuilder("Mật khẩu phải có:");
-
-        if (!hasLength) {
-            errorMessage.append("\n- Ít nhất 8 ký tự");
-        }
-        if (!hasLowerCase) {
-            errorMessage.append("\n- Chữ cái thường");
-        }
-        if (!hasUpperCase) {
-            errorMessage.append("\n- Chữ cái in hoa");
-        }
-        if (!hasDigit) {
-            errorMessage.append("\n- Chữ số");
-        }
-        if (!hasSpecialChar) {
-            errorMessage.append("\n- Ký tự đặc biệt (@#$%^&+=!)");
-        }
-
-        if (!hasLength || !hasLowerCase || !hasUpperCase || !hasDigit || !hasSpecialChar) {
-            JOptionPane.showMessageDialog(null, errorMessage.toString(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        if (!ScannerUtils.isPasswordValid(password)) {
             return false;
         }
-
 
         //kiem tra pass2
         if (!password.equals(password2)) {

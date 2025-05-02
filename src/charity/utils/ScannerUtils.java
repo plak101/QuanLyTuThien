@@ -26,20 +26,43 @@ public class ScannerUtils {
         return false;
     }
     
-    public static boolean isPasswordValid(String password, String passwordConfirm){
-        if (password.length()==0 ||passwordConfirm.length()==0){
-            JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống");
-            return false;
+    public static boolean isPasswordValid(String password){
+        StringBuilder errorMessage = new StringBuilder("Mật khẩu phải có:");
+
+        boolean hasLength = password.length() >= 8;
+        boolean hasLowerCase = password.matches(".*[a-z].*");
+        boolean hasUpperCase = password.matches(".*[A-Z].*");
+        boolean hasDigit = password.matches(".*\\d.*");
+        boolean hasSpecialChar = password.matches(".*[@#$%^&+=!].*");
+
+        boolean isValid = true;
+
+        if (!hasLength) {
+            errorMessage.append("\n- Ít nhất 8 ký tự");
+            isValid = false;
         }
-        if (password.length()<=5 ||! password.matches(".*\\d.*")){
-            JOptionPane.showMessageDialog(null, "Mật khẩu phải lớn hơn 5 ký tự và có ít nhất một chữ số");
-            return false;
+        if (!hasLowerCase) {
+            errorMessage.append("\n- Chữ cái thường");
+            isValid = false;
         }
-        if (!password.equals(passwordConfirm)){
-            JOptionPane.showMessageDialog(null, "Mật khẩu nhập lại không khớp");
-            return false;
+        if (!hasUpperCase) {
+            errorMessage.append("\n- Chữ cái in hoa");
+            isValid = false;
         }
-        return true;
+        if (!hasDigit) {
+            errorMessage.append("\n- Chữ số");
+            isValid = false;
+        }
+        if (!hasSpecialChar) {
+            errorMessage.append("\n- Ký tự đặc biệt (@#$%^&+=!)");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            JOptionPane.showMessageDialog(null, errorMessage.toString(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return isValid;
     }
     
     public static boolean isEmpty(JTextField textField, String message) {

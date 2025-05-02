@@ -413,6 +413,9 @@ public class AccountPanelController {
             JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống!");
             return false;
         }
+        if (!ScannerUtils.isPasswordValid(password)){
+            return false;
+        }
 
         if (!email.matches("^\\S+@\\S+\\.\\S+$")) {
             JOptionPane.showMessageDialog(null, "Email không hợp lệ!");

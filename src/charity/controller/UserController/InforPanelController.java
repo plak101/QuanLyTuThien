@@ -274,7 +274,11 @@ public class InforPanelController {
                 } else if (choice == 2) {
                     String newPassword = txtNewPassword.getText().trim();
                     String passwordConfirm = txtPasswordConfirm.getText().trim();
-                    if (scu.isPasswordValid(newPassword, passwordConfirm)) {
+                    if (scu.isPasswordValid(newPassword)) {
+                        if (!passwordConfirm.equals(newPassword)){
+                            JOptionPane.showMessageDialog(null, "Mật khẩu nhập lại không khớp!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                            return ;
+                        }
                         account.setPassword(newPassword);
 
                         if (accountService.updateAccount(account)) {

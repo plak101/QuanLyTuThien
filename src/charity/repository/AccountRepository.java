@@ -149,7 +149,7 @@ public class AccountRepository implements IAccountRepository {
     @Override
     public Account checkAccount(String username, String password) {
         conn = ConnectionDB.getConnection();
-        String sql = "SELECT * FROM account WHERE username LIKE ? AND password LIKE ?";
+        String sql = "SELECT * FROM account WHERE username=? AND password=?";
         try {
             ps = conn.prepareStatement(sql);
             ps.setString(1, username);
@@ -157,13 +157,15 @@ public class AccountRepository implements IAccountRepository {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new Account(
+                if (username.equals(rs.getString("username")) && password.equals(rs.getString("password"))){
+                                    return new Account(
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
                         Role.valueOf(rs.getString("role"))
                 );
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccountRepository.class.getName()).log(Level.SEVERE, null, ex);

@@ -13,7 +13,7 @@ public class DonationListPanel extends javax.swing.JPanel {
         initComponents();
         this.accountId = accountId;
         this.userId = userId;
-        controller= new DonationListController(txtSearch, jrbtId, jrbtEvent, jrbtUser, gbtReset, jpnTable);
+        controller= new DonationListController(txtSearch, jrbtId, jrbtEvent, jrbtUser, gbtReset, jpnTable, gbtPrint);
         controller.setDonationListTable();
         controller.setEvent();
         init();
@@ -21,7 +21,7 @@ public class DonationListPanel extends javax.swing.JPanel {
     
     public void init(){
         header.changeColor("#74ebd5", "#ACB6E5");
-
+        gbtPrint.setVisible(false);
 //        gbtReset.changeColor("#71bbb2");
     }
     /**
@@ -44,6 +44,7 @@ public class DonationListPanel extends javax.swing.JPanel {
         jrbtEvent = new javax.swing.JRadioButton();
         jrbtUser = new javax.swing.JRadioButton();
         gbtReset = new charity.component.GButton();
+        gbtPrint = new charity.component.GButton();
         jpnTable = new javax.swing.JPanel();
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -107,6 +108,15 @@ public class DonationListPanel extends javax.swing.JPanel {
             }
         });
 
+        gbtPrint.setForeground(new java.awt.Color(255, 255, 255));
+        gbtPrint.setText("Làm mới");
+        gbtPrint.setPreferredSize(new java.awt.Dimension(74, 30));
+        gbtPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gbtPrintActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -122,7 +132,9 @@ public class DonationListPanel extends javax.swing.JPanel {
                 .addComponent(jrbtEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jrbtUser)
-                .addGap(265, 265, 265)
+                .addGap(156, 156, 156)
+                .addComponent(gbtPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(gbtReset, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(57, Short.MAX_VALUE))
         );
@@ -137,8 +149,9 @@ public class DonationListPanel extends javax.swing.JPanel {
                         .addComponent(jrbtId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jrbtEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jrbtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(gbtReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(15, 15, 15))
+                        .addComponent(gbtReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(gbtPrint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(51, 51, 51))
         );
 
         jpnTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -198,8 +211,13 @@ public class DonationListPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_gbtResetActionPerformed
 
+    private void gbtPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gbtPrintActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gbtPrintActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private charity.component.GButton gbtPrint;
     private charity.component.GButton gbtReset;
     private charity.view.User.GradientPanel header;
     private javax.swing.JLabel jLabel2;

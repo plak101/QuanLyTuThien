@@ -7,6 +7,7 @@ import charity.service.AccountService;
 import charity.service.UserService;
 import charity.utils.ScannerUtils;
 import charity.view.Login.LoginFrame;
+import charity.view.User.UserUI;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,7 @@ public class InforPanelController {
     private int choice;
 
     public InforPanelController(int accountId, int userId, JFrame parent, JTextField txtName, JTextField txtAddress, JTextField txtPhone, JTextField txtUsername, JTextField txtEmail, JTextField txtPassword, JTextField txtNewPassword, JTextField txtPasswordConfirm, JDateChooser jdcBirthday, JRadioButton jrbtMale, JRadioButton jrbtFemale, GButton gbtUserSave, GButton gbtUserCancel, GButton gbtAccountSave, GButton gbtAccountCancel, GButton gbtReset, GButton gbtUserUpdate, GButton gbtPasswordUpdate, GButton gbtEmailUpdate, JPanel jpnPasswordConfirm) {
+        this.parent = parent;
         this.accountId = accountId;
         this.userId = userId;
         this.parent = parent;
@@ -223,8 +225,7 @@ public class InforPanelController {
                             userId = user.getId();
                         }
                         JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công! Vui lòng đăng nhập lại");
-                        parent.dispose();
-                        new LoginFrame().setVisible(true);
+                        ((UserUI)parent).getController().loadDataUpdate();
                     } else {
                         JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
                     }
@@ -235,6 +236,8 @@ public class InforPanelController {
 
                     if (success) {
                         JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công");
+                                                ((UserUI)parent).getController().loadDataUpdate();
+
                     } else {
                         JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
                     }
@@ -431,5 +434,9 @@ public class InforPanelController {
                 gbtUserSave.changeColor("#66BB6A");
             }
         });
+    }
+    
+    public void reloadData(){
+        loadData();
     }
 }

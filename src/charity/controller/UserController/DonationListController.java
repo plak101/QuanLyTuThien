@@ -203,5 +203,7 @@ public class DonationListController {
             }
         });
     }
-
+    public void reloadData(){
+        setDonationListTable();
+    }
 }

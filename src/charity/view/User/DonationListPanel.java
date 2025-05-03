@@ -24,6 +24,11 @@ public class DonationListPanel extends javax.swing.JPanel {
         gbtPrint.setVisible(false);
 //        gbtReset.changeColor("#71bbb2");
     }
+
+    public DonationListController getController() {
+        return controller;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

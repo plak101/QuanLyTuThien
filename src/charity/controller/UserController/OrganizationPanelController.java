@@ -166,4 +166,8 @@ public class OrganizationPanelController {
             }
         });
     }
+    
+    public void reloadData(){
+        setOrganizationTable();
+    }
 }

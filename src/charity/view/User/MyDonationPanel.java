@@ -17,7 +17,7 @@ public class MyDonationPanel extends javax.swing.JPanel {
         initComponents();
         this.accountId = accountId;
         this.userId = userId;
-        controller = new MyDonationController(userId, txtSearch, jrbtId, jrbtEvent, jtbtUser, gbtReset, gbtPrint, jpnTable);
+        controller = new MyDonationController(accountId, userId, txtSearch, jrbtId, jrbtEvent, jtbtUser, gbtReset, gbtPrint, jpnTable);
         controller.setDonationListTable();
         controller.setEvent();
         init();
@@ -28,6 +28,10 @@ public class MyDonationPanel extends javax.swing.JPanel {
 
 //        gbtPrint.changeColor("#71bbb2");
 //        gbtReset.changeColor("#71bbb2");
+    }
+
+    public MyDonationController getController() {
+        return controller;
     }
 
     /**

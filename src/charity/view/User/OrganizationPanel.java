@@ -7,10 +7,11 @@ public class OrganizationPanel extends javax.swing.JPanel {
     /**
      * Creates new form OrganizationPanel
      */
+    OrganizationPanelController controller;
     public OrganizationPanel() {
         initComponents();
         
-        OrganizationPanelController controller = new OrganizationPanelController(txtSearch, gbtReset, jpnTable);
+        controller = new OrganizationPanelController(txtSearch, gbtReset, jpnTable);
         controller.setOrganizationTable();
         controller.setEvent();
         init();
@@ -19,8 +20,12 @@ public class OrganizationPanel extends javax.swing.JPanel {
     public void init(){
 //        gbtReset.changeColor("#71bbb2");
         header.changeColor("#74ebd5", "#ACB6E5");
-
     }
+
+    public OrganizationPanelController getController() {
+        return controller;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -1,9 +1,9 @@
 package charity.controller.UserController;
 
 import charity.component.GButton;
-import charity.controller.UserController.ClassTableModel;
 import charity.controller.AdminController.PDFExporter;
 import charity.model.Donation;
+import charity.model.User;
 import charity.service.DonationService;
 import charity.service.UserService;
 import java.awt.BorderLayout;
@@ -11,13 +11,13 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.List;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -28,6 +28,7 @@ import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -35,6 +36,7 @@ import javax.swing.table.TableRowSorter;
 
 public class MyDonationController {
 
+    private int accountId;
     private int userId;
     private JTextField txtSearch;
     private JRadioButton jrbtId;
@@ -50,7 +52,8 @@ public class MyDonationController {
 
     private TableRowSorter<TableModel> rowSorter = null;
 
-    public MyDonationController(int userId, JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, GButton gbtPrint, JPanel tablePanel) {
+    public MyDonationController(int accountId, int userId, JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, GButton gbtPrint, JPanel tablePanel) {
+        this.accountId = accountId;
         this.userId = userId;
         this.txtSearch = txtSearch;
         this.jrbtId = jrbtId;
@@ -218,13 +221,35 @@ public class MyDonationController {
         gbtPrint.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PDFExporter pDFExporter = new PDFExporter();
-                pDFExporter.exportMyDonate("pdfExport/ChungNhanQuyenGop.pdf", userId);
-            }
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Chọn thư mục xuất file");
+                fileChooser.setSelectedFile(new File("ChungNhanQuyenGop.pdf"));//Ten goi y
 
+                //lọc định dạng pdf
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Files", "pdf");
+                fileChooser.setFileFilter(filter);
+
+                //bảng lựa chọn
+                int userSelection = fileChooser.showSaveDialog(null);
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    String filePath = selectedFile.getAbsolutePath();
+                    
+                    //them đuôi pdf nếu người dùng không nhập
+                    if (!filePath.toLowerCase().endsWith(".pdf")){
+                        filePath += ".pdf";
+                    }
+                    
+                    PDFExporter pDFExporter = new PDFExporter();
+                    pDFExporter.exportMyDonate(filePath, userId);
+                    
+                }
+            }
         });
     }
-public void setHoverButtonEvent(){
+
+    public void setHoverButtonEvent() {
         gbtPrint.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
@@ -247,5 +272,14 @@ public void setHoverButtonEvent(){
                 gbtReset.changeColor("#5dc1d3");
             }
         });
+    }
+
+    public void reloadData() {
+        User user = userService.getUserByAccountId(accountId);
+        if (user == null) {
+            System.err.println("Không tìm thấy user");
+        }
+        userId = user.getId();
+        setDonationListTable();
     }
 }

@@ -22,7 +22,7 @@ public class MainPanel extends javax.swing.JPanel {
     private DefaultTableModel eventModel = null;
     private JTable eventTable = null;
     private int selectedEventId = -1;
-
+    private MainPanelController controller;
 //    private 
     public MainPanel(JFrame parent,int accountId, int userId) {
 //        eventModel = classTableModel.getActiveEventTable();
@@ -36,7 +36,7 @@ public class MainPanel extends javax.swing.JPanel {
 //        header.changeColor("#abc6e5", "#86fde8");
         
         
-        MainPanelController controller =new MainPanelController(parent,accountId, userId, txtSearch, jrbtId, jrbtName, jrbtCategory, gbtReset, gbtDonate, jbtActive, jbtExpired, jpnTable);
+        controller =new MainPanelController(parent,accountId, userId, txtSearch, jrbtId, jrbtName, jrbtCategory, gbtReset, gbtDonate, jbtActive, jbtExpired, jpnTable);
         controller.loadButton();
         controller.loadJbtEvent();
         controller.showEventTable();
@@ -48,6 +48,11 @@ public class MainPanel extends javax.swing.JPanel {
 //        gbtReset.changeColor("#71bbb2");
 //        gbtDonate.changeColor("#71bbb2");
     }
+
+    public MainPanelController getController() {
+        return controller;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -39,6 +39,11 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
         jlbLogout.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/logout2.png", 20, 20));
     }
 
+    public UserUIController getController() {
+        return controller;
+    }
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -32,6 +32,11 @@ public class UserUIController {
     private AccountService accountService;
     private JFrame parent;
     private JPanel activePanel;
+    private MainPanel mainPanel;
+    private OrganizationPanel organizationPanel;
+    private DonationListPanel donationListPanel;
+    private MyDonationPanel myDonationPanel;
+    private InforPanel inforPanel;
 
     public UserUIController(JFrame parent, int accountId, JPanel jpnMainOption, JPanel jpnOrganizationOption, JPanel jpnDonationOption, JPanel jpnMyDonationOption, JPanel jpnInforOption, JPanel jpnRight, JTextField txtUsername, JLabel jlbLogout) {
         this.jpnMainOption = jpnMainOption;
@@ -74,23 +79,23 @@ public class UserUIController {
     public void setupCardLayout() {
         jpnRight.setLayout(new CardLayout());
         //1. Main 
-        MainPanel mainPanel = new MainPanel(parent, accountId, userId);
+        mainPanel = new MainPanel(parent, accountId, userId);
         jpnRight.add(mainPanel, "mainPanel");
 
         //2 organization
-        OrganizationPanel organizationPanel = new OrganizationPanel();
+        organizationPanel = new OrganizationPanel();
         jpnRight.add(organizationPanel, "organizationPanel");
 
         //3.Donation List
-        DonationListPanel donationListPanel = new DonationListPanel(parent, accountId, userId);
+        donationListPanel = new DonationListPanel(parent, accountId, userId);
         jpnRight.add(donationListPanel, "donationListPanel");
 
         //4.MyDonation
-        MyDonationPanel myDonationPanel = new MyDonationPanel(parent, accountId, userId);
+        myDonationPanel = new MyDonationPanel(parent, accountId, userId);
         jpnRight.add(myDonationPanel, "myDonationPanel");
 
         //5 profile
-        InforPanel inforPanel = new InforPanel(parent, accountId, userId);
+        inforPanel = new InforPanel(parent, accountId, userId);
         jpnRight.add(inforPanel, "inforPanel");
     }
 
@@ -142,15 +147,30 @@ public class UserUIController {
                 setActivePanel(panel);
                 CardLayout cardLayout = (CardLayout) jpnRight.getLayout();
                 if (panel == jpnMainOption) {
-                    cardLayout.show(jpnRight, "mainPanel");
+                    if (mainPanel instanceof MainPanel) {
+                        mainPanel.getController().reloadData();
+                        cardLayout.show(jpnRight, "mainPanel");
+                    }
                 } else if (panel == jpnOrganizationOption) {
-                    cardLayout.show(jpnRight, "organizationPanel");
+                    if (organizationPanel instanceof OrganizationPanel) {
+                        organizationPanel.getController().reloadData();
+                        cardLayout.show(jpnRight, "organizationPanel");
+                    }
                 } else if (panel == jpnDonationOption) {
-                    cardLayout.show(jpnRight, "donationListPanel");
+                    if (donationListPanel instanceof DonationListPanel) {
+                        donationListPanel.getController().reloadData();
+                        cardLayout.show(jpnRight, "donationListPanel");
+                    }
                 } else if (panel == jpnMyDonationOption) {
-                    cardLayout.show(jpnRight, "myDonationPanel");
+                    if (myDonationPanel instanceof MyDonationPanel) {
+                        myDonationPanel.getController().reloadData();
+                        cardLayout.show(jpnRight, "myDonationPanel");
+                    }
                 } else if (panel == jpnInforOption) {
-                    cardLayout.show(jpnRight, "inforPanel");
+                    if (inforPanel instanceof InforPanel) {
+                        inforPanel.getController().reloadData();
+                        cardLayout.show(jpnRight, "inforPanel");
+                    }
                 }
             }
 
@@ -179,5 +199,18 @@ public class UserUIController {
             }
 
         });
+    }
+
+    public void loadDataUpdate() {
+        user = userService.getUserByAccountId(accountId);
+        if (user != null) {
+            userId = user.getId();
+            txtUsername.setText(user.getName());
+        } else {
+            System.err.println("Không tìm thấy user");
+        }
+    }
+    public void reloadMainPanel(){
+        mainPanel.getController().reloadData();
     }
 }

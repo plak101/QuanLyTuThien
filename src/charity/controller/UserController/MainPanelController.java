@@ -2,7 +2,10 @@ package charity.controller.UserController;
 
 import charity.component.GButton;
 import charity.model.CharityEvent;
+import charity.model.User;
 import charity.service.CharityEventService;
+import charity.service.UserService;
+import charity.utils.MessageDialog;
 import charity.view.User.DonateDialog;
 import charity.view.User.DonateJDialog;
 import java.awt.CardLayout;
@@ -27,10 +30,11 @@ public class MainPanelController {
     private JButton jbtActive;
     private JButton jbtExpired;
     private JPanel jpnTable;
-
+    private User user;
+    
     private ClassTableModel classTableModel = null;
     private CharityEventService eventService = null;
-
+    private UserService userService;
     private TableRowSorter<TableModel> rowSorter = null;
     private JTable eventTable = null;
 
@@ -51,6 +55,7 @@ public class MainPanelController {
         this.parent = parent;
 
         eventService = new CharityEventService();
+        userService = new UserService();
         classTableModel = new ClassTableModel();
         loadButton();
     }
@@ -271,16 +276,17 @@ public class MainPanelController {
         gbtDonate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectedEventId != -1) {
+                if (selectedEventId != -1) {//kiem tra có chọn sự kiện nào không
                     CharityEvent event = eventService.getEventById(selectedEventId);
 
                     if (event == null) {
                         JOptionPane.showMessageDialog(null, "Không tìm thấy sự kiện!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     }
-
-//                    DonateJDialog dialog = new DonateJDialog(parent, true, event,accountId, userId);
+                    
                     DonateJDialog dialog = new DonateJDialog(parent, true, selectedEventId, accountId, userId);
                     dialog.setVisible(true);
+                }else{
+                    MessageDialog.showPlain("Vui lòng chọn 1 sự kiện để quyên góp");
                 }
             }
 
@@ -293,7 +299,6 @@ public class MainPanelController {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 selectedEventId = -1;
-                if (!jbtActive.isEnabled()) {
                     if (!e.getValueIsAdjusting()) {//dam bao dong khong bi chon nhieu lan
                         int selectedRow = eventTable.getSelectedRow();
                         if (selectedRow != -1) {
@@ -301,11 +306,18 @@ public class MainPanelController {
                             gbtDonate.setEnabled(true);
                         }
                     }
-                }
             }
 
         });
     }
     
-   
+    public void reloadData(){
+        reset();
+        user = userService.getUserByAccountId(accountId);
+        if (user == null){
+            System.err.print("Không tìm thấy user");
+            return;
+        }
+        userId= user.getId();
+    }
 }

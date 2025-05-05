@@ -4,7 +4,7 @@ import charity.model.User;
 import charity.service.AccountService;
 import charity.service.UserService;
 import charity.view.Login.LoginFrame;
-import charity.view.User.DonationListPanel;
+import charity.view.User.DonationPanel;
 import charity.view.User.InforPanel;
 import charity.view.User.MainPanel;
 import charity.view.User.MyDonationPanel;
@@ -34,7 +34,7 @@ public class UserUIController {
     private JPanel activePanel;
     private MainPanel mainPanel;
     private OrganizationPanel organizationPanel;
-    private DonationListPanel donationListPanel;
+    private DonationPanel donationListPanel;
     private MyDonationPanel myDonationPanel;
     private InforPanel inforPanel;
 
@@ -87,7 +87,7 @@ public class UserUIController {
         jpnRight.add(organizationPanel, "organizationPanel");
 
         //3.Donation List
-        donationListPanel = new DonationListPanel(parent, accountId, userId);
+        donationListPanel = new DonationPanel(parent, accountId, userId);
         jpnRight.add(donationListPanel, "donationListPanel");
 
         //4.MyDonation
@@ -157,7 +157,7 @@ public class UserUIController {
                         cardLayout.show(jpnRight, "organizationPanel");
                     }
                 } else if (panel == jpnDonationOption) {
-                    if (donationListPanel instanceof DonationListPanel) {
+                    if (donationListPanel instanceof DonationPanel) {
                         donationListPanel.getController().reloadData();
                         cardLayout.show(jpnRight, "donationListPanel");
                     }

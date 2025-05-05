@@ -1,4 +1,4 @@
-package charity.view.User;
+package test;
 
 import charity.controller.UserController.DonationListController;
 import com.sun.source.tree.DoWhileLoopTree;

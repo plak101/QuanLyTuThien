@@ -24,7 +24,7 @@ public class DonationPanel extends JPanel {
     private charity.component.GButton gbtReset;
     private charity.component.GButton gbtPrint;
     private JPanel jpnTable;
-    private JScrollPane jspTable; // To manage table size
+    private JScrollPane jspTable;
 
     public DonationPanel(JFrame parent, int accountId, int userId) {
         this.accountId = accountId;

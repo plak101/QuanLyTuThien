@@ -219,7 +219,7 @@ public class OrganizationPanelController {
             public void actionPerformed(ActionEvent e) {
                 try {
                     // If text on button is "PRINT", print the table
-                    if ("PRINT".equals(btnReset.getText())) {
+                    if ("IN".equals(btnReset.getText())) {
                         MessageFormat header = new MessageFormat("DANH SÁCH TỔ CHỨC TỪ THIỆN");
                         MessageFormat footer = new MessageFormat("Trang {0}");
 

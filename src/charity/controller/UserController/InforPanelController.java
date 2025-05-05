@@ -70,7 +70,7 @@ public class InforPanelController {
 
     public void loadData() {
         clearData();
-        user=userService.getUserByAccountId(accountId);
+        user = userService.getUserByAccountId(accountId);
 
         //hien thong tin user
         user = userService.getUserById(userId);
@@ -224,8 +224,8 @@ public class InforPanelController {
                         if (user != null) {
                             userId = user.getId();
                         }
-                        JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công! Vui lòng đăng nhập lại");
-                        ((UserUI)parent).getController().loadDataUpdate();
+                        JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công!");
+                        ((UserUI) parent).getController().loadDataUpdate();
                     } else {
                         JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
                     }
@@ -236,7 +236,7 @@ public class InforPanelController {
 
                     if (success) {
                         JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công");
-                                                ((UserUI)parent).getController().loadDataUpdate();
+                        ((UserUI) parent).getController().loadDataUpdate();
 
                     } else {
                         JOptionPane.showMessageDialog(null, "Cập nhật thông tin thất bại!");
@@ -435,8 +435,8 @@ public class InforPanelController {
             }
         });
     }
-    
-    public void reloadData(){
+
+    public void reloadData() {
         loadData();
     }
 }

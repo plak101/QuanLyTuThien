@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
+import java.text.MessageFormat;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -38,7 +40,7 @@ public class DonationListController {
     private DonationService donationService = null;
 
     private TableRowSorter<TableModel> rowSorter = null;
-
+    private JTable donationTable = null;
 //    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JPanel tablePanel) {
 //        this.txtSearch = txtSearch;
 //        this.jrbtId = jrbtId;
@@ -51,14 +53,15 @@ public class DonationListController {
 //        this.donationService = new DonationService();
 //        setHoverButtonEvent();
 //    }
-    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JPanel tablePanel,GButton gbtPrint) {
+
+    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JPanel tablePanel, GButton gbtPrint) {
         this.txtSearch = txtSearch;
         this.jrbtId = jrbtId;
         this.jrbtEvent = jrbtEvent;
         this.jrbtUser = jrbtUser;
         this.gbtReset = gbtReset;
         this.jpnTable = tablePanel;
-        this.gbtPrint= gbtPrint;
+        this.gbtPrint = gbtPrint;
         this.classTableModel = new ClassTableModel();
         this.donationService = new DonationService();
         setHoverButtonEvent();
@@ -67,7 +70,7 @@ public class DonationListController {
     public void setDonationListTable() {
         List<Donation> donations = donationService.getAllDonation();
         DefaultTableModel model = classTableModel.getDonationTable(donations);
-        JTable donationTable = new JTable(model);
+        donationTable = new JTable(model);
 
         rowSorter = new TableRowSorter<>(donationTable.getModel());
         donationTable.setRowSorter(rowSorter);
@@ -142,7 +145,7 @@ public class DonationListController {
         table.setShowVerticalLines(false);
         table.setShowGrid(false);
         table.setShowHorizontalLines(true);
-        table.setFont(new Font("Segoe UI",Font.PLAIN , 14));
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
 //        table.setGridColor(new Color(230, 230, 230));
 //        //size column
@@ -169,16 +172,38 @@ public class DonationListController {
         table.validate();
         table.repaint();
     }
-    
-    public void setEvent(){
+
+    public void setEvent() {
         gbtReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setDonationListTable();
             }
         });
+        gbtPrint.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    MessageFormat header = new MessageFormat("DANH SÁCH QUYÊN GÓP");
+                    MessageFormat footer = new MessageFormat("Trang {0}");
+
+                    try {
+                        donationTable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+                        JOptionPane.showMessageDialog(null, "In thành công!");
+                    } catch (PrinterException ex) {
+                        JOptionPane.showMessageDialog(null, "Lỗi khi in: " + ex.getMessage(),
+                                "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    // If any error occurs, refresh the table
+                    setDonationListTable();
+                }
+            }
+        });
     }
-    public void setHoverButtonEvent(){
+
+    public void setHoverButtonEvent() {
 
         gbtPrint.addMouseListener(new MouseAdapter() {
             @Override
@@ -203,7 +228,8 @@ public class DonationListController {
             }
         });
     }
-    public void reloadData(){
+
+    public void reloadData() {
         setDonationListTable();
     }
 }

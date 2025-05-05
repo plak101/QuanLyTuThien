@@ -56,7 +56,7 @@ public class OrganizationPanel extends javax.swing.JPanel {
         topPanel.setBackground(Color.WHITE);
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
 
-        // Sử dụng màu đen thay vì màu đỏ cho tất cả các label
+        // Sử dụng màu đen  cho tất cả các label
         Color labelColor = Color.BLACK;
         Font labelFont = new Font("Segoe UI", Font.BOLD, 14);
 
@@ -66,7 +66,7 @@ public class OrganizationPanel extends javax.swing.JPanel {
 
         txtSearch = new JTextField();
         txtSearch.setPreferredSize(new java.awt.Dimension(200, 30));
-        txtSearch.setBackground(Color.LIGHT_GRAY);
+        txtSearch.setBackground(Color.WHITE);
 
         // Tạo panel con để căn chỉnh các thành phần search
         JPanel searchPanel = new JPanel();
@@ -102,7 +102,7 @@ public class OrganizationPanel extends javax.swing.JPanel {
         
         txtOrgId = new JTextField();
         txtOrgId.setPreferredSize(new java.awt.Dimension(100, 30));
-        txtOrgId.setBackground(Color.LIGHT_GRAY);
+        txtOrgId.setBackground(Color.WHITE);
         txtOrgId.setEditable(false);
         
         // Organization Name field
@@ -113,7 +113,7 @@ public class OrganizationPanel extends javax.swing.JPanel {
         
         txtOrgName = new JTextField();
         txtOrgName.setPreferredSize(new java.awt.Dimension(200, 30));
-        txtOrgName.setBackground(Color.LIGHT_GRAY);
+        txtOrgName.setBackground(Color.WHITE);
         
         // Email field
         JLabel lblEmail = new JLabel("Email");
@@ -123,7 +123,7 @@ public class OrganizationPanel extends javax.swing.JPanel {
         
         txtEmail = new JTextField();
         txtEmail.setPreferredSize(new java.awt.Dimension(200, 30));
-        txtEmail.setBackground(Color.LIGHT_GRAY);
+        txtEmail.setBackground(Color.WHITE);
         
         // Hotline field
         JLabel lblHotline = new JLabel("Hotline");
@@ -133,7 +133,7 @@ public class OrganizationPanel extends javax.swing.JPanel {
         
         txtHotline = new JTextField();
         txtHotline.setPreferredSize(new java.awt.Dimension(150, 30));
-        txtHotline.setBackground(Color.LIGHT_GRAY);
+        txtHotline.setBackground(Color.WHITE);
         
         // Address field
         JLabel lblAddress = new JLabel("Địa chỉ");
@@ -143,7 +143,7 @@ public class OrganizationPanel extends javax.swing.JPanel {
         
         txtAddress = new JTextField();
         txtAddress.setPreferredSize(new java.awt.Dimension(200, 30));
-        txtAddress.setBackground(Color.LIGHT_GRAY);
+        txtAddress.setBackground(Color.WHITE);
         
         // Thêm các thành phần vào hàng 1
         JPanel orgIdPanel = new JPanel();
@@ -219,12 +219,12 @@ public class OrganizationPanel extends javax.swing.JPanel {
         btnDelete.setForeground(Color.WHITE);
         btnDelete.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
-        btnClear = new GButton("CLEAR");
+        btnClear = new GButton("LÀM MỚI");
         btnClear.setBackground(new Color(100, 180, 100));
         btnClear.setForeground(Color.WHITE);
         btnClear.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
-        btnReset = new GButton("PRINT");
+        btnReset = new GButton("IN");
         btnReset.setBackground(new Color(100, 180, 100));
         btnReset.setForeground(Color.WHITE);
         btnReset.setFont(new Font("Segoe UI", Font.BOLD, 14));

@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import charity.view.Admin.AccountPanel;
 import charity.view.Admin.CharityEventPanel;
-import charity.view.Admin.DonationListPanel;
+import charity.view.Admin.DonationPanel;
 import charity.view.Admin.OrganizationPanel;
 import charity.view.Admin.TrangChu;
 
@@ -69,7 +69,8 @@ public class ChuyenManHinh {
                     node = new CharityEventPanel();
                     break;
                 case "QuanLyQuyenGop":
-                    node = new DonationListPanel(null, 0, 0);
+//                    node = new DonationListPanel(null, 0, 0);
+                    node = new DonationPanel(null, 0, 0);
                     break;
                 case "QuanLyToChuc":
                     node = new OrganizationPanel();

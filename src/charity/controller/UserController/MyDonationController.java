@@ -278,6 +278,7 @@ public class MyDonationController {
         User user = userService.getUserByAccountId(accountId);
         if (user == null) {
             System.err.println("Không tìm thấy user");
+            return;
         }
         userId = user.getId();
         setDonationListTable();

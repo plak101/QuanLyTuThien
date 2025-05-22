@@ -5,7 +5,6 @@
 package charity.view;
 
 import charity.controller.AdminController.Program;
-import charity.view.User.UserUI;
 
 /**
  *

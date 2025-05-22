@@ -12,6 +12,7 @@ import charity.view.Admin.AccountPanel;
 import charity.view.Admin.CharityEventPanel;
 import charity.view.Admin.DonationPanel;
 import charity.view.Admin.OrganizationPanel;
+import charity.view.Admin.StatisticsPanel;
 import charity.view.Admin.TrangChu;
 
 
@@ -77,6 +78,9 @@ public class ChuyenManHinh {
                     break;
                 case "QuanLyTaiKhoan":
                     node = new AccountPanel();
+                    break;
+                case "ThongKe":
+                    node = new StatisticsPanel();
                     break;
                 default:
                     node = new TrangChu();

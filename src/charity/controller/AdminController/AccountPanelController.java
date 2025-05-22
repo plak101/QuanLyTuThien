@@ -180,7 +180,7 @@ public class AccountPanelController {
                 if (text.trim().length() == 0) {
                     rowSorter.setRowFilter(null);
                 } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1,2));
                 }
             }
 
@@ -329,10 +329,6 @@ public class AccountPanelController {
 
     private void setGbtSaveEvent() {
         gbtSave.addActionListener(e -> {
-            if (!validateFormInput()) {
-                return;
-            }
-
             if (!validateFormInput()) {
                 return;
             }

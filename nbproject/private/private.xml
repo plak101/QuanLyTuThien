@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/User/DonationPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/User/UserUI.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/test/keotha/DonationListPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/Admin/OrganizationPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/User/DonateDialog.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/Admin/StatisticsPanel.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/AdminController/StatisticsController.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/component/ChartCustom.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/component/FontCustom.java</file>
         </group>
     </open-files>
 </project-private>

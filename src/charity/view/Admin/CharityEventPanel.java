@@ -5,6 +5,7 @@
 package charity.view.Admin;
 
 import charity.controller.AdminController.CharityEventPanelController;
+import charity.model.Category;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -166,8 +167,6 @@ public class CharityEventPanel extends javax.swing.JPanel {
         gbtCancel.setBackground(new java.awt.Color(255, 153, 153));
         gbtCancel.setForeground(new java.awt.Color(255, 255, 255));
         gbtCancel.setText("Hủy");
-
-        jcbCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -404,7 +403,7 @@ public class CharityEventPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbtChoose;
     private charity.component.GButton jbtReset;
-    private javax.swing.JComboBox<String> jcbCategory;
+    private javax.swing.JComboBox<Object> jcbCategory;
     private javax.swing.JComboBox<Object> jcbOrganization;
     private com.toedter.calendar.JDateChooser jdcDateBegin;
     private com.toedter.calendar.JDateChooser jdcDateEnd;

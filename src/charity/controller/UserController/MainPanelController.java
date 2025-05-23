@@ -1,6 +1,7 @@
 package charity.controller.UserController;
 
 import charity.component.GButton;
+import charity.component.TableLoader;
 import charity.model.CharityEvent;
 import charity.model.User;
 import charity.service.CharityEventService;
@@ -101,80 +102,79 @@ public class MainPanelController {
         });
     }
     public void showEventTable() {
-        //setup event table
-        List<CharityEvent> events = new ArrayList<>();
-        if (!jbtActive.isEnabled()) {
-            events = eventService.getActiveEventList();
-        } else {
-            events = eventService.getExpiredEventList();
-        }
-        DefaultTableModel model = classTableModel.getEventTable(events);
-        eventTable = new JTable(model);
-
-        //setup rowsorter
-        rowSorter = new TableRowSorter<>(eventTable.getModel());
-        eventTable.setRowSorter(rowSorter);
+        // Get data in background
+        SwingWorker<List<CharityEvent>, Void> dataLoader = new SwingWorker<List<CharityEvent>, Void>() {
+            @Override
+            protected List<CharityEvent> doInBackground() {
+                if (!jbtActive.isEnabled()) {
+                    return eventService.getActiveEventList();
+                } else {
+                    return eventService.getExpiredEventList();
+                }
+            }
+            
+            @Override
+            protected void done() {
+                try {
+                    List<CharityEvent> events = get();
+                    DefaultTableModel model = classTableModel.getEventTable(events);
+                    eventTable = new JTable(model);
+                    
+                    // Setup row sorter
+                    rowSorter = new TableRowSorter<>(eventTable.getModel());
+                    eventTable.setRowSorter(rowSorter);
+                    setupSearchFilter();
+                    
+                    // Design table
+                    designTable(eventTable);
+                    
+                    // Load table UI in background
+                    TableLoader tableLoader = new TableLoader(jpnTable, events, model, eventTable);
+                    tableLoader.execute();
+                    
+                    // Set click event
+                    setTableClickEvent();
+                    
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        
+        dataLoader.execute();
+    }
+    
+    private void setupSearchFilter() {
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
-
-            //"(?i)" khong phan biet chu hoa chu thuong
-            //khi nhap vao txtSearch
             @Override
             public void insertUpdate(DocumentEvent e) {
-                String text = txtSearch.getText();
-                if (text.trim().length() == 0) {
-                    rowSorter.setRowFilter(null);
-                } else {
-                    if (jrbtId.isSelected()) {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 0));
-                    } else if (jrbtEvent.isSelected()) {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 2));
-                    } else {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 3));
-                    }
-
-                }
+                filterTable();
             }
 
-            //khi xoa noi dung cua txtSearch
             @Override
             public void removeUpdate(DocumentEvent e) {
-                String text = txtSearch.getText();
-
-                if (text.trim().length() == 0) {
-                    rowSorter.setRowFilter(null);
-                } else {
-                    if (jrbtId.isSelected()) {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 0));
-                    } else if (jrbtEvent.isSelected()) {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 2));
-                    } else {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 3));
-                    }
-                }
+                filterTable(); 
             }
 
-            //khi co thay doi thuoc tinh van ban
             @Override
             public void changedUpdate(DocumentEvent e) {
             }
         });
-
-        designTable(eventTable);
-
-        //hien thi ra jpnTable
-        JScrollPane scroll = new JScrollPane(eventTable);
-        eventTable.setFillsViewportHeight(true);
-        eventTable.setBackground(Color.white);
-        scroll.getViewport().setBackground(Color.white);
-        scroll.setPreferredSize(new Dimension(jpnTable.getWidth(), 400));
-        jpnTable.removeAll();
-        jpnTable.setBackground(Color.white);
-
-        jpnTable.setLayout(new CardLayout());
-        jpnTable.add(scroll);
-        jpnTable.revalidate();
-        jpnTable.repaint();
-        setTableClickEvent();
+    }
+    
+    private void filterTable() {
+        String text = txtSearch.getText();
+        if (text.trim().length() == 0) {
+            rowSorter.setRowFilter(null);
+        } else {
+            if (jrbtId.isSelected()) {
+                rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 0));
+            } else if (jrbtEvent.isSelected()) {
+                rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 2));
+            } else {
+                rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 3));
+            }
+        }
     }
 
     public void designTable(JTable table) {

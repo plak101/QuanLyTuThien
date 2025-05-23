@@ -2,6 +2,7 @@ package charity.repository;
 
 import charity.model.otherModel.DonationStatistics;
 import charity.repository.IRepository.IStatisticsRepository;
+import charity.service.CategoryService;
 import charity.utils.MessageDialog;
 import java.sql.*;
 import java.sql.Date;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 public class StatisticsRepository implements IStatisticsRepository {
 
     private Connection conn;
+    private CategoryService categoryService = new CategoryService();
 
     @Override
     public List<Map<String, Object>> getStatisticsByDateRange(Date startDate, Date endDate) {
@@ -27,14 +29,14 @@ public class StatisticsRepository implements IStatisticsRepository {
                 SELECT DATE(d.donationDate) as date,
                         SUM(d.amount) as totalAmount,
                         COUNT(*) as totalDonation,
-                        e.category,
+                        e.categoryId,
                         e.eventName,
                         o.name as organizationName
                 FROM Donation d
                 JOIN Event e ON e.eventId = d.eventId
                 JOIN Organization o ON o.id = e.OrganizationId
                 WHERE DATE(d.donationDate) BETWEEN ? AND ?
-                GROUP BY DATE(d.donationDate), e.category, e.eventName, o.name
+                GROUP BY DATE(d.donationDate), e.categoryId, e.eventName, o.name
                 ORDER BY date DESC;
         """;
 
@@ -46,10 +48,11 @@ public class StatisticsRepository implements IStatisticsRepository {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Map<String, Object> stat = new HashMap<>();
+                String categoryName = categoryService.getCategoryNameById(rs.getInt("categoryId"));
                 stat.put("date", rs.getDate("date"));
                 stat.put("totalAmount", rs.getLong("totalAmount"));
                 stat.put("totalDonation", rs.getInt("totalDonation"));
-                stat.put("category", rs.getString("category"));
+                stat.put("category", categoryName);
                 stat.put("eventName", rs.getString("eventName"));
                 stat.put("organizationName", rs.getString("organizationName"));
                 statistics.add(stat);
@@ -65,13 +68,13 @@ public class StatisticsRepository implements IStatisticsRepository {
         List<Map<String, Object>> categoryStatistics = new ArrayList<>();
         String sql = """
                    SELECT 
-                       e.category,  
+                       e.categoryId,  
                        COUNT(DISTINCT e.eventId) AS totalEvent,
                        COUNT(d.donationId) AS totalDonation,
                        SUM(d.amount) AS totalAmount
                    FROM Event e
                    LEFT JOIN Donation d ON d.eventId = e.eventId
-                   GROUP BY e.category
+                   GROUP BY e.categoryId
                    ORDER BY totalAmount DESC;
                    """;
         conn = ConnectionDB.getConnection();
@@ -79,7 +82,8 @@ public class StatisticsRepository implements IStatisticsRepository {
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 Map<String, Object> stat = new HashMap<>();
-                stat.put("category", rs.getString("category"));
+                String categoryName = categoryService.getCategoryNameById(rs.getInt("categoryId"));
+                stat.put("category", categoryName);
                 stat.put("totalEvent", rs.getInt("totalEvent"));
                 stat.put("totalDonation", rs.getInt("totalDonation"));
                 stat.put("totalAmount", rs.getBigDecimal("totalAmount"));
@@ -107,12 +111,10 @@ public class StatisticsRepository implements IStatisticsRepository {
                     LIMIT ?
                      """;
         try (
-            Connection conn = ConnectionDB.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ){
+                Connection conn = ConnectionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.setInt(1, limit);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 Map<String, Object> donor = new HashMap<>();
                 donor.put("userId", rs.getInt("userId"));
                 donor.put("userName", rs.getString("userName"));
@@ -140,10 +142,8 @@ public class StatisticsRepository implements IStatisticsRepository {
                 (SELECT COUNT(DISTINCT userId) FROM Donation) as activeDonors,
                 (SELECT COUNT(*) FROM Event WHERE currentAmount >= targetAmount) as achievedEvents
         """;
-        
-        try (Connection conn = ConnectionDB.getConnection();
-            Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+
+        try (Connection conn = ConnectionDB.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             if (rs.next()) {
                 stats.put("totalEvents", rs.getInt("totalEvents"));
                 stats.put("totalUsers", rs.getInt("totalUsers"));
@@ -185,5 +185,5 @@ public class StatisticsRepository implements IStatisticsRepository {
 //        }
         return result;
     }
-    
+
 }

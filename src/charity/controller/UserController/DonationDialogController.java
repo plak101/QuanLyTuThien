@@ -10,6 +10,7 @@ import charity.component.ImageIconCustom;
 import charity.model.CharityEvent;
 import charity.model.Donation;
 import charity.service.AccountService;
+import charity.service.CategoryService;
 import charity.service.CharityEventService;
 import charity.service.DonationService;
 import charity.service.OrganizationService;
@@ -40,6 +41,7 @@ public class DonationDialogController implements IFormatData {
     private DonationService donationService = new DonationService();
     private AccountService accountService = new AccountService();
     private OrganizationService organizationService = new OrganizationService();
+    private CategoryService categoryService = new CategoryService();
 
     private JTextField txtEventId;
     private JTextField txtEventName;
@@ -86,7 +88,8 @@ public class DonationDialogController implements IFormatData {
         event = event2;
         txtEventId.setText(String.valueOf(event2.getId()));
         txtEventName.setText((event2.getName()));
-        txtCategory.setText((event2.getCategory()));
+        String categoryName = categoryService.getCategoryNameById(event2.getCategoryId());
+        txtCategory.setText(categoryName);
         txtCurrentAmount.setText((String.valueOf(moneyFormat.format(event2.getCurrentAmount()))));
         txtTargetAmount.setText((String.valueOf(moneyFormat.format(event2.getTargetAmount()))));
         txtDateBegin.setText(dateFormat.format(event2.getDateBegin()));

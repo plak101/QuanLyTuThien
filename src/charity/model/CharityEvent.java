@@ -15,7 +15,7 @@ public class CharityEvent {
     private int id; // ID tự tăng
     private int organizationId;
     private String name;
-    private String category;
+    private int categoryId;
     private String description;
     private long targetAmount;
     private long currentAmount;
@@ -27,24 +27,24 @@ public class CharityEvent {
         this.imageUrl = "/charity/image/default.png";
     }
 
-    public CharityEvent(int id,int organizationId, String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
+    public CharityEvent(int id,int organizationId, String name, int categoryId, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
         this.imageUrl = "/charity/image/default.png";
         this.id = id;
         this.organizationId=organizationId;
         this.name = name;
-        this.category = category;
+        this.categoryId = categoryId;
         this.description = description;
         this.targetAmount = targetAmount;
         this.currentAmount = currentAmount;
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
     }
-    public CharityEvent(int id,int organizationId, String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description, String imageUrl) {
+    public CharityEvent(int id,int organizationId, String name, int categoryId, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description, String imageUrl) {
         this.imageUrl = "/charity/image/default.png";
         this.id = id;
         this.organizationId=organizationId;
         this.name = name;
-        this.category = category;
+        this.categoryId = categoryId;
         this.description = description;
         this.targetAmount = targetAmount;
         this.currentAmount = currentAmount;
@@ -52,10 +52,10 @@ public class CharityEvent {
         this.dateEnd = dateEnd;
         this.imageUrl= imageUrl;
     }
-    public CharityEvent(String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
+    public CharityEvent(String name, int categoryId, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
         this.imageUrl = "/charity/image/default.png";
         this.name = name;
-        this.category = category;
+        this.categoryId = categoryId;
         this.description = description;
         this.targetAmount = targetAmount;
         this.currentAmount = currentAmount;
@@ -124,12 +124,12 @@ public class CharityEvent {
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getDescription() {
@@ -159,7 +159,7 @@ public class CharityEvent {
 
     @Override
     public String toString() {
-        return "CharityEvent{" + "id=" + id + ", organizationId=" + organizationId + ", name=" + name + ", category=" + category + ", description=" + description + ", targetAmount=" + targetAmount + ", currentAmount=" + currentAmount + ", imageUrl=" + imageUrl + ", dateBegin=" + dateBegin + ", dateEnd=" + dateEnd + '}';
+        return "CharityEvent{" + "id=" + id + ", organizationId=" + organizationId + ", name=" + name + ", categoryId=" + categoryId + ", description=" + description + ", targetAmount=" + targetAmount + ", currentAmount=" + currentAmount + ", imageUrl=" + imageUrl + ", dateBegin=" + dateBegin + ", dateEnd=" + dateEnd + '}';
     }
 
 

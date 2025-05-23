@@ -11,6 +11,7 @@ import charity.model.Organization;
 import charity.service.CharityEventService;
 import charity.service.OrganizationService;
 import charity.service.UserService;
+import charity.service.CategoryService;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,6 +22,7 @@ public class ClassTableModel implements IFormatData {
     private CharityEventService eventService = new CharityEventService();
     private final OrganizationService organizationService = new OrganizationService();
     private UserService userService = new UserService();
+    private CategoryService categoryService = new CategoryService();
 //    -----
 
     private List<CharityEvent> events = null;
@@ -127,7 +129,7 @@ public class ClassTableModel implements IFormatData {
             obj[0] = event.getId();
             obj[1] = organizationService.getNameById(event.getOrganizationId());
             obj[2] = event.getName();
-            obj[3] = event.getCategory();
+            obj[3] = categoryService.getCategoryNameById(event.getCategoryId());
             obj[4] = moneyFormat.format(event.getTargetAmount());
             obj[5] = moneyFormat.format(event.getCurrentAmount());
             obj[6] = String.format("%.2f%%", (float) event.getCurrentAmount() / event.getTargetAmount() * 100);

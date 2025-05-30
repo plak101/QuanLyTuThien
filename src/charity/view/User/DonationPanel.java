@@ -23,12 +23,13 @@ public class DonationPanel extends JPanel {
     private ButtonGroup typeSearch;
     private GButton gbtReset, gbtPrint;
     private JPanel jpnTable;
+    private JTable table;
 
     public DonationPanel(JFrame parent, int accountId, int userId) {
         this.accountId = accountId;
         this.userId = userId;
         initComponents();
-        controller = new DonationListController(txtSearch, jrbtId, jrbtEvent, jrbtUser, gbtReset, jpnTable, gbtPrint);
+        controller = new DonationListController(txtSearch, jrbtId, jrbtEvent, jrbtUser, gbtReset, table, gbtPrint);
         controller.setDonationListTable();
         controller.setEvent();
         init();
@@ -122,7 +123,24 @@ public class DonationPanel extends JPanel {
         jpnTable.setPreferredSize(new java.awt.Dimension(800, 300));
         jpnTable.setBorder(new EmptyBorder(10, 30, 120, 60));
         jpnTable.setBackground(Color.WHITE);
+        
+        addTable();
+        
         centerPanel.add(jpnTable, BorderLayout.CENTER);
         add(centerPanel);
+    }
+    
+    public void addTable(){
+        jpnTable.setLayout(new BorderLayout());
+        jpnTable.setBackground(Color.white);
+
+        table = new JTable();
+        table.setBackground(Color.white); // Nền bảng
+        table.setFillsViewportHeight(true); // Đảm bảo nền được vẽ đầy
+        JScrollPane scroll = new JScrollPane(table);
+        scroll.getViewport().setBackground(Color.white); // Nền viewport (khoảng trống)
+        scroll.setBackground(Color.white); // Nền scrollpane
+        
+        jpnTable.add(scroll, BorderLayout.CENTER);
     }
 }

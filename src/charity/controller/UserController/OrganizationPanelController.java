@@ -1,7 +1,7 @@
 package charity.controller.UserController;
 
 import charity.component.GButton;
-import charity.controller.UserController.ClassTableModel;
+import charity.component.ClassTableModel;
 import charity.model.Organization;
 import charity.service.OrganizationService;
 import java.awt.CardLayout;

@@ -1,295 +1,355 @@
 package charity.view.User;
 
+import charity.component.FontCustom;
+import charity.component.GButton;
+import charity.component.ImageIconCustom;
+import charity.component.MapHelper;
 import charity.controller.UserController.MainPanelController;
-import charity.controller.UserController.ClassTableModel;
-import charity.repository.CharityEventRepository;
+import charity.model.Category;
+import charity.model.CharityEvent;
+import charity.service.CategoryService;
+import charity.utils.MessageDialog;
+import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.net.URL;
+import java.util.List;
+import javax.swing.JButton;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
-public class MainPanel extends javax.swing.JPanel {
-    private JFrame parent;
-    private int userId;
-    private int accountId;
-
-    private CharityEventRepository eventDAO = new CharityEventRepository();
-
-    private ClassTableModel classTableModel = new ClassTableModel();
-    private TableRowSorter<TableModel> rowSorter = null;
-    private DefaultTableModel eventModel = null;
-    private JTable eventTable = null;
-    private int selectedEventId = -1;
+public class MainPanel extends JPanel {
+    private JFrame frame;
+    private int accountId, userId;
+    private JPanel campaignsPanel;
+    private JButton btnPrev;
+    private JButton btnNext;
     private MainPanelController controller;
-//    private 
-    public MainPanel(JFrame parent,int accountId, int userId) {
-//        eventModel = classTableModel.getActiveEventTable();
-        
+    private CategoryService categoryService = new CategoryService();
+
+    public MainPanel(JFrame frame, int accountId, int userId){
+        this.frame = frame;
         this.accountId= accountId;
         this.userId = userId;
-        this.parent = parent;
-
-        initComponents();
-        header.changeColor("#74ebd5", "#ACB6E5");
-//        header.changeColor("#abc6e5", "#86fde8");
-        
-        
-        controller =new MainPanelController(parent,accountId, userId, txtSearch, jrbtId, jrbtName, jrbtCategory, gbtReset, gbtDonate, jbtActive, jbtExpired, jpnTable);
-        controller.loadButton();
-        controller.loadJbtEvent();
-        controller.showEventTable();
         init();
+        this.controller = new MainPanelController(this);
     }
 
-    public void init(){
-        
-//        gbtReset.changeColor("#71bbb2");
-//        gbtDonate.changeColor("#71bbb2");
+    private void init() {
+        setLayout(new BorderLayout(0, 10));
+//        setBorder(new EmptyBorder(10, 10, 10, 10));
+        setBackground(Color.white);
+
+        // tieu de
+        JPanel headerPanel = createHeaderPanel();
+        add(headerPanel, BorderLayout.NORTH);
+
+        //panel chua noi dung chinh
+        JPanel contentPanel = new JPanel(new BorderLayout(0, 10));
+        contentPanel.setBorder(new EmptyBorder(30, 10, 10, 40));
+        contentPanel.setBackground(Color.white);
+
+        //panel category
+        JPanel categoryPanel = createCategoryPanel();
+        contentPanel.add(categoryPanel, BorderLayout.NORTH);
+
+        //panel chua noi dung va nut dieu hương
+        JPanel centerPanel = new JPanel(new BorderLayout(10, 0));
+        centerPanel.setBackground(Color.white);
+
+        btnPrev = createNavigationButton("←");
+        btnNext = createNavigationButton("→");
+
+        JPanel westPanel = new JPanel(new GridBagLayout());
+        westPanel.setBackground(Color.white);
+        westPanel.add(btnPrev);
+        JPanel eastPanel = new JPanel(new GridBagLayout());
+        eastPanel.setBackground(Color.white);
+        eastPanel.add(btnNext);
+
+        //panel noi dung
+        campaignsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 0));
+        campaignsPanel.setBorder(new EmptyBorder(60, 10, 10, 10));
+        campaignsPanel.setBackground(Color.white);
+
+        JPanel containerPanel = new JPanel(new BorderLayout());
+        containerPanel.setBackground(Color.white);
+        containerPanel.add(campaignsPanel, BorderLayout.CENTER);
+
+        //them cac panel vao centerPanel
+        centerPanel.add(westPanel, BorderLayout.WEST);
+        centerPanel.add(eastPanel, BorderLayout.EAST);
+        centerPanel.add(campaignsPanel, BorderLayout.CENTER);
+
+        contentPanel.add(centerPanel, BorderLayout.CENTER);
+
+        add(contentPanel, BorderLayout.CENTER);
+
     }
 
-    public MainPanelController getController() {
-        return controller;
-    }
-    
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        searchType = new javax.swing.ButtonGroup();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        txtSearch = new javax.swing.JTextField();
-        jrbtId = new javax.swing.JRadioButton();
-        jrbtName = new javax.swing.JRadioButton();
-        jrbtCategory = new javax.swing.JRadioButton();
-        jLabel2 = new javax.swing.JLabel();
-        gbtReset = new charity.component.GButton();
-        gbtDonate = new charity.component.GButton();
-        jpnTable = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jbtExpired = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jbtActive = new javax.swing.JButton();
-        header = new charity.view.User.GradientPanel();
-        jLabel1 = new javax.swing.JLabel();
-
-        setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(1023, 650));
-
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setPreferredSize(new java.awt.Dimension(627, 35));
-
-        txtSearch.setPreferredSize(new java.awt.Dimension(64, 30));
-        txtSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSearchActionPerformed(evt);
+    //tao header   
+    private JPanel createHeaderPanel() {
+        JPanel headerPanel = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+                //tao hinh nen
+                URL imgURL = getClass().getResource("/charity/image/background.jpg");
+                if (imgURL == null) {
+                    MessageDialog.showError("Khong tim thay anh: /charity/image/background.jpg");
+                }
+                ImageIcon backgroundImage = new ImageIcon(imgURL);
+                Image img = backgroundImage.getImage();
+                g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
             }
-        });
+        };
 
-        jrbtId.setBackground(new java.awt.Color(255, 255, 255));
-        searchType.add(jrbtId);
-        jrbtId.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jrbtId.setSelected(true);
-        jrbtId.setText("ID");
+        //tao panel cho tieu de voi nen trong suot
+        JPanel titlePanel = new JPanel();
+        titlePanel.setOpaque(false);
 
-        jrbtName.setBackground(new java.awt.Color(255, 255, 255));
-        searchType.add(jrbtName);
-        jrbtName.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jrbtName.setText("Tên sự kiện");
+        //tao va tuy chinh label tieu de
+        JLabel lblTitle = new JLabel("Trang Chủ");
+        lblTitle.setFont(FontCustom.Arial40B());
+        lblTitle.setForeground(Color.red);
+        lblTitle.setBorder(new EmptyBorder(20, 0, 20, 0));//padding
 
-        jrbtCategory.setBackground(new java.awt.Color(255, 255, 255));
-        searchType.add(jrbtCategory);
-        jrbtCategory.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jrbtCategory.setText("Loại");
+        titlePanel.add(lblTitle);
+        headerPanel.add(titlePanel, BorderLayout.CENTER);
+        return headerPanel;
+    }
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setText("Tìm kiếm");
+    //tao panel danh muc
+    private JPanel createCategoryPanel() {
+        JPanel categoryPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        categoryPanel.setBackground(Color.WHITE);
 
-        gbtReset.setForeground(new java.awt.Color(255, 255, 255));
-        gbtReset.setText("Làm mới");
-        gbtReset.setFocusable(false);
+        List<Category> categorys = categoryService.getActiveCategories();
+        //tao nut "Tất cả"
+        JButton btnCategory = new JButton("Tất cả");
+        btnCategory.setFocusPainted(false);
+        btnCategory.setBackground(Color.WHITE);
+        btnCategory.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200)),
+                BorderFactory.createEmptyBorder(5, 15, 5, 15)
+        ));
 
-        gbtDonate.setForeground(new java.awt.Color(255, 255, 255));
-        gbtDonate.setText("Quyên góp");
-        gbtDonate.setFocusable(false);
+        //add event
+        btnCategory.addActionListener(e -> controller.filterByCategory("Tất cả"));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jrbtId, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jrbtName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jrbtCategory)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(gbtDonate, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(gbtReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
+        categoryPanel.add(btnCategory);
+
+        for (Category c : categorys) {
+            btnCategory = new JButton(c.getCategoryName());
+            btnCategory.setFocusPainted(false);
+            btnCategory.setBackground(Color.WHITE);
+            btnCategory.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(200, 200, 200)),
+                    BorderFactory.createEmptyBorder(5, 15, 5, 15)
+            ));
+
+            //add event
+            btnCategory.addActionListener(e -> controller.filterByCategory(c.getCategoryName()));
+
+            categoryPanel.add(btnCategory);
+        }
+        return categoryPanel;
+    }
+
+    //tao nut dieu hương
+    private JButton createNavigationButton(String text) {
+        JButton btn = new JButton(text);
+        btn.setPreferredSize(new Dimension(40, 40));
+        btn.setFont(FontCustom.Arial18B());
+        btn.setFocusPainted(false);
+        btn.setBackground(new Color(245, 245, 245));
+        btn.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+
+        //event
+        if (text.equals("←")) {
+            btn.addActionListener(e -> controller.showPreviousPage());
+        } else {
+            btn.addActionListener(e -> controller.showNextPage());
+        }
+        return btn;
+    }
+
+    //tao card event
+    public JPanel createCampaignCard(CharityEvent event) {
+        JPanel card = createMainCardPanel();
+        card.add(createImagePanel(event));
+        card.add(createInforPanel(event));
+        card.add(createViewButton(event));
+        return card;
+    }
+
+    // panel chinh cardevent
+    private JPanel createMainCardPanel() {
+        JPanel card = new JPanel();
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setPreferredSize(new Dimension(250, 300));
+        card.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+        card.setBackground(Color.white);
+        return card;
+    }
+
+    //panel anh
+    private JPanel createImagePanel(CharityEvent event) {
+        JPanel imagePanel = new JPanel(new BorderLayout());
+        imagePanel.setPreferredSize(new Dimension(250, 160));
+        imagePanel.setBackground(Color.white);
+
+        ImageIcon image = ImageIconCustom.getSmoothIcon(event.getImageUrl(), 250, 160);
+        JLabel imageLabel = new JLabel(image);
+        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        imageLabel.setVerticalAlignment(SwingConstants.TOP); // căn trên
+        imagePanel.setMaximumSize(new Dimension(250, 160)); // cố định kích thước
+        imagePanel.setAlignmentY(Component.TOP_ALIGNMENT);
+        imagePanel.add(imageLabel, BorderLayout.CENTER);
+
+        return imagePanel;
+    }
+
+    private JPanel createInforPanel(CharityEvent event) {
+        JPanel inforPanel = new JPanel();
+        inforPanel.setLayout(new BoxLayout(inforPanel, BoxLayout.Y_AXIS));
+        inforPanel.setBorder(new EmptyBorder(10, 5, 5, 10));
+        inforPanel.setBackground(Color.white);
+
+        //them cac thanh phhan
+        inforPanel.add(createCategoryLabel(event));
+        inforPanel.add(Box.createVerticalStrut(5));
+        inforPanel.add(createTitleLabel(event));
+        inforPanel.add(Box.createVerticalStrut(5));
+        inforPanel.add(createProgressBar(event));
+        inforPanel.add(Box.createVerticalStrut(5));
+        inforPanel.add(createAmountLabel(event));
+
+        return inforPanel;
+    }
+
+    //tao panel ten su kién
+    private JPanel createCategoryLabel(CharityEvent event) {
+        JPanel categoryPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        categoryPanel.setBackground(Color.white);
+        categoryPanel.setMaximumSize(new Dimension(200, 15));
+
+        JLabel lbl = new JLabel("Danh mục: " + MapHelper.getCategoryName(event.getCategoryId()));
+        lbl.setFont(FontCustom.Arial12());
+        lbl.setForeground(new Color(100, 100, 100));
+        categoryPanel.add(lbl);
+
+        return categoryPanel;
+    }
+
+    //CardEvent: tieu de event
+    private JPanel createTitleLabel(CharityEvent event) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        panel.setBackground(Color.white);
+        panel.setMaximumSize(new Dimension(200, 35));
+
+        JLabel lbl = new JLabel(event.getName());
+        lbl.setFont(FontCustom.Arial13B());
+        panel.add(lbl);
+
+        return panel;
+    }
+
+    //tao thanh tien do 
+    private JPanel createProgressBar(CharityEvent event) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        panel.setBackground(Color.white);
+        panel.setMaximumSize(new Dimension(200, 15));
+
+        JProgressBar bar = new JProgressBar();
+        bar.setPreferredSize(new Dimension(200, 12));
+
+        double progress = (double) event.getCurrentAmount() / event.getTargetAmount() * 100;
+        bar.setMaximum(100);
+        bar.setValue((int) progress);
+        bar.setStringPainted(true);
+        bar.setString(String.format("%.0f%%", progress));
+
+        bar.setForeground(new Color(46, 139, 87));
+        bar.setBackground(new Color(240, 240, 240));
+
+        panel.add(bar);
+        return panel;
+    }
+
+    private JPanel createAmountLabel(CharityEvent event) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        panel.setBackground(Color.white);
+        panel.setMaximumSize(new Dimension(200, 15));
+
+        //format so tien
+        String amount = String.format("%,d / %,d VNĐ",
+                event.getCurrentAmount(),
+                event.getTargetAmount()
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(gbtDonate, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                        .addComponent(gbtReset, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jrbtId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jrbtName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jrbtCategory, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        JLabel lbl = new JLabel(amount);
+        lbl.setFont(FontCustom.Arial11());
 
-        jpnTable.setBackground(new java.awt.Color(255, 255, 255));
+        panel.add(lbl);
+        return panel;
+    }
 
-        javax.swing.GroupLayout jpnTableLayout = new javax.swing.GroupLayout(jpnTable);
-        jpnTable.setLayout(jpnTableLayout);
-        jpnTableLayout.setHorizontalGroup(
-            jpnTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jpnTableLayout.setVerticalGroup(
-            jpnTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 213, Short.MAX_VALUE)
-        );
+    //tao btn xem thong tin
+    private JPanel createViewButton(CharityEvent event) {
+        JPanel viewPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        viewPanel.setBackground(Color.white);
+        viewPanel.setBorder(new EmptyBorder(5, 0, 0, 0));
+        GButton viewButton = new GButton("Xem thông tin");
+        viewButton.setPreferredSize(new Dimension(200, 25));
+        
+        //event
+        viewButton.addActionListener(e->controller.showEventDialog(frame, event, accountId, userId));
+        
+        viewPanel.add(viewButton);
+        return viewPanel;
+    }
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+    public void updateCampaignCards(List<CharityEvent> events) {
+        campaignsPanel.removeAll();
+        for (CharityEvent event : events) {
+            campaignsPanel.add(createCampaignCard(event));
+        }
 
-        jbtExpired.setBackground(new java.awt.Color(180, 235, 230));
-        jbtExpired.setText("Hết hạn");
+        campaignsPanel.revalidate();
+        campaignsPanel.repaint();
+    }
 
-        jButton5.setText("jButton3");
+    //kiem tra khi chuyen trang
+    public void updateNavigationButton(boolean canGoPrevious, boolean canGoNext) {
+        if (btnPrev != null) {
+            btnPrev.setEnabled(canGoPrevious);
+        }
+        if (btnNext != null) {
+            btnNext.setEnabled(canGoNext);
+        }
+    }
 
-        jbtActive.setBackground(new java.awt.Color(180, 235, 230));
-        jbtActive.setText("Đang hoạt động");
+    //hien thi khi danh muc khong co event
+    public void showNoEventMessage() {
+        JPanel messagePanel = new JPanel(new GridBagLayout());
+        messagePanel.setPreferredSize(new Dimension(campaignsPanel.getWidth(), 300));
+        messagePanel.setBackground(Color.white);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jbtActive)
-                        .addGap(0, 0, 0)
-                        .addComponent(jbtExpired))
-                    .addComponent(jButton5))
-                .addContainerGap(790, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtExpired)
-                    .addComponent(jbtActive))
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
-        );
+        JLabel messageLabel = new JLabel("Không có sự kiện nào trong danh mục này");
+        messageLabel.setFont(FontCustom.Arial14B());
+        messageLabel.setForeground(Color.gray);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Sự kiện");
+        messagePanel.add(messageLabel);
 
-        javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
-        header.setLayout(headerLayout);
-        headerLayout.setHorizontalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel1)
-                .addContainerGap(933, Short.MAX_VALUE))
-        );
-        headerLayout.setVerticalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jLabel1)
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
+        campaignsPanel.removeAll();
+        campaignsPanel.add(messagePanel);
+        campaignsPanel.revalidate();
+        campaignsPanel.repaint();
+    }
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jpnTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(20, 20, 20))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1003, Short.MAX_VALUE)))
-                    .addComponent(header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jpnTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(259, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchActionPerformed
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private charity.component.GButton gbtDonate;
-    private charity.component.GButton gbtReset;
-    private charity.view.User.GradientPanel header;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JButton jbtActive;
-    private javax.swing.JButton jbtExpired;
-    private javax.swing.JPanel jpnTable;
-    private javax.swing.JRadioButton jrbtCategory;
-    private javax.swing.JRadioButton jrbtId;
-    private javax.swing.JRadioButton jrbtName;
-    private javax.swing.ButtonGroup searchType;
-    private javax.swing.JTextField txtSearch;
-    // End of variables declaration//GEN-END:variables
 }

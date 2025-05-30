@@ -1,5 +1,6 @@
 package charity.controller.UserController;
 
+import charity.component.ClassTableModel;
 import charity.component.GButton;
 import charity.model.Donation;
 import charity.service.DonationService;
@@ -40,27 +41,15 @@ public class DonationListController {
     private DonationService donationService = null;
 
     private TableRowSorter<TableModel> rowSorter = null;
-    private JTable donationTable = null;
-//    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JPanel tablePanel) {
-//        this.txtSearch = txtSearch;
-//        this.jrbtId = jrbtId;
-//        this.jrbtEvent = jrbtEvent;
-//        this.jrbtUser = jrbtUser;
-//        this.gbtReset = gbtReset;
-//        this.jpnTable = tablePanel;
-//
-//        this.classTableModel = new ClassTableModel();
-//        this.donationService = new DonationService();
-//        setHoverButtonEvent();
-//    }
+    private JTable table = null;
 
-    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JPanel tablePanel, GButton gbtPrint) {
+    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JTable table, GButton gbtPrint) {
         this.txtSearch = txtSearch;
         this.jrbtId = jrbtId;
         this.jrbtEvent = jrbtEvent;
         this.jrbtUser = jrbtUser;
         this.gbtReset = gbtReset;
-        this.jpnTable = tablePanel;
+        this.table = table;
         this.gbtPrint = gbtPrint;
         this.classTableModel = new ClassTableModel();
         this.donationService = new DonationService();
@@ -70,10 +59,10 @@ public class DonationListController {
     public void setDonationListTable() {
         List<Donation> donations = donationService.getAllDonation();
         DefaultTableModel model = classTableModel.getDonationTable(donations);
-        donationTable = new JTable(model);
+        table.setModel(model);
 
-        rowSorter = new TableRowSorter<>(donationTable.getModel());
-        donationTable.setRowSorter(rowSorter);
+        rowSorter = new TableRowSorter<>(table.getModel());
+        table.setRowSorter(rowSorter);
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
 
             //"(?i)" khong phan biet chu hoa chu thuong
@@ -119,17 +108,7 @@ public class DonationListController {
             }
         });
 
-        designTable(donationTable);
-
-        //hien thi ra jpnTable
-        JScrollPane scroll = new JScrollPane(donationTable);
-        scroll.setViewportView(donationTable);
-        scroll.setPreferredSize(new Dimension(900, 400));
-        jpnTable.removeAll();
-        jpnTable.setLayout(new CardLayout());
-        jpnTable.add(scroll);
-        jpnTable.revalidate();
-        jpnTable.repaint();
+        designTable(table);
     }
 
     public void designTable(JTable table) {
@@ -189,7 +168,7 @@ public class DonationListController {
                     MessageFormat footer = new MessageFormat("Trang {0}");
 
                     try {
-                        donationTable.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+                        table.print(JTable.PrintMode.FIT_WIDTH, header, footer);
                         JOptionPane.showMessageDialog(null, "In thành công!");
                     } catch (PrinterException ex) {
                         JOptionPane.showMessageDialog(null, "Lỗi khi in: " + ex.getMessage(),

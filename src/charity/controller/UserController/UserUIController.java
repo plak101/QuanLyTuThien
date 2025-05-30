@@ -6,6 +6,7 @@ import charity.service.UserService;
 import charity.view.Login.LoginFrame;
 import charity.view.User.DonationPanel;
 import charity.view.User.InforPanel;
+import charity.view.User.EventPanel;
 import charity.view.User.MainPanel;
 import charity.view.User.MyDonationPanel;
 import charity.view.User.OrganizationPanel;
@@ -21,7 +22,7 @@ import javax.swing.*;
  */
 public class UserUIController {
 
-    private JPanel jpnMainOption, jpnOrganizationOption, jpnDonationOption, jpnMyDonationOption, jpnInforOption, jpnRight;
+    private JPanel jpnMainOption,jpnEventOption, jpnOrganizationOption, jpnDonationOption, jpnMyDonationOption, jpnInforOption, jpnRight;
     private JTextField txtUsername;
     private JLabel jlbLogout;
     private int accountId;
@@ -33,13 +34,15 @@ public class UserUIController {
     private JFrame parent;
     private JPanel activePanel;
     private MainPanel mainPanel;
+    private EventPanel eventPanel;
     private OrganizationPanel organizationPanel;
     private DonationPanel donationListPanel;
     private MyDonationPanel myDonationPanel;
     private InforPanel inforPanel;
 
-    public UserUIController(JFrame parent, int accountId, JPanel jpnMainOption, JPanel jpnOrganizationOption, JPanel jpnDonationOption, JPanel jpnMyDonationOption, JPanel jpnInforOption, JPanel jpnRight, JTextField txtUsername, JLabel jlbLogout) {
+    public UserUIController(JFrame parent, int accountId, JPanel jpnMainOption, JPanel jpnEventOption, JPanel jpnOrganizationOption, JPanel jpnDonationOption, JPanel jpnMyDonationOption, JPanel jpnInforOption, JPanel jpnRight, JTextField txtUsername, JLabel jlbLogout) {
         this.jpnMainOption = jpnMainOption;
+        this.jpnEventOption = jpnEventOption;
         this.jpnOrganizationOption = jpnOrganizationOption;
         this.jpnDonationOption = jpnDonationOption;
         this.jpnMyDonationOption = jpnMyDonationOption;
@@ -78,9 +81,14 @@ public class UserUIController {
     //    2. cai dat cardlayout
     public void setupCardLayout() {
         jpnRight.setLayout(new CardLayout());
-        //1. Main 
+        
+        //Main
         mainPanel = new MainPanel(parent, accountId, userId);
         jpnRight.add(mainPanel, "mainPanel");
+        
+        //1. Event
+        eventPanel = new EventPanel(parent, accountId, userId);
+        jpnRight.add(eventPanel, "eventPanel");
 
         //2 organization
         organizationPanel = new OrganizationPanel();
@@ -101,6 +109,7 @@ public class UserUIController {
 
     public void setMouseEvent() {
         setMouseEvent(jpnMainOption);
+        setMouseEvent(jpnEventOption);
         setMouseEvent(jpnDonationOption);
         setMouseEvent(jpnMyDonationOption);
         setMouseEvent(jpnOrganizationOption);
@@ -111,7 +120,7 @@ public class UserUIController {
     private void setActivePanel(JPanel selectedPanel) {
         activePanel = selectedPanel;
 
-        JPanel[] panels = {jpnMainOption, jpnOrganizationOption, jpnDonationOption, jpnMyDonationOption, jpnInforOption};
+        JPanel[] panels = {jpnMainOption,jpnEventOption, jpnOrganizationOption, jpnDonationOption, jpnMyDonationOption, jpnInforOption};
         for (JPanel panel : panels) {
             if (panel == selectedPanel) {
                 panel.setOpaque(true);
@@ -146,10 +155,16 @@ public class UserUIController {
             public void mouseClicked(MouseEvent e) {
                 setActivePanel(panel);
                 CardLayout cardLayout = (CardLayout) jpnRight.getLayout();
-                if (panel == jpnMainOption) {
+                if (panel == jpnMainOption){
                     if (mainPanel instanceof MainPanel) {
-                        mainPanel.getController().reloadData();
+//                        eventPanel.getController().reloadData();
                         cardLayout.show(jpnRight, "mainPanel");
+                    }
+                }
+                else if (panel == jpnEventOption) {
+                    if (eventPanel instanceof EventPanel) {
+                        eventPanel.getController().reloadData();
+                        cardLayout.show(jpnRight, "eventPanel");
                     }
                 } else if (panel == jpnOrganizationOption) {
                     if (organizationPanel instanceof OrganizationPanel) {
@@ -211,6 +226,6 @@ public class UserUIController {
         }
     }
     public void reloadMainPanel(){
-        mainPanel.getController().reloadData();
+        eventPanel.getController().reloadData();
     }
 }

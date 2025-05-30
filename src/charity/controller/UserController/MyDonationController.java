@@ -1,5 +1,6 @@
 package charity.controller.UserController;
 
+import charity.component.ClassTableModel;
 import charity.component.GButton;
 import charity.controller.AdminController.PDFExporter;
 import charity.model.Donation;
@@ -277,7 +278,6 @@ public class MyDonationController {
     public void reloadData() {
         User user = userService.getUserByAccountId(accountId);
         if (user == null) {
-            System.err.println("Không tìm thấy user");
             return;
         }
         userId = user.getId();

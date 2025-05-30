@@ -24,14 +24,15 @@ public class DonationPanel extends JPanel {
     private charity.component.GButton gbtReset;
     private charity.component.GButton gbtPrint;
     private JPanel jpnTable;
-    private JScrollPane jspTable;
+    private JScrollPane scroll;
+    private JTable table;
 
     public DonationPanel(JFrame parent, int accountId, int userId) {
         this.accountId = accountId;
         this.userId = userId;
         initComponents();
         controller = new DonationListController(txtSearch, jrbtId, jrbtEvent, jrbtUser, gbtReset,
-                jpnTable, gbtPrint);
+                table, gbtPrint);
         controller.setDonationListTable();
         controller.setEvent();
     }
@@ -98,11 +99,21 @@ public class DonationPanel extends JPanel {
         // Panel bảng dữ liệu (ở giữa)
         jpnTable = new JPanel(new BorderLayout());
 
-        jspTable = new JScrollPane(jpnTable);
-        jspTable.setPreferredSize(new Dimension(600, 200)); // Kích thước ưu tiên nhỏ hơn
-        jspTable.setBorder(new EmptyBorder(50, 30, 50, 30)); // Khoảng đệm xung quanh bảng
-        jspTable.setBackground(Color.WHITE);
-        add(jspTable, BorderLayout.CENTER);
+        addTable();
+        add(jpnTable, BorderLayout.CENTER);
 
+    }
+
+    public void addTable() {
+        jpnTable.setBackground(Color.white);
+        jpnTable.setBorder( BorderFactory.createEmptyBorder(20 , 20, 20, 20));
+        table = new JTable();
+        table.setBackground(Color.white); // Nền bảng
+        table.setFillsViewportHeight(true); // Đảm bảo nền được vẽ đầy
+        JScrollPane scroll = new JScrollPane(table);
+        scroll.getViewport().setBackground(Color.white); // Nền viewport (khoảng trống)
+        scroll.setBackground(Color.white); // Nền scrollpane
+
+        jpnTable.add(scroll, BorderLayout.CENTER);
     }
 }

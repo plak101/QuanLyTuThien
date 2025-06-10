@@ -4,27 +4,97 @@
  */
 package charity.view.Admin;
 
+import charity.component.GButton;
 import charity.controller.AdminController.CharityEventPanelController;
 import charity.model.Category;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
  * @author phaml
  */
 public class CharityEventPanel extends javax.swing.JPanel {
-
-    /**
-     * Creates new form CharityEventPanel
-     */
+    
     public CharityEventPanel() {
         initComponents();
         CharityEventPanelController controller = new CharityEventPanelController(jpnTable, txtCurrentAmount, txtDescription, txtEventName, txtId, txtProgress, txtSearch, txtTargetAmount, jbtChoose, jbtReset, jcbCategory, jcbOrganization, jdcDateBegin, jdcDateEnd, gbtAdd, gbtCancel, gbtDelete, gbtSave, gbtUpdate, jlbImage);
+        
+        // Thiết lập giao diện
+        setupUI();
+    }
+
+    private void setupUI() {
+        // Thiết lập kích thước bảng
         jpnTable.setPreferredSize(new Dimension(985, 280));
+        
+        // Thiết lập màu sắc và font chữ
+        Color primaryColor = new Color(67, 160, 71);  // Xanh lá
+        Color dangerColor = new Color(229, 57, 53);   // Đỏ
+        Font labelFont = new Font("Segoe UI", Font.BOLD, 14);
+        
+        // Căn chỉnh và style cho các label
+        JLabel[] labels = {jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel6, 
+                          jLabel7, jLabel8, jLabel9, jLabel10, jLabel11};
+        for (JLabel label : labels) {
+            label.setFont(labelFont);
+            label.setForeground(Color.BLACK);
+        }
+
+        // Style cho các button
         jbtChoose.setBackground(new Color(230, 230, 230));
-        gbtCancel.changeColor("#E53935");
-        gbtSave.changeColor("#43A047");
+        jbtChoose.setFont(labelFont);
+        
+        // GButton styling
+        gbtSave.changeColor("#43A047");  // Xanh lá đậm
+        gbtCancel.changeColor("#E53935"); // Đỏ đậm
+        gbtAdd.changeColor("#43A047");
+        gbtUpdate.changeColor("#43A047");
+        gbtDelete.changeColor("#E53935");
+        jbtReset.changeColor("#43A047");
+
+        GButton[] buttons = {gbtSave, gbtCancel, gbtAdd, gbtUpdate, gbtDelete, jbtReset};
+        for (GButton btn : buttons) {
+            btn.setFont(labelFont);
+            btn.setForeground(Color.WHITE);
+        }
+
+        // Style cho các text field
+        JTextField[] textFields = {txtId, txtEventName, txtTargetAmount, 
+                                 txtCurrentAmount, txtProgress, txtSearch};
+        for (JTextField field : textFields) {
+            field.setBorder(BorderFactory.createCompoundBorder(
+                field.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+            ));
+        }
+
+        // Style cho phần mô tả
+        txtDescription.setLineWrap(true);
+        txtDescription.setWrapStyleWord(true);
+        txtDescription.setBorder(BorderFactory.createCompoundBorder(
+            txtDescription.getBorder(),
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+
+        // Style cho combobox
+        jcbCategory.setFont(labelFont);
+        jcbOrganization.setFont(labelFont);
+
+        // Style cho date chooser
+        jdcDateBegin.setFont(labelFont);
+        jdcDateEnd.setFont(labelFont);
+
+        // Style cho image panel
+        jPanel3.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+        jlbImage.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+
+        // Style cho main panel
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     }
 
     /**

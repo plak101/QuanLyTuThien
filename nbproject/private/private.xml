@@ -3,15 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/test/UI/CampaignPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/test/UI/CampaignController.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/component/FontCustom.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/User/InforPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/User/EventPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/User/MainPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/UserController/MainPanelController.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/component/ImageIconCustom.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/User/UserUI.java</file>
+            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/view/Admin/CharityEventPanel.java</file>
+            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/view/Admin/OrganizationPanel.java</file>
+            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/controller/AdminController/OrganizationPanelController.java</file>
         </group>
     </open-files>
 </project-private>

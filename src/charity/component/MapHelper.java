@@ -28,7 +28,7 @@ public class MapHelper {
     private static Map<Integer, String> getAllCategoryName() {
         if (cacheCategoryNames == null) {
             cacheCategoryNames = new HashMap<>();
-            List<Category> categories = categoryService.getActiveCategories();
+            List<Category> categories = categoryService.getAllCategories();
             for (Category c : categories) {
                 cacheCategoryNames.put(c.getCategoryId(), c.getCategoryName());
             }

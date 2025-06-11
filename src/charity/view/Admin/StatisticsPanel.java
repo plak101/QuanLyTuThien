@@ -131,7 +131,7 @@ public class StatisticsPanel extends JPanel {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBackground(new Color(245, 245, 245));
 
-        // Viền trên màu đỏ dày 5px
+        // Viền trên màu xanh dày 5px
         MatteBorder topBorder = BorderFactory.createMatteBorder(5, 0, 0, 0, new Color(25, 118, 210));
 
         // Viền đệm 10px cho tất cả các cạnh

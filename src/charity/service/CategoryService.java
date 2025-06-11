@@ -18,11 +18,6 @@ public class CategoryService implements ICategoryService {
     }
     
     @Override
-    public List<Category> getActiveCategories() {
-        return categoryRepository.getActiveCategories();
-    }
-    
-    @Override
     public Category getCategoryById(int id) {
         return categoryRepository.getCategoryById(id);
     }

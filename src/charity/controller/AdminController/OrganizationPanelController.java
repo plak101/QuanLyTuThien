@@ -2,6 +2,7 @@ package charity.controller.AdminController;
 
 import charity.component.GButton;
 import charity.component.ClassTableModel;
+import charity.component.MapHelper;
 import charity.model.Organization;
 import charity.service.OrganizationService;
 import java.awt.CardLayout;
@@ -260,6 +261,7 @@ public class OrganizationPanelController {
                         JOptionPane.showMessageDialog(null, "Thêm tổ chức thành công!");
                         clearForm();
                         setOrganizationTable(); // Refresh table
+                        MapHelper.refreshOrganizationCache(); // refresh maphelper
                     } else {
                         JOptionPane.showMessageDialog(null, "Thêm tổ chức thất bại!",
                                 "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -298,6 +300,8 @@ public class OrganizationPanelController {
                             JOptionPane.showMessageDialog(null, "Cập nhật tổ chức thành công!");
                             clearForm();
                             setOrganizationTable(); // Refresh table
+                            MapHelper.refreshOrganizationCache(); // refresh maphelper
+
                         } else {
                             JOptionPane.showMessageDialog(null, "Cập nhật tổ chức thất bại!",
                                     "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -370,6 +374,8 @@ public class OrganizationPanelController {
                             JOptionPane.showMessageDialog(null, "Xóa tổ chức thành công!");
                             clearForm();
                             setOrganizationTable(); // Refresh table
+                            MapHelper.refreshOrganizationCache(); // refresh maphelper
+
                         } else {
                             // Attempt to get related events again in case they were added between checks
                             try {

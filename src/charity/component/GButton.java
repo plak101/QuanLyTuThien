@@ -21,6 +21,14 @@ public class GButton extends JButton {
         setBorderPainted(false);       // Không vẽ border mặc định
         setOpaque(false);              // Quan trọng để bo góc có hiệu lực
     }
+    public GButton(String text, Color color) {
+        super(text);
+        setContentAreaFilled(false);   // Không vẽ nền mặc định
+        setFocusPainted(false);        // Bỏ hiệu ứng viền focus
+        setBorderPainted(false);       // Không vẽ border mặc định
+        setOpaque(false);              // Quan trọng để bo góc có hiệu lực
+        setColor(color);
+    }
     
     public GButton() {
         super();
@@ -29,6 +37,7 @@ public class GButton extends JButton {
         setBorderPainted(false);       // Không vẽ border mặc định
         setOpaque(false);              // Quan trọng để bo góc có hiệu lực
     }
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -52,6 +61,12 @@ public class GButton extends JButton {
         }
     }
 
+    private void setColor(Color color){
+        this.startColor= color;
+        this.endColor = color;
+        repaint();
+    }
+    
     public void setBackgroundColor(Color color) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }

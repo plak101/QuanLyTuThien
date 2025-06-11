@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package charity.view.Admin;
 
 import charity.component.ColorCustom;
@@ -39,7 +36,7 @@ public class CategoryDialog extends JDialog {
         //Main panel
         JPanel pnMain = new JPanel(new BorderLayout());
         pnMain.setBackground(Color.white);
-        pnMain.setBorder(new EmptyBorder(0, 0, 15, 0));
+        pnMain.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         //header
         JLabel lbHeader = new JLabel(title);
@@ -54,7 +51,7 @@ public class CategoryDialog extends JDialog {
         JPanel pnForm = new JPanel(new GridBagLayout());
         pnForm.setOpaque(false);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10,5, 10);
+        gbc.insets = new Insets(0, 10,5, 10);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx =0;
         
@@ -65,6 +62,13 @@ public class CategoryDialog extends JDialog {
         txtName = new JTextField();
         txtName.setFont(FontCustom.Arial13());
         txtName.setPreferredSize(new Dimension(350,30));
+        pnForm.add(txtName, gbc);
+        
+                gbc.gridy=2;
+
+        pnForm.add(txtName, gbc);
+                gbc.gridy=3;
+
         pnForm.add(txtName, gbc);
         
         

@@ -129,7 +129,7 @@ public class MainPanel extends JPanel {
         JPanel categoryPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         categoryPanel.setBackground(Color.WHITE);
 
-        List<Category> categorys = categoryService.getActiveCategories();
+        List<Category> categorys = categoryService.getAllCategories();
         //tao nut "Tất cả"
         JButton btnCategory = new JButton("Tất cả");
         btnCategory.setFocusPainted(false);

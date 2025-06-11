@@ -135,7 +135,7 @@ public class CampaignPanel extends JFrame {
         JLabel imageLabel = new JLabel(new ImageIcon(image));
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imagePanel.add(imageLabel, BorderLayout.CENTER);
-        
+
         return imagePanel;
     }
 

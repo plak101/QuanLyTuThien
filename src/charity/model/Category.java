@@ -3,21 +3,18 @@ package charity.model;
 public class Category {
     private int categoryId;
     private String categoryName;
-    private boolean status;
-    
+
     public Category() {
-        this.status = true;
     }
     
-    public Category(int categoryId, String categoryName, boolean status) {
+    
+    public Category(int categoryId, String categoryName) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
-        this.status = status;
     }
     
-    public Category(String categoryName, boolean status) {
+    public Category(String categoryName) {
         this.categoryName = categoryName;
-        this.status = status;
     }
     
     public int getCategoryId() {
@@ -34,14 +31,6 @@ public class Category {
     
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-    
-    public boolean isStatus() {
-        return status;
-    }
-    
-    public void setStatus(boolean status) {
-        this.status = status;
     }
     
     @Override

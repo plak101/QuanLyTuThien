@@ -20,8 +20,11 @@ public class FontCustom {
     public static Font Arial12B(){
         return new Font("Arial",Font.PLAIN, 12);
     }
-    public static Font Arial13B(){
+    public static Font Arial13(){
         return new Font("Arial",Font.PLAIN, 13);
+    }
+    public static Font Arial13B(){
+        return new Font("Arial",Font.BOLD, 13);
     }
     public static Font Arial18B(){
         return new Font("Arial",Font.BOLD, 18);

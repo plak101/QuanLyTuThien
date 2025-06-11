@@ -40,8 +40,7 @@ CREATE TABLE Organization (
 -- Tạo bảng Category (Danh mục)
 CREATE TABLE Category (
     categoryId INT PRIMARY KEY AUTO_INCREMENT,
-    categoryName VARCHAR(50) NOT NULL UNIQUE,
-    status BOOLEAN DEFAULT TRUE
+    categoryName VARCHAR(50) NOT NULL UNIQUE
 );
 -- Tạo bảng Event (Sự kiện từ thiện)
 CREATE TABLE Event (
@@ -132,7 +131,9 @@ INSERT INTO account (username, password, email, role) VALUES
 ('hoanganh357', 'AnhHoang#90', 'hoanganh.le@gmail.com', 'User'),
 ('xuanmai102', 'MaiXuan1^2', 'xuan.mai@gmail.com', 'User'),
 
-('user', 'User@001', 'ductuan1992@gmail.com', 'User');
+('user', 'User@001', 'ductuan1992@gmail.com', 'User'),
+('1', '1', 'qlttadmint@gmail.com', 'Admin'),
+('2', '2', 'qlttadmin1st@gmail.com', 'User');
 
 -- thêm dữ liệu vào bảng User
 INSERT INTO User (accountId, userName, address, phone, gender, birthDay) VALUES
@@ -165,13 +166,13 @@ INSERT INTO Organization (name, email, hotline, address) VALUES
 ('Quỹ Hy vọng', 'hope@quyhyvong.com', '0972776776', 'Tầng 9, Tòa nhà FPT Tower, số 10 Phạm Văn Bạch, Dịch Vọng, Cầu Giấy, Hà Nội');
 
 -- Thêm dữ liệu mẫu cho bảng Category
-INSERT INTO Category (categoryName, status) VALUES
-('Giáo dục', TRUE),
-('Cứu trợ', TRUE),
-('Môi trường', TRUE),
-('Trẻ em', TRUE),
-('Y tế', TRUE),
-('Người già', TRUE);
+INSERT INTO Category (categoryName) VALUES
+('Giáo dục'),
+('Cứu trợ'),
+('Môi trường'),
+('Trẻ em'),
+('Y tế'),
+('Người già');
 
 -- thêm dữ liệu vào bảng Event
 INSERT INTO Event (organizationId, eventname, categoryId, description, targetAmount, currentAmount, dateBegin, dateEnd, imageUrl) VALUES
@@ -237,6 +238,7 @@ SELECT * FROM Category;
 SELECT * FROM Event;
 SELECT * FROM Donation;
 SELECT * FROM organization;
+
 -- donation list
 -- SELECT donationId, eventName, userName, amount, donationDate
 -- FROM donation d
@@ -267,7 +269,3 @@ SELECT * FROM organization;
 -- FROM account a
 -- JOIN User u ON a.id = u.accountId
 -- WHERE u.userId = ?;
-
-
-
-SELECT count(*) FROM user WHERE phone='0865019639'

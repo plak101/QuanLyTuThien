@@ -23,8 +23,7 @@ public class CategoryRepository implements ICategoryRepository {
             while(rs.next()) {
                 categories.add(new Category(
                     rs.getInt("categoryId"),
-                    rs.getString("categoryName"),
-                    rs.getBoolean("status")
+                    rs.getString("categoryName")
                 ));
             }
         } catch (SQLException e) {
@@ -35,29 +34,6 @@ public class CategoryRepository implements ICategoryRepository {
         return categories;
     }
     
-    @Override
-    public List<Category> getActiveCategories() {
-        List<Category> categories = new ArrayList<>();
-        String query = "SELECT * FROM Category WHERE status = TRUE";
-        try {
-            connection = ConnectionDB.getConnection();
-            ps = connection.prepareStatement(query);
-            rs = ps.executeQuery();
-            
-            while(rs.next()) {
-                categories.add(new Category(
-                    rs.getInt("categoryId"),
-                    rs.getString("categoryName"),
-                    rs.getBoolean("status")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeResources(connection, ps, rs);
-        }
-        return categories;
-    }
     
     @Override
     public Category getCategoryById(int id) {
@@ -71,8 +47,7 @@ public class CategoryRepository implements ICategoryRepository {
             if(rs.next()) {
                 return new Category(
                     rs.getInt("categoryId"),
-                    rs.getString("categoryName"),
-                    rs.getBoolean("status")
+                    rs.getString("categoryName")
                 );
             }
         } catch (SQLException e) {
@@ -105,12 +80,11 @@ public class CategoryRepository implements ICategoryRepository {
     
     @Override
     public boolean addCategory(Category category) {
-        String query = "INSERT INTO Category (categoryName, status) VALUES (?, ?)";
+        String query = "INSERT INTO Category (categoryName) VALUES (?)";
         try {
             connection = ConnectionDB.getConnection();
             ps = connection.prepareStatement(query);
             ps.setString(1, category.getCategoryName());
-            ps.setBoolean(2, category.isStatus());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -122,13 +96,12 @@ public class CategoryRepository implements ICategoryRepository {
     
     @Override
     public boolean updateCategory(Category category) {
-        String query = "UPDATE Category SET categoryName = ?, status = ? WHERE categoryId = ?";
+        String query = "UPDATE Category SET categoryName = ? WHERE categoryId = ?";
         try {
             connection = ConnectionDB.getConnection();
             ps = connection.prepareStatement(query);
             ps.setString(1, category.getCategoryName());
-            ps.setBoolean(2, category.isStatus());
-            ps.setInt(3, category.getCategoryId());
+            ps.setInt(2, category.getCategoryId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

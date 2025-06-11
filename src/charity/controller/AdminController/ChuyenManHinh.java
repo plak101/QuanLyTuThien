@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import charity.view.Admin.AccountPanel;
+import charity.view.Admin.CategoryPanel;
 import charity.view.Admin.CharityEventPanel;
 import charity.view.Admin.DonationPanel;
 import charity.view.Admin.OrganizationPanel;
@@ -72,6 +73,9 @@ public class ChuyenManHinh {
                 case "QuanLyQuyenGop":
 //                    node = new DonationListPanel(null, 0, 0);
                     node = new DonationPanel(null, 0, 0);
+                    break;
+                case "QuanLyDanhMuc":
+                    node = new CategoryPanel();
                     break;
                 case "QuanLyToChuc":
                     node = new OrganizationPanel();

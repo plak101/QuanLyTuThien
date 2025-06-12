@@ -2,6 +2,7 @@ package charity.controller.AdminController;
 
 import charity.component.GButton;
 import charity.component.ClassTableModel;
+import charity.component.ColorCustom;
 import charity.component.MapHelper;
 import charity.model.Organization;
 import charity.service.OrganizationService;
@@ -82,6 +83,57 @@ public class OrganizationPanelController {
         this.classTableModel = new ClassTableModel();
     }
 
+    public void setHoverButton(){
+        btnAdd.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnAdd.setColor(ColorCustom.colorBtnAdd());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnAdd.setColor(ColorCustom.colorBtnAddHover());
+            }
+        });
+
+        btnDelete.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnDelete.setColor(ColorCustom.colorBtnDelete());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnDelete.setColor(ColorCustom.colorBtnDeleteHover());
+            }
+        });
+
+        btnEdit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnEdit.setColor(ColorCustom.colorBtnUpdate());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnEdit.setColor(ColorCustom.colorBtnUpdateHover());
+            }
+        });
+
+        btnReset.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnReset.setColor(ColorCustom.colorBtnReset());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnReset.setColor(ColorCustom.colorBtnResetHover());
+            }
+        });
+
+    }
+    
     // Setup the organization table
     public void setOrganizationTable() {
         // Get the list of organizations from the service

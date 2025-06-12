@@ -47,36 +47,42 @@ public class MomoApiHelper {
             String orderInfo = "Quyen gop tu thien";
             String redirectUrl = "https://momo.vn"; // Có thể để tạm, test không cần đúng
             String ipnUrl = "https://momo.vn";
+            String storeId = "MyCharity";
+            String partnerName = "My Charity";
+            String lang = "vi";
+            boolean autoCapture = true;
+            String requestType = "captureWallet";
+            String extraData = "";
 
             String rawSignature = "accessKey=" + ACCESS_KEY
                     + "&amount=" + amount
-                    + "&extraData="
+                    + "&extraData=" + extraData
                     + "&ipnUrl=" + ipnUrl
                     + "&orderId=" + orderId
                     + "&orderInfo=" + orderInfo
                     + "&partnerCode=" + PARTNER_CODE
                     + "&redirectUrl=" + redirectUrl
                     + "&requestId=" + requestId
-                    + "&requestType=captureWallet";
+                    + "&requestType=" + requestType;
 
             String signature = hmacSHA256(rawSignature, SECRET_KEY);
-            String jsonBody = "{"
-                    + "\"partnerCode\":\"" + PARTNER_CODE + "\","
-                    + "\"accessKey\":\"" + ACCESS_KEY + "\","
-                    + "\"requestId\":\"" + requestId + "\","
-                    + "\"amount\":\"" + amount + "\","
-                    + "\"orderId\":\"" + orderId + "\","
-                    + "\"orderInfo\":\"" + orderInfo + "\","
-                    + "\"redirectUrl\":\"" + redirectUrl + "\","
-                    + "\"ipnUrl\":\"" + ipnUrl + "\","
-                    + "\"extraData\":\"\","
-                    + "\"requestType\":\"captureWallet\","
-                    + "\"storeId\":\"Merchant\","
-                    + "\"partnerName\":\"My Charity Org\","
-                    + "\"lang\":\"vi\","
-                    + "\"autoCapture\":true,"
-                    + "\"signature\":\"" + signature + "\""
-                    + "}";
+            // tạo JSON body đầy đủ
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("partnerCode", PARTNER_CODE);
+            jsonBody.put("accessKey", ACCESS_KEY);
+            jsonBody.put("requestId", requestId);
+            jsonBody.put("amount", String.valueOf(amount));
+            jsonBody.put("orderId", orderId);
+            jsonBody.put("orderInfo", orderInfo);
+            jsonBody.put("redirectUrl", redirectUrl);
+            jsonBody.put("ipnUrl", ipnUrl);
+            jsonBody.put("extraData", extraData);
+            jsonBody.put("requestType", requestType);
+            jsonBody.put("storeId", storeId);
+            jsonBody.put("partnerName", partnerName);
+            jsonBody.put("lang", lang);
+            jsonBody.put("autoCapture", autoCapture);
+            jsonBody.put("signature", signature);
 
             URL url = new URL(CREATE_URL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -85,7 +91,7 @@ public class MomoApiHelper {
             conn.setDoOutput(true);
 
             try (OutputStream os = conn.getOutputStream()) {
-                byte[] input = jsonBody.getBytes("utf-8");
+                byte[] input = jsonBody.toString().getBytes("utf-8");
                 os.write(input, 0, input.length);
             }
 
@@ -99,7 +105,6 @@ public class MomoApiHelper {
 
             // parse json
             JSONObject json = new JSONObject(response.toString());
-            System.out.println("Momo API respone: " + json.toString(4));
 
             String link;
             if (json.has("deeplink")) {//neu co deep link khong thi lay payurl

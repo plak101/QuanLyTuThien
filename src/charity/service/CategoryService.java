@@ -41,4 +41,10 @@ public class CategoryService implements ICategoryService {
     public boolean deleteCategory(int id) {
         return categoryRepository.deleteCategory(id);
     }
+
+    @Override
+    public boolean isCategoryNameExits(String name) {
+        return categoryRepository.isCategoryNameExits(name);
+    }
+    
 } 

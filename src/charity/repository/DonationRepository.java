@@ -29,7 +29,7 @@ public class DonationRepository implements IDonationRepository {
     @Override
     public List<Donation> getAllDonation() {
         List<Donation> donations = new ArrayList<>();
-        String query = "SELECT * FROM donation";
+        String query = "SELECT * FROM donation ORDER BY donationDate DESC";
         conn = ConnectionDB.getConnection();
         try {
             ps = conn.prepareStatement(query);

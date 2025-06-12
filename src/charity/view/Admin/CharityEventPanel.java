@@ -4,6 +4,7 @@
  */
 package charity.view.Admin;
 
+import charity.component.ColorCustom;
 import charity.controller.AdminController.CharityEventPanelController;
 import charity.model.Category;
 import java.awt.Color;
@@ -25,6 +26,11 @@ public class CharityEventPanel extends javax.swing.JPanel {
         jbtChoose.setBackground(new Color(230, 230, 230));
         gbtCancel.changeColor("#E53935");
         gbtSave.changeColor("#43A047");
+        
+        gbtAdd.setColor(ColorCustom.colorBtnAdd());
+        gbtDelete.setColor(ColorCustom.colorBtnDelete());
+        gbtUpdate.setColor(ColorCustom.colorBtnUpdate());
+        jbtReset.setColor(ColorCustom.colorBtnReset());
     }
 
     /**

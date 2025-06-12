@@ -1,6 +1,7 @@
 package charity.controller.UserController;
 
 import charity.component.ClassTableModel;
+import charity.component.ColorCustom;
 import charity.component.GButton;
 import charity.model.Donation;
 import charity.service.DonationService;
@@ -198,12 +199,12 @@ public class DonationListController {
         gbtReset.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtReset.changeColor("#2d99ae");
+                gbtReset.setColor(ColorCustom.colorBtnReset());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtReset.changeColor("#5dc1d3");
+                gbtReset.setColor(ColorCustom.colorBtnResetHover());
             }
         });
     }

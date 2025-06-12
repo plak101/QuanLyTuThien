@@ -80,4 +80,5 @@ public class MainPanelController {
         DonateJDialog donateJDialog = new DonateJDialog(frame, true, event.getId(), accountId, userId);
         donateJDialog.setVisible(true);
     }
+    
 }

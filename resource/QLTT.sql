@@ -236,7 +236,7 @@ SELECT * FROM account;
 SELECT * FROM User;
 SELECT * FROM Category;
 SELECT * FROM Event;
-SELECT * FROM Donation;
+SELECT * FROM Donation order by donationDate DESC;
 SELECT * FROM organization;
 
 -- donation list

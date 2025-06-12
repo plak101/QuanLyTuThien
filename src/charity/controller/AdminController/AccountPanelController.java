@@ -2,6 +2,7 @@ package charity.controller.AdminController;
 
 import charity.component.GButton;
 import charity.component.ClassTableModel;
+import charity.component.ColorCustom;
 import charity.model.Account;
 import charity.model.Role;
 import charity.model.User;
@@ -440,48 +441,48 @@ public class AccountPanelController {
         gbtAdd.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtAdd.changeColor("#2d99ae");
+                gbtAdd.setColor(ColorCustom.colorBtnAdd());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtAdd.changeColor("#5dc1d3");
+                gbtAdd.setColor(ColorCustom.colorBtnAddHover());
             }
         });
 
         gbtDelete.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtDelete.changeColor("#2d99ae");
+                gbtDelete.setColor(ColorCustom.colorBtnDelete());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtDelete.changeColor("#5dc1d3");
+                gbtDelete.setColor(ColorCustom.colorBtnDeleteHover());
             }
         });
 
         gbtUpdate.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtUpdate.changeColor("#2d99ae");
+                gbtUpdate.setColor(ColorCustom.colorBtnUpdate());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtUpdate.changeColor("#5dc1d3");
+                gbtUpdate.setColor(ColorCustom.colorBtnUpdateHover());
             }
         });
 
         gbtReset.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtReset.changeColor("#2d99ae");
+                gbtReset.setColor(ColorCustom.colorBtnReset());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtReset.changeColor("#5dc1d3");
+                gbtReset.setColor(ColorCustom.colorBtnResetHover());
             }
         });
 

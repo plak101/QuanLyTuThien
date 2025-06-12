@@ -11,6 +11,7 @@ import charity.utils.ScannerUtils;
 import com.toedter.calendar.JDateChooser;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -32,7 +33,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CharityEventPanelController {
 
@@ -136,48 +142,48 @@ public class CharityEventPanelController {
         gbtAdd.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtAdd.changeColor("#2d99ae");
+                gbtAdd.setColor(ColorCustom.colorBtnAdd());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtAdd.changeColor("#5dc1d3");
+                gbtAdd.setColor(ColorCustom.colorBtnAddHover());
             }
         });
 
         gbtDelete.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtDelete.changeColor("#2d99ae");
+                gbtDelete.setColor(ColorCustom.colorBtnDelete());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtDelete.changeColor("#5dc1d3");
+                gbtDelete.setColor(ColorCustom.colorBtnDeleteHover());
             }
         });
 
         gbtUpdate.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtUpdate.changeColor("#2d99ae");
+                gbtUpdate.setColor(ColorCustom.colorBtnUpdate());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtUpdate.changeColor("#5dc1d3");
+                gbtUpdate.setColor(ColorCustom.colorBtnUpdateHover());
             }
         });
 
         jbtReset.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                jbtReset.changeColor("#2d99ae");
+                jbtReset.setColor(ColorCustom.colorBtnReset());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                jbtReset.changeColor("#5dc1d3");
+                jbtReset.setColor(ColorCustom.colorBtnResetHover());
             }
         });
 
@@ -305,13 +311,12 @@ public class CharityEventPanelController {
         table.setShowGrid(false);
 
         //chu can giua
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-
+//        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+//        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+//
+//        for (int i = 0; i < table.getColumnCount(); i++) {
+//            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+//        }
         //size column
         table.getColumnModel().getColumn(0).setMaxWidth(400);
         table.getColumnModel().getColumn(0).setPreferredWidth(40);
@@ -330,6 +335,44 @@ public class CharityEventPanelController {
 
         table.getColumnModel().getColumn(6).setMaxWidth(500);
         table.getColumnModel().getColumn(6).setPreferredWidth(70);
+
+        //dat mau cho su kien het han
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Color endDateColor = new Color(255, 204, 204);
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+                setHorizontalAlignment(CENTER);
+                int endDateCol = 7;
+                String endDateStr = table.getValueAt(row, endDateCol).toString();
+                Date endDate = null;
+                try {
+                    endDate = sdf.parse(endDateStr);
+                } catch (ParseException ex) {
+                    Logger.getLogger(CharityEventPanelController.class.getName()).log(Level.SEVERE, null, ex);
+                    c.setBackground(Color.white);
+                    return c;
+                }
+                Date now = new Date();
+                System.out.println("\nend date: " + endDate.toString());
+                System.out.println("now: " + now.toString());
+                System.out.println(endDate.before(now));
+
+                if (endDate.before(now)) {
+                    c.setBackground(endDateColor);
+                } else if (!isSelected) {
+                    c.setBackground(Color.white);
+                }
+
+                if (isSelected) {
+                    c.setBackground(table.getSelectionBackground());
+                }
+                return c;
+            }
+
+        });
 
         //show
         table.validate();

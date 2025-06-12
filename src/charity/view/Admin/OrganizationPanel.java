@@ -1,5 +1,6 @@
 package charity.view.Admin;
 
+import charity.component.ColorCustom;
 import charity.controller.AdminController.OrganizationPanelController;
 import charity.component.GButton;
 import java.awt.Color;
@@ -205,22 +206,22 @@ public class OrganizationPanel extends javax.swing.JPanel {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         
         btnAdd = new GButton("THÊM");
-        btnAdd.setBackground(new Color(100, 180, 100));
+        btnAdd.setColor(ColorCustom.colorBtnAdd());
         btnAdd.setForeground(Color.WHITE);
         btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
         btnEdit = new GButton("SỬA");
-        btnEdit.setBackground(new Color(100, 180, 100));
+        btnEdit.setColor(ColorCustom.colorBtnUpdate());
         btnEdit.setForeground(Color.WHITE);
         btnEdit.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
         btnDelete = new GButton("XOÁ");
-        btnDelete.setBackground(new Color(100, 180, 100));
+        btnDelete.setColor(ColorCustom.colorBtnDelete());
         btnDelete.setForeground(Color.WHITE);
         btnDelete.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
         btnClear = new GButton("LÀM MỚI");
-        btnClear.setBackground(new Color(100, 180, 100));
+        btnClear.setColor(ColorCustom.colorBtnReset());
         btnClear.setForeground(Color.WHITE);
         btnClear.setFont(new Font("Segoe UI", Font.BOLD, 14));
         

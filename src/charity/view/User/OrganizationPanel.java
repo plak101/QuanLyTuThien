@@ -66,6 +66,7 @@ public class OrganizationPanel extends JPanel {
 
         gbtReset = new GButton("Làm mới");
         gbtReset.setPreferredSize(new Dimension(100, 30));
+        gbtReset.setForeground(Color.white);
 
         searchPanelLeft.add(lblSearch);
         searchPanelLeft.add(txtSearch);

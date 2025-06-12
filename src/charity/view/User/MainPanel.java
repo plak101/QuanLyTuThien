@@ -51,7 +51,7 @@ public class MainPanel extends JPanel {
 
         //panel chua noi dung chinh
         JPanel contentPanel = new JPanel(new BorderLayout(0, 10));
-        contentPanel.setBorder(new EmptyBorder(30, 10, 10, 40));
+        contentPanel.setBorder(new EmptyBorder(10, 10, 10, 40));
         contentPanel.setBackground(Color.white);
 
         //panel category
@@ -59,7 +59,7 @@ public class MainPanel extends JPanel {
         contentPanel.add(categoryPanel, BorderLayout.NORTH);
 
         //panel chua noi dung va nut dieu hương
-        JPanel centerPanel = new JPanel(new BorderLayout(10, 0));
+        JPanel centerPanel = new JPanel(new BorderLayout(0, 0));
         centerPanel.setBackground(Color.white);
 
         btnPrev = createNavigationButton("←");
@@ -74,7 +74,7 @@ public class MainPanel extends JPanel {
 
         //panel noi dung
         campaignsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 0));
-        campaignsPanel.setBorder(new EmptyBorder(60, 10, 10, 10));
+        campaignsPanel.setBorder(new EmptyBorder(70, 10, 10, 10));
         campaignsPanel.setBackground(Color.white);
 
         JPanel containerPanel = new JPanel(new BorderLayout());
@@ -352,4 +352,8 @@ public class MainPanel extends JPanel {
         campaignsPanel.repaint();
     }
 
+    public MainPanelController getController() {
+        return controller;
+    }
+    
 }

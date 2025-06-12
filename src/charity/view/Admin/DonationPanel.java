@@ -1,5 +1,6 @@
 package charity.view.Admin;
 
+import charity.component.ColorCustom;
 import charity.component.GButton;
 import charity.controller.UserController.DonationListController;
 import java.awt.BorderLayout;
@@ -89,11 +90,14 @@ public class DonationPanel extends JPanel {
         gbtPrint = new GButton();
         gbtPrint.setText("In");
         gbtPrint.setPreferredSize(new Dimension(80, 30));
+        gbtPrint.setForeground(Color.white);
         buttonRightPanel.add(gbtPrint);
 
         gbtReset = new charity.component.GButton();
         gbtReset.setText("Làm mới");
         gbtReset.setPreferredSize(new Dimension(90, 30));
+        gbtReset.setForeground(Color.white);
+        gbtReset.setColor(ColorCustom.colorBtnReset());
         buttonRightPanel.add(gbtReset);
 
         // Panel bảng dữ liệu (ở giữa)
@@ -106,7 +110,7 @@ public class DonationPanel extends JPanel {
 
     public void addTable() {
         jpnTable.setBackground(Color.white);
-        jpnTable.setBorder( BorderFactory.createEmptyBorder(20 , 20, 20, 20));
+        jpnTable.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         table = new JTable();
         table.setBackground(Color.white); // Nền bảng
         table.setFillsViewportHeight(true); // Đảm bảo nền được vẽ đầy

@@ -26,11 +26,15 @@ import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
+
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Calendar;
@@ -231,32 +235,54 @@ public class DonationDialogController implements IFormatData {
     private void showMomoQRCodeDialog(String qrCodeUrl, String orderId, String requestId, long money) {
         JDialog qrDialog = new JDialog(parent, "Quét mã QR Momo", true);
         qrDialog.setLayout(new BorderLayout());
-        qrDialog.setSize(350, 400);
+        qrDialog.setSize(300, 350);
         qrDialog.setLocationRelativeTo(parent);
 
         JLabel qrLabel = null;
+        //tạo mã qr
         try {
-            String filePath = "src/charity/image/qrCode.png";
+            String filePath = "src/charity/image/qrCode_" + orderId + ".png";
             createQRCodeImage(qrCodeUrl, filePath);
             ImageIcon qrIcon = new ImageIcon(filePath);
             qrLabel = new JLabel();
             qrLabel.setIcon(qrIcon);
-            qrDialog.add(qrLabel, BorderLayout.CENTER);
         } catch (Exception ex) {
             MessageDialog.showError("Không thể tải mã QR");
             qrDialog.dispose();
             return;
         }
-
+        JButton btn = new JButton("Mở trang Web");
+        btn.addActionListener(e ->{
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
+                try {
+                    URI uri = new URI(qrCodeUrl);
+                    Desktop.getDesktop().browse(uri);
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(DonationDialogController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(DonationDialogController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+                MessageDialog.showError("Không thể mở trang thanh toán");
+            }
+        });
+        qrDialog.add(qrLabel, BorderLayout.CENTER);
+        qrDialog.add(btn, BorderLayout.SOUTH);
         //Poilling kiem tra trang thai giao dich moi 3 giay
         Timer timer = new Timer(3000, null);
         timer.addActionListener(e -> {
-            if (checkMomoPaymentStatus(orderId, requestId)) {
+            String response = MomoApiHelper.checkMomoTransactionStatus(orderId, requestId);
+            if (response == null) {
+                return;
+            }
+            if (response.contains("\"resultCode\":0")) {
                 timer.stop();
                 qrDialog.dispose();
-
-                //ghi nhan quyen 
                 doDonate();
+            } else if (response.contains("\"resultCode\":1006")) {
+                timer.stop();
+                qrDialog.dispose();
+                MessageDialog.showError("Giao dịch đã bị hủy");
             }
         });
 
@@ -265,11 +291,15 @@ public class DonationDialogController implements IFormatData {
             @Override
             public void windowClosed(WindowEvent e) {
                 timer.stop();
+                String filePath = "src/charity/image/qrCode_" + orderId + ".png";
+                new File(filePath).delete();
             }
 
             @Override
             public void windowClosing(WindowEvent e) {
                 timer.stop();
+                String filePath = "src/charity/image/qrCode_" + orderId + ".png";
+                new File(filePath).delete();
             }
 
         });
@@ -292,6 +322,8 @@ public class DonationDialogController implements IFormatData {
             loadEventData();//cập nhật giao diện
             if (parent instanceof UserUI) {
                 ((UserUI) parent).getController().reloadMainPanel();
+                ((UserUI) parent).getController().reloadEventPanel();
+
             }
             txtMoney.setText("");
             txtMessage.setText("");

@@ -31,7 +31,7 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
         jLabel6.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/user.png", 70, 70));
         
         jLabel9.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/home.png", 24, 24));
-        jLabel1.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/home.png", 24, 24));
+        lbEvent.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/calendar.png", 24, 24));
         jLabel3.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/list2.png", 24, 24));
         jLabel5.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/non-profit-organization (2).png", 24, 24));
         jLabel2.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/user2.png", 24, 24));
@@ -63,12 +63,12 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
         jlbLogout = new javax.swing.JLabel();
         jpnOrganizationOption = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jpnEventOption = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jpnMainOption = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
+        jpnEventOption = new javax.swing.JPanel();
+        lbEvent = new javax.swing.JLabel();
 
         popupMenu1.setLabel("popupMenu1");
 
@@ -178,27 +178,6 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel5.setText("Tổ chức từ thiện");
 
-        jpnEventOption.setOpaque(false);
-
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setText("Sự kiện");
-
-        javax.swing.GroupLayout jpnEventOptionLayout = new javax.swing.GroupLayout(jpnEventOption);
-        jpnEventOption.setLayout(jpnEventOptionLayout);
-        jpnEventOptionLayout.setHorizontalGroup(
-            jpnEventOptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnEventOptionLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jpnEventOptionLayout.setVerticalGroup(
-            jpnEventOptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout jpnOrganizationOptionLayout = new javax.swing.GroupLayout(jpnOrganizationOption);
         jpnOrganizationOption.setLayout(jpnOrganizationOptionLayout);
         jpnOrganizationOptionLayout.setHorizontalGroup(
@@ -206,14 +185,13 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
             .addGroup(jpnOrganizationOptionLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jpnEventOption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpnOrganizationOptionLayout.setVerticalGroup(
             jpnOrganizationOptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpnOrganizationOptionLayout.createSequentialGroup()
-                .addComponent(jpnEventOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -242,6 +220,27 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
             .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
         );
 
+        jpnEventOption.setOpaque(false);
+
+        lbEvent.setBackground(new java.awt.Color(255, 255, 255));
+        lbEvent.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lbEvent.setForeground(new java.awt.Color(255, 255, 255));
+        lbEvent.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbEvent.setText("Sự kiện");
+
+        javax.swing.GroupLayout jpnEventOptionLayout = new javax.swing.GroupLayout(jpnEventOption);
+        jpnEventOption.setLayout(jpnEventOptionLayout);
+        jpnEventOptionLayout.setHorizontalGroup(
+            jpnEventOptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnEventOptionLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lbEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jpnEventOptionLayout.setVerticalGroup(
+            jpnEventOptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lbEvent, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jpnLeftLayout = new javax.swing.GroupLayout(jpnLeft);
         jpnLeft.setLayout(jpnLeftLayout);
         jpnLeftLayout.setHorizontalGroup(
@@ -258,17 +257,15 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
                         .addContainerGap())
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(jpnLeftLayout.createSequentialGroup()
-                .addGroup(jpnLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpnLeftLayout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(jlbLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jpnLeftLayout.createSequentialGroup()
-                        .addGap(83, 83, 83)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, 0))
+                .addGap(53, 53, 53)
+                .addComponent(jlbLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jpnLeftLayout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jpnLeftLayout.createSequentialGroup()
                 .addGap(1, 1, 1)
                 .addComponent(jpnMainOption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jpnEventOption, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpnLeftLayout.setVerticalGroup(
             jpnLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,6 +279,8 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
                 .addGap(54, 54, 54)
                 .addComponent(jpnMainOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
+                .addComponent(jpnEventOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
                 .addComponent(jpnOrganizationOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jpnDonationOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -317,7 +316,6 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -335,6 +333,7 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
     private javax.swing.JPanel jpnMyDonationOption;
     private javax.swing.JPanel jpnOrganizationOption;
     private javax.swing.JPanel jpnRight;
+    private javax.swing.JLabel lbEvent;
     private java.awt.PopupMenu popupMenu1;
     private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables

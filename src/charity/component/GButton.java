@@ -61,7 +61,7 @@ public class GButton extends JButton {
         }
     }
 
-    private void setColor(Color color){
+    public void setColor(Color color){
         this.startColor= color;
         this.endColor = color;
         repaint();

@@ -62,6 +62,8 @@ public class StatisticsPanel extends JPanel {
         });
 
         btnGenerate = new GButton("Tạo báo cáo");
+        btnGenerate.setForeground(Color.white);
+        
         btnExport = new GButton("Xuất PDF");
 
         // dashboard labels

@@ -225,7 +225,12 @@ public class UserUIController {
             System.err.println("Không tìm thấy user");
         }
     }
-    public void reloadMainPanel(){
+    public void reloadEventPanel(){
         eventPanel.getController().reloadData();
+    }
+    public void reloadMainPanel(){
+        MainPanelController controller = mainPanel.getController();
+        controller.loadEvent();
+        
     }
 }

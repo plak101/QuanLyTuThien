@@ -39,25 +39,33 @@ public class CategoryDialogController {
         if (valid()) {
             if (action.equals("ADD")) {
                 category = new Category(name);
+                if (service.addCategory(category)) {
+                    dialog.dispose();
+                    MessageDialog.showSuccess("Thêm danh mục thành công");
+                    //cap nhat maphelper
+                    MapHelper.refreshCategoryCache();
+                } else {
+                    MessageDialog.showError("Thêm danh mục thất bại");
+                }
             } else {//action="UPDATE"
+                category = dialog.getCategory();
                 category.setCategoryName(name);
-            }
-            //upfate len database
-            if (service.addCategory(category)) {
+                            if (service.updateCategory(category)) {
                 dialog.dispose();
-                MessageDialog.showSuccess("Thêm danh mục thành công");
+                MessageDialog.showSuccess("Sửa danh mục thành công");
                 //cap nhat maphelper
                 MapHelper.refreshCategoryCache();
             } else {
-                MessageDialog.showError("Thêm danh mục thất bại");
+                MessageDialog.showError("Sửa danh mục thất bại");
+            }
             }
         }
     }
 
-    public void onCancel(){
+    public void onCancel() {
         dialog.dispose();
     }
-    
+
     private boolean valid() {
         if (ScannerUtils.isEmpty(name, "Tên danh mục không được để trống")) {
             return false;

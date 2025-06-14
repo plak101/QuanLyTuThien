@@ -1,8 +1,10 @@
 package charity.view.Admin;
 
 import charity.component.ColorCustom;
+import charity.component.FontCustom;
 import charity.component.GButton;
-import charity.controller.UserController.DonationListController;
+import charity.controller.AdminController.DonationListController;
+import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,12 +30,15 @@ public class DonationPanel extends JPanel {
     private JScrollPane scroll;
     private JTable table;
 
+    private JDateChooser jdcStartDate, jdcEndDate;
+    private GButton gbtAdd, gbtUpdate, gbtDelete;
+
     public DonationPanel(JFrame parent, int accountId, int userId) {
         this.accountId = accountId;
         this.userId = userId;
         initComponents();
         controller = new DonationListController(txtSearch, jrbtId, jrbtEvent, jrbtUser, gbtReset,
-                table, gbtPrint);
+                table, gbtPrint, gbtAdd, gbtUpdate, gbtDelete, jdcStartDate, jdcEndDate);
         controller.setDonationListTable();
         controller.setEvent();
     }
@@ -42,12 +47,15 @@ public class DonationPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
+        JPanel pnTop = new JPanel(new BorderLayout());
+        pnTop.setBorder(new EmptyBorder(10, 20, 10, 20)); // Khoảng đệm trên và dưới
+        pnTop.setOpaque(false);
         // Panel tìm kiếm (phía Bắc)
         JPanel searchPanel = new JPanel(new BorderLayout());
         searchPanel.setBackground(Color.WHITE);
-        searchPanel.setBorder(new EmptyBorder(50, 20, 20, 20)); // Khoảng đệm trên và dưới
-        add(searchPanel, BorderLayout.NORTH);
-
+        pnTop.add(searchPanel, BorderLayout.NORTH);
+        pnTop.add(createTopSouthPanel(), BorderLayout.SOUTH);
+        add(pnTop, BorderLayout.NORTH);
         // Panel bên trái chứa các thành phần tìm kiếm
         JPanel searchLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         searchLeftPanel.setBackground(Color.WHITE);
@@ -106,6 +114,52 @@ public class DonationPanel extends JPanel {
         addTable();
         add(jpnTable, BorderLayout.CENTER);
 
+    }
+
+    private JPanel createTopSouthPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JPanel pnLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        JPanel pnRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        panel.setOpaque(false);
+        pnLeft.setOpaque(false);
+        pnRight.setOpaque(false);
+
+        //left
+        jdcStartDate = new JDateChooser();
+        jdcStartDate.setPreferredSize(new Dimension(200, 30));
+        jdcStartDate.setDateFormatString("dd/MM/yyyy");
+        jdcEndDate = new JDateChooser();
+        jdcEndDate.setPreferredSize(new Dimension(200, 30));
+        jdcEndDate.setDateFormatString("dd/MM/yyyy");
+
+        JLabel lbStartDate = new JLabel("Bắt đầu");
+        lbStartDate.setFont(FontCustom.Arial13());
+        JLabel lbEndDate = new JLabel("Kết thúc");
+        lbEndDate.setFont(FontCustom.Arial13());
+
+        pnLeft.add(lbStartDate);
+        pnLeft.add(jdcStartDate);
+        pnLeft.add(lbEndDate);
+        pnLeft.add(jdcEndDate);
+
+        //right
+        gbtAdd = createButton("Thêm", ColorCustom.colorBtnAdd());
+        gbtUpdate = createButton("Sửa", ColorCustom.colorBtnUpdate());
+        gbtDelete = createButton("Xóa", ColorCustom.colorBtnDelete());
+        pnRight.add(gbtAdd);
+        pnRight.add(gbtUpdate);
+        pnRight.add(gbtDelete);
+        panel.add(pnLeft, BorderLayout.WEST);
+        panel.add(pnRight, BorderLayout.EAST);
+        return panel;
+    }
+
+    private GButton createButton(String text, Color color) {
+        GButton btn = new GButton(text, color);
+        btn.setFont(FontCustom.Arial13());
+        btn.setPreferredSize(new Dimension(90, 30));
+        btn.setForeground(Color.white);
+        return btn;
     }
 
     public void addTable() {

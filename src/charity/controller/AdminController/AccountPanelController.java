@@ -3,6 +3,7 @@ package charity.controller.AdminController;
 import charity.component.GButton;
 import charity.component.ClassTableModel;
 import charity.component.ColorCustom;
+import charity.component.MapHelper;
 import charity.model.Account;
 import charity.model.Role;
 import charity.model.User;
@@ -181,7 +182,7 @@ public class AccountPanelController {
                 if (text.trim().length() == 0) {
                     rowSorter.setRowFilter(null);
                 } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1,2));
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1, 2));
                 }
             }
 
@@ -253,6 +254,14 @@ public class AccountPanelController {
                         } else {
                             jrbFemale.setSelected(true);
                         }
+                    } else {
+                        txtFullName.setText("");
+                        txtAddress.setText("");
+                        txtPhoneNumber.setText("");
+                        jdcBirthDate.setDate(null);
+                        jrbFemale.setSelected(false);
+                        jrbMale.setSelected(false);
+
                     }
                 }
             }
@@ -341,6 +350,7 @@ public class AccountPanelController {
                 boolean result = accountService.addAccountWithUser(acc, user);
                 if (result) {
                     JOptionPane.showMessageDialog(null, "Thêm tài khoản thành công!");
+                    MapHelper.refreshUserCache();
                 } else {
                     JOptionPane.showMessageDialog(null, "Thêm tài khoản thất bại!");
                 }
@@ -349,6 +359,8 @@ public class AccountPanelController {
                 boolean result = accountService.updateAccountWithUser(acc, user);
                 if (result) {
                     JOptionPane.showMessageDialog(null, "Cập nhật tài khoản thành công!");
+                    MapHelper.refreshUserCache();
+
                 } else {
                     JOptionPane.showMessageDialog(null, "Cập nhật tài khoản thất bại!");
                 }
@@ -378,6 +390,8 @@ public class AccountPanelController {
                     JOptionPane.showMessageDialog(null, "Xóa tài khoản thành công!");
                     setTableAccount();
                     clearForm();
+                    MapHelper.refreshUserCache();
+
                 } else {
                     JOptionPane.showMessageDialog(null, "Xóa tài khoản thất bại!");
                 }
@@ -410,7 +424,7 @@ public class AccountPanelController {
             JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống!");
             return false;
         }
-        if (!ScannerUtils.isPasswordValid(password)){
+        if (!ScannerUtils.isPasswordValid(password)) {
             return false;
         }
 

@@ -356,9 +356,6 @@ public class CharityEventPanelController {
                     return c;
                 }
                 Date now = new Date();
-                System.out.println("\nend date: " + endDate.toString());
-                System.out.println("now: " + now.toString());
-                System.out.println(endDate.before(now));
 
                 if (endDate.before(now)) {
                     c.setBackground(endDateColor);
@@ -497,6 +494,7 @@ public class CharityEventPanelController {
                 eventService.deleteEvent(selectedEventId);
                 showEventTable();
                 clearForm();
+                MapHelper.refreshEventCache();
             }
         } else {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn sự kiện để xóa.");
@@ -515,6 +513,8 @@ public class CharityEventPanelController {
             // THÊM MỚI
             if (eventService.addEvent(event)) {
                 JOptionPane.showMessageDialog(null, "Thêm sự kiện thành công.");
+                MapHelper.refreshEventCache();
+
             } else {
                 JOptionPane.showMessageDialog(null, "Thêm sự kiện thất bại.");
             }
@@ -523,6 +523,8 @@ public class CharityEventPanelController {
             event.setId(selectedEventId); // Set ID để cập nhật
             if (eventService.updateEvent(event)) {
                 JOptionPane.showMessageDialog(null, "Cập nhật sự kiện thành công.");
+                MapHelper.refreshEventCache();
+
             } else {
                 JOptionPane.showMessageDialog(null, "Cập nhật sự kiện thất bại.");
             }

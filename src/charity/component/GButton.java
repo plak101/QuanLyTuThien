@@ -5,6 +5,8 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 
 /**
@@ -12,15 +14,19 @@ import javax.swing.JButton;
  * @author phaml
  */
 public class GButton extends JButton {
-    private Color startColor= Color.decode("#2d99ae");
-    private Color endColor= Color.decode("#2d99ae");
+
+    private Color startColor = Color.decode("#2d99ae");
+    private Color endColor = Color.decode("#2d99ae");
+
     public GButton(String text) {
         super(text);
         setContentAreaFilled(false);   // Không vẽ nền mặc định
         setFocusPainted(false);        // Bỏ hiệu ứng viền focus
         setBorderPainted(false);       // Không vẽ border mặc định
         setOpaque(false);              // Quan trọng để bo góc có hiệu lực
+        setFont(FontCustom.Arial13());
     }
+
     public GButton(String text, Color color) {
         super(text);
         setContentAreaFilled(false);   // Không vẽ nền mặc định
@@ -28,16 +34,17 @@ public class GButton extends JButton {
         setBorderPainted(false);       // Không vẽ border mặc định
         setOpaque(false);              // Quan trọng để bo góc có hiệu lực
         setColor(color);
+        setFont(FontCustom.Arial13());
     }
-    
+
     public GButton() {
         super();
         setContentAreaFilled(false);   // Không vẽ nền mặc định
         setFocusPainted(false);        // Bỏ hiệu ứng viền focus
         setBorderPainted(false);       // Không vẽ border mặc định
         setOpaque(false);              // Quan trọng để bo góc có hiệu lực
+        setFont(FontCustom.Arial13());
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -51,23 +58,39 @@ public class GButton extends JButton {
 
     }
 //                    gbtAdd.changeColor("#2d99ae");
-    public void changeColor( String color){
-        try{
-            this.startColor= Color.decode(color);
-            this.endColor= Color.decode(color);
+
+    public void changeColor(String color) {
+        try {
+            this.startColor = Color.decode(color);
+            this.endColor = Color.decode(color);
             repaint();
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("Mã màu không hợp lệ!");
         }
     }
 
-    public void setColor(Color color){
-        this.startColor= color;
+    public void setColor(Color color) {
+        this.startColor = color;
         this.endColor = color;
         repaint();
     }
-    
+
     public void setBackgroundColor(Color color) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    public void setHover(Color noHover, Color hover) {
+        this.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setColor(noHover);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setColor(hover);
+            }
+        });
+}
 }

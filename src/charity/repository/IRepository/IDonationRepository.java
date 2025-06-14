@@ -14,6 +14,7 @@ import java.sql.*;
 public interface IDonationRepository {
     public List<Donation> getAllDonation();
     public List<Donation> getDonationByUserId(int userId);
+    public Donation getDonationById(int id);
     public List<Donation> getDonationByEventId(int eventId);
     public boolean addDonation(Donation donation);
     public boolean updateDonation(Donation donation);

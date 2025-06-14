@@ -277,8 +277,8 @@ public class OrganizationPanelController {
                         MessageFormat footer = new MessageFormat("Trang {0}");
 
                         try {
-                            organizationTable.print(PrintMode.FIT_WIDTH, header, footer);
-                            JOptionPane.showMessageDialog(null, "In thành công!");
+                            if (organizationTable.print(PrintMode.FIT_WIDTH, header, footer))
+                                JOptionPane.showMessageDialog(null, "In thành công!");
                         } catch (PrinterException ex) {
                             JOptionPane.showMessageDialog(null, "Lỗi khi in: " + ex.getMessage(),
                                     "Lỗi", JOptionPane.ERROR_MESSAGE);

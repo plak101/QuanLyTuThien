@@ -52,4 +52,9 @@ public class DonationService implements IDonationService{
     public int getDonationCount(){
         return donationRepository.getDonationCount();
     }
+
+    @Override
+    public Donation getDonationById(int id) {
+        return donationRepository.getDonationById(id);
+    }
 }

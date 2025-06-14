@@ -136,14 +136,16 @@ public class DonationRepository implements IDonationRepository {
 
     @Override
     public boolean updateDonation(Donation donation) {
-        String query = "UPDATE donation SET eventId=?, userId=?, amount=?, donationDate=?";
+        String query = "UPDATE donation SET eventId=?, userId=?, amount=?,  donationDate=?, description=? WHERE donationId = ?";
         conn = ConnectionDB.getConnection();
         try {
             ps = conn.prepareStatement(query);
             ps.setInt(1, donation.getEventId());
             ps.setInt(2, donation.getUserId());
             ps.setLong(3, donation.getAmount());
-            ps.setDate(4, (Date) donation.getDonationDate());
+            ps.setTimestamp(4,  donation.getDonationDate());
+            ps.setString(5, donation.getDescription());
+            ps.setInt(6, donation.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -219,6 +221,35 @@ public class DonationRepository implements IDonationRepository {
             closeResources(conn, ps, rs);
         }
         return count;
+    }
+
+    @Override
+    public Donation getDonationById(int id) {
+
+        String query = "SELECT * FROM donation WHERE donationId =?";
+        conn = ConnectionDB.getConnection();
+        try {
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Donation donation = new Donation(
+                        rs.getInt("donationId"),
+                        rs.getInt("eventId"),
+                        rs.getInt("userId"),
+                        rs.getLong("amount"),
+                        rs.getTimestamp("donationDate"),
+                        rs.getString("description")
+                );
+                return donation;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeResources(conn, ps, rs);
+        }
+        return null;
     }
 
 }

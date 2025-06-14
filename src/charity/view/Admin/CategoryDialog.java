@@ -83,13 +83,6 @@ public class CategoryDialog extends JDialog {
         txtName.setPreferredSize(new Dimension(350, 30));
         pnForm.add(txtName, gbc);
 
-        gbc.gridy = 2;
-
-        pnForm.add(txtName, gbc);
-        gbc.gridy = 3;
-
-        pnForm.add(txtName, gbc);
-
         //button
         JPanel pnButton = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         pnButton.setOpaque(false);
@@ -116,10 +109,6 @@ public class CategoryDialog extends JDialog {
         return btn;
     }
 
-//    public static void main(String[] args) {
-//        CategoryDialog dialog = new CategoryDialog(null, "Thêm danh mục");
-//        dialog.setVisible(true);
-//    }
     public JTextField getTxtName() {
         return txtName;
     }

@@ -61,7 +61,11 @@ public class CategoryPanelController {
 
         int id = (int) table.getValueAt(row, 0);
         Category category = categoryService.getCategoryById(id);
-
+        if (category ==null){
+            MessageDialog.showError("category null");
+            return;
+        }
+        
         CategoryDialog dialog = new CategoryDialog(null, "Sửa danh mục", "UPDATE", category);
         dialog.setVisible(true);
         loadTable();

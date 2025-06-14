@@ -4,7 +4,7 @@
  */
 package charity.model;
 
-import java.util.Date;
+//import java.util.Date;
 import java.sql.*;
 
 /**
@@ -86,7 +86,7 @@ public class Donation {
         this.amount = amount;
     }
 
-    public Date getDonationDate() {
+    public Timestamp getDonationDate() {
         return donationDate;
     }
 

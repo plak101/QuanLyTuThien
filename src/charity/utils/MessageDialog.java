@@ -6,7 +6,7 @@ public class MessageDialog {
     
     // Thông báo thành công
     public static void showSuccess(String message) {
-        JOptionPane.showMessageDialog(null, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, message, "Thành công", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Thông báo lỗi

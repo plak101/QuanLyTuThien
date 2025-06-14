@@ -15,6 +15,7 @@ public interface IDonationService {
     public List<Donation> getAllDonation();
     public List<Donation> getDonationByUserId(int userId);
     public List<Donation> getDonationByEventId(int eventId);
+    public Donation getDonationById(int id);
     public boolean addDonation(Donation donation);
     public boolean updateDonation(Donation donation);
     public boolean deleteDonation(int donationId);

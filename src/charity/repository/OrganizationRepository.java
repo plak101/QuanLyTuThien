@@ -227,4 +227,105 @@ public class OrganizationRepository implements IOrganizationRepository {
         return count;
     }
 
+    // Kiểm tra trùng lặp email hoặc số điện thoại
+    public Organization findByEmailOrHotline(String email, String hotline) throws SQLException {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT * FROM organization WHERE email = ? OR hotline = ?";
+
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, hotline);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Organization(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("hotline"),
+                    rs.getString("address")
+                );
+            }
+            return null;
+        } finally {
+            closeResources(conn, ps, rs);
+        }
+    }
+
+    // Kiểm tra trùng lặp email hoặc số điện thoại, trừ tổ chức có id tương ứng
+    public Organization findByEmailOrHotlineExceptId(String email, String hotline, int id) throws SQLException {
+        conn = ConnectionDB.getConnection();
+        String sql = "SELECT * FROM organization WHERE (email = ? OR hotline = ?) AND id != ?";
+
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, hotline);
+            ps.setInt(3, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Organization(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("hotline"),
+                    rs.getString("address")
+                );
+            }
+            return null;
+        } finally {
+            closeResources(conn, ps, rs);
+        }
+    }
+
+    // Tìm tổ chức theo tên
+    public Organization findByName(String name) {
+        String sql = "SELECT * FROM Organization WHERE name = ?";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                Organization org = new Organization();
+                org.setId(rs.getInt("id"));
+                org.setName(rs.getString("name"));
+                org.setEmail(rs.getString("email"));
+                org.setHotline(rs.getString("hotline"));
+                org.setAddress(rs.getString("address"));
+                return org;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Tìm tổ chức theo tên, trừ tổ chức có id tương ứng
+    public Organization findByNameExceptId(String name, int id) {
+        String sql = "SELECT * FROM Organization WHERE name = ? AND id != ?";
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, name);
+            stmt.setInt(2, id);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                Organization org = new Organization();
+                org.setId(rs.getInt("id"));
+                org.setName(rs.getString("name"));
+                org.setEmail(rs.getString("email"));
+                org.setHotline(rs.getString("hotline"));
+                org.setAddress(rs.getString("address"));
+                return org;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

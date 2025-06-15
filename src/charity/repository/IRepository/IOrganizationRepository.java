@@ -5,6 +5,7 @@ import charity.model.Organization;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -31,4 +32,7 @@ public interface IOrganizationRepository {
     public void closeResources(Connection conn, PreparedStatement ps);
 
     public void closeResources(Connection conn, PreparedStatement ps, ResultSet rs);
+    
+    public Organization findByEmailOrHotline(String email, String hotline) throws SQLException;
+    public Organization findByEmailOrHotlineExceptId(String email, String hotline, int id) throws SQLException;
 }

@@ -1,9 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package charity.repository;
 
+import charity.model.Distribution;
 import charity.repository.IRepository.IDonationRepository;
 import charity.model.Donation;
 import java.sql.*;
@@ -250,6 +248,127 @@ public class DonationRepository implements IDonationRepository {
             closeResources(conn, ps, rs);
         }
         return null;
+    }    @Override
+    public List<Donation> getDonationByStatus(String status) {
+        List<Donation> donations = new ArrayList<>();
+        String query = "SELECT * FROM donation WHERE status = ?";
+        conn = ConnectionDB.getConnection();
+        try {
+            ps = conn.prepareStatement(query);
+            ps.setString(1, status);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Donation donation = new Donation();                donation.setId(rs.getInt("donationId"));
+                donation.setEventId(rs.getInt("eventId"));
+                donation.setUserId(rs.getInt("userId"));
+                donation.setAmount(rs.getLong("amount"));
+                donation.setDonationDate(rs.getTimestamp("donationDate"));
+                donation.setDescription(rs.getString("description"));
+                donations.add(donation);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeResources(conn, ps, rs);
+        }
+        return donations;
+    }
+
+    @Override
+    public boolean addDistribution(int donationId, int eventId, double amount, String note, int adminId) {
+        String query = "INSERT INTO distribution (donationId, eventId, amount, distributionDate, note, distributedBy) "
+                + "VALUES (?, ?, ?, NOW(), ?, ?)";
+        conn = ConnectionDB.getConnection();
+        try {
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, donationId);
+            ps.setInt(2, eventId);
+            ps.setDouble(3, amount);
+            ps.setString(4, note);
+            ps.setInt(5, adminId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            closeResources(conn, ps);
+        }
+    }
+
+    @Override
+    public List<Distribution> getDistributionsByDonationId(int donationId) {
+        List<Distribution> distributions = new ArrayList<>();
+        String query = "SELECT * FROM distribution WHERE donationId = ?";
+        conn = ConnectionDB.getConnection();
+        try {
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, donationId);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Distribution dist = new Distribution();
+                dist.setId(rs.getInt("id"));
+                dist.setDonationId(rs.getInt("donationId"));
+                dist.setEventId(rs.getInt("eventId"));
+                dist.setAmount(rs.getDouble("amount"));
+                dist.setDistributionDate(rs.getDate("distributionDate"));
+                dist.setNote(rs.getString("note"));
+                dist.setDistributedBy(rs.getInt("distributedBy"));
+                distributions.add(dist);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeResources(conn, ps, rs);
+        }
+        return distributions;
+    }
+
+    @Override
+    public double getTotalDistributedAmount(int donationId) {
+        double total = 0;
+        String query = "SELECT SUM(amount) as total FROM distribution WHERE donationId = ?";
+        conn = ConnectionDB.getConnection();
+        try {
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, donationId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                total = rs.getDouble("total");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeResources(conn, ps, rs);
+        }
+        return total;
+    }
+
+    @Override
+    public double getTotalDonationByEvent(int eventId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean processDonationBySP(int donationId, int adminId, String note) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean distributeDonationBySP(int donationId, int eventId, double amount, String note, int adminId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<Distribution> getDistributionDetails() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<Donation> getDonationDetails() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

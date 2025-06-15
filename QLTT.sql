@@ -28,11 +28,16 @@ CREATE TABLE `donation` (
   `eventId` int NOT NULL,
   `amount` bigint NOT NULL,
   `donationDate` date NOT NULL,
+  `status` varchar(20) DEFAULT 'Pending',
+  `processing_note` text,
+  `processed_date` date,
+  `processed_by` int,
   PRIMARY KEY (`donationId`),
   KEY `userId` (`userId`),
   KEY `eventId` (`eventId`),
   CONSTRAINT `donation_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE,
-  CONSTRAINT `donation_ibfk_2` FOREIGN KEY (`eventId`) REFERENCES `event` (`eventId`) ON DELETE CASCADE
+  CONSTRAINT `donation_ibfk_2` FOREIGN KEY (`eventId`) REFERENCES `event` (`eventId`) ON DELETE CASCADE,
+  CONSTRAINT `donation_ibfk_3` FOREIGN KEY (`processed_by`) REFERENCES `user` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -81,4 +86,30 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+--
+-- Table structure for table `distributions`
+--
+
+DROP TABLE IF EXISTS `distributions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `distributions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `donation_id` int NOT NULL,
+  `event_id` int NOT NULL,
+  `amount` double NOT NULL,
+  `distribution_date` date NOT NULL,
+  `note` text,
+  `distributed_by` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `donation_id` (`donation_id`),
+  KEY `event_id` (`event_id`),
+  KEY `distributed_by` (`distributed_by`),
+  CONSTRAINT `distributions_ibfk_1` FOREIGN KEY (`donation_id`) REFERENCES `donation` (`donationId`),
+  CONSTRAINT `distributions_ibfk_2` FOREIGN KEY (`event_id`) REFERENCES `event` (`eventId`),
+  CONSTRAINT `distributions_ibfk_3` FOREIGN KEY (`distributed_by`) REFERENCES `user` (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dump completed on 2025-03-22  0:15:53

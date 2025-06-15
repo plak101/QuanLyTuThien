@@ -1,4 +1,4 @@
-package charity.view.Admin;
+package charity.controller.AdminController;
 
 import charity.component.ColorCustom;
 import charity.component.GButton;

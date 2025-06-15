@@ -20,4 +20,10 @@ public interface IDonationService {
     public boolean updateDonation(Donation donation);
     public boolean deleteDonation(int donationId);
     public int getDonationCount();
+    public boolean processDonation(int donationId, int adminId, String note);
+    public boolean distributeDonation(int donationId, int eventId, double amount, String note, int adminId);
+    public double getTotalUnprocessedAmount();
+    public List<Donation> getUnprocessedDonations();
+    public List<Donation> getDonationByStatus(String status);
+    public double getTotalDonationByEvent(int eventId);
 }

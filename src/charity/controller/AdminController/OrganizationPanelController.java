@@ -49,6 +49,7 @@ public class OrganizationPanelController {
     private GButton btnAdd;
     private GButton btnEdit;
     private GButton btnDelete;
+    private GButton btnClear;
 
     private OrganizationService organizationService = null;
     private ClassTableModel classTableModel = null;
@@ -67,7 +68,8 @@ public class OrganizationPanelController {
             JTextField txtAddress,
             GButton btnAdd,
             GButton btnEdit,
-            GButton btnDelete) {
+            GButton btnDelete,
+            GButton btnClear) {
 
         this.txtSearch = txtSearch;
         this.btnReset = btnReset;
@@ -80,6 +82,7 @@ public class OrganizationPanelController {
         this.btnAdd = btnAdd;
         this.btnEdit = btnEdit;
         this.btnDelete = btnDelete;
+        this.btnClear = btnClear;
 
         this.organizationService = new OrganizationService();
         this.classTableModel = new ClassTableModel();
@@ -122,15 +125,15 @@ public class OrganizationPanelController {
             }
         });
 
-        btnReset.addMouseListener(new MouseAdapter() {
+        btnClear.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                btnReset.setColor(ColorCustom.colorBtnReset());
+                btnClear.setColor(ColorCustom.colorBtnReset());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                btnReset.setColor(ColorCustom.colorBtnResetHover());
+                btnClear.setColor(ColorCustom.colorBtnResetHover());
             }
         });
 

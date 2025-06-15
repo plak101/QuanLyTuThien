@@ -45,7 +45,8 @@ public class OrganizationPanel extends javax.swing.JPanel {
             txtAddress,
             btnAdd,
             btnEdit,
-            btnDelete
+            btnDelete, 
+            btnClear
         );
         controller.setOrganizationTable();
         controller.setEvent();
@@ -107,7 +108,7 @@ public class OrganizationPanel extends javax.swing.JPanel {
         for (GButton btn : new GButton[]{btnAdd, btnEdit, btnDelete, btnClear, btnReset}) {
             btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
             btn.setForeground(Color.WHITE);
-            btn.setPreferredSize(new Dimension(120, 40));
+            btn.setPreferredSize(new Dimension(120, 30));
         }
 
         btnAdd.setColor(ColorCustom.colorBtnAdd());

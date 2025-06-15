@@ -3,5 +3,5 @@
 *.class
 *.war
 *.log
-
+nbproject/private/
 /dist/

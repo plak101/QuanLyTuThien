@@ -62,7 +62,7 @@ public class DonationPanel extends JPanel {
         searchPanel.add(searchLeftPanel, BorderLayout.WEST);
 
         JLabel lblSearch = new JLabel("Tìm kiếm");
-        lblSearch.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblSearch.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         searchLeftPanel.add(lblSearch);
 
         txtSearch = new JTextField(20);

@@ -59,4 +59,21 @@ public class DBUtils {
             JOptionPane.showMessageDialog(null, "Lỗi không xác định!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    //-------------------------------------------------------
+    //|                Kết nối CSDL                        |
+    //-------------------------------------------------------
+    public static Connection getConnection() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/QLTT";
+            String username = "root";
+            String password = "root";
+            return DriverManager.getConnection(url, username, password);
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("MySQL JDBC Driver not found.", e);
+        } catch (SQLException e) {
+            throw new SQLException("Error connecting to the database: " + e.getMessage(), e);
+        }
+    }
 }

@@ -55,4 +55,12 @@ public class ColorCustom {
     public static Color backroundHeaderTitle() {
         return new Color(33, 123, 191);
     }
+
+    public static Color colorBtnEdit() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public static Color colorBtnInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

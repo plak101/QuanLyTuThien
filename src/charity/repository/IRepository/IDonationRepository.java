@@ -4,6 +4,7 @@
  */
 package charity.repository.IRepository;
 
+import charity.model.Distribution;
 import charity.model.Donation;
 import java.util.List;
 import java.sql.*;
@@ -20,6 +21,15 @@ public interface IDonationRepository {
     public boolean updateDonation(Donation donation);
     public boolean deleteDonation(int donationId);
     public int getDonationCount();
+    public List<Donation> getDonationByStatus(String status);
+    public boolean addDistribution(int donationId, int eventId, double amount, String note, int adminId);
+    public List<Distribution> getDistributionsByDonationId(int donationId);
+    public double getTotalDistributedAmount(int donationId);
+    public double getTotalDonationByEvent(int eventId);
+    public boolean processDonationBySP(int donationId, int adminId, String note);
+    public boolean distributeDonationBySP(int donationId, int eventId, double amount, String note, int adminId);
+    public List<Distribution> getDistributionDetails();
+    public List<Donation> getDonationDetails();
     //Dong ket noi
     public void closeResources(Connection conn, PreparedStatement ps);
     public void closeResources(Connection conn, PreparedStatement ps, ResultSet rs);

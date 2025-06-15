@@ -19,6 +19,13 @@ public class Donation {
     private long amount;
     private Timestamp donationDate;
     private String description;
+    private String status; // Pending, Processed, Distributed
+    private String processingNote;
+    private Date processedDate;
+    private int processedBy;
+    private String donorName;
+    private String eventName;
+    private String processorName;
 
     public Donation() {
     }
@@ -92,6 +99,62 @@ public class Donation {
 
     public void setDonationDate(Timestamp donationDate) {
         this.donationDate = donationDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getProcessingNote() {
+        return processingNote;
+    }
+
+    public void setProcessingNote(String processingNote) {
+        this.processingNote = processingNote;
+    }
+
+    public Date getProcessedDate() {
+        return processedDate;
+    }
+
+    public void setProcessedDate(Date processedDate) {
+        this.processedDate = processedDate;
+    }
+
+    public int getProcessedBy() {
+        return processedBy;
+    }
+
+    public void setProcessedBy(int processedBy) {
+        this.processedBy = processedBy;
+    }
+
+    public String getDonorName() {
+        return donorName;
+    }
+
+    public void setDonorName(String donorName) {
+        this.donorName = donorName;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public String getProcessorName() {
+        return processorName;
+    }
+
+    public void setProcessorName(String processorName) {
+        this.processorName = processorName;
     }
 
 }

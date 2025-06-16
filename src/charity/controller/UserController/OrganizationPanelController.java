@@ -1,7 +1,7 @@
 package charity.controller.UserController;
 
 import charity.component.GButton;
-import charity.controller.AdminController.ClassTableModel;
+import charity.component.ClassTableModel;
 import charity.model.Organization;
 import charity.service.OrganizationService;
 import java.awt.CardLayout;
@@ -123,13 +123,13 @@ public class OrganizationPanelController {
         table.getColumnModel().getColumn(0).setPreferredWidth(50);
 
         table.getColumnModel().getColumn(1).setMaxWidth(500);
-        table.getColumnModel().getColumn(1).setPreferredWidth(150);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
 
         table.getColumnModel().getColumn(2).setMaxWidth(500);
         table.getColumnModel().getColumn(2).setPreferredWidth(200);
 
         table.getColumnModel().getColumn(4).setMaxWidth(500);
-        table.getColumnModel().getColumn(4).setPreferredWidth(200);
+        table.getColumnModel().getColumn(4).setPreferredWidth(250);
 
 //        chu can giua
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -165,5 +165,9 @@ public class OrganizationPanelController {
                 gbtReset.changeColor("#5dc1d3");
             }
         });
+    }
+    
+    public void reloadData(){
+        setOrganizationTable();
     }
 }

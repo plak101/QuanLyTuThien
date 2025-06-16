@@ -6,7 +6,7 @@ public class MessageDialog {
     
     // Thông báo thành công
     public static void showSuccess(String message) {
-        JOptionPane.showMessageDialog(null, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, message, "Thành công", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Thông báo lỗi
@@ -27,5 +27,17 @@ public class MessageDialog {
     // Thông báo đơn giản không icon
     public static void showPlain(String message) {
         JOptionPane.showMessageDialog(null, message, "Thông báo", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    //thong bao xac nhan
+    public static boolean showConfirmDialog(String message, String title) {
+        int result = JOptionPane.showConfirmDialog(
+            null, 
+            message, 
+            title,
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+        return result == JOptionPane.YES_OPTION;
     }
 }

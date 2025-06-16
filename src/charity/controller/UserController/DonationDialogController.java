@@ -10,21 +10,38 @@ import charity.component.ImageIconCustom;
 import charity.model.CharityEvent;
 import charity.model.Donation;
 import charity.service.AccountService;
+import charity.service.CategoryService;
 import charity.service.CharityEventService;
 import charity.service.DonationService;
 import charity.service.OrganizationService;
 import charity.utils.MessageDialog;
+import charity.utils.MomoApiHelper;
+import charity.view.User.UserUI;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.Desktop;
+
+import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.*;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -39,6 +56,7 @@ public class DonationDialogController implements IFormatData {
     private DonationService donationService = new DonationService();
     private AccountService accountService = new AccountService();
     private OrganizationService organizationService = new OrganizationService();
+    private CategoryService categoryService = new CategoryService();
 
     private JTextField txtEventId;
     private JTextField txtEventName;
@@ -55,9 +73,11 @@ public class DonationDialogController implements IFormatData {
     private JLabel jlbImage;
     private JTextArea txtMessage;
     private JProgressBar jpbProgress;
+    private JFrame parent;
+    private Long money;
 //    private CharityEvent event2 = eventService.getEventById(event.getId());
 
-    public DonationDialogController(int accountId, int userId, CharityEvent event, JTextField txtEventId, JTextField txtEventName, JTextField txtCategory, JTextField txtTargetAmount, JTextField txtCurrentAmount, JLabel txtProgress, JTextField txtDateBegin, JTextField txtDateEnd, JTextArea txtDescription, JTextField txtMoney, GButton gbtDonate, JTextField txtOrganization, JLabel jlbImage, JTextArea txtMessage, JProgressBar jpbProgress) {
+    public DonationDialogController(JFrame parent, int accountId, int userId, CharityEvent event, JTextField txtEventId, JTextField txtEventName, JTextField txtCategory, JTextField txtTargetAmount, JTextField txtCurrentAmount, JLabel txtProgress, JTextField txtDateBegin, JTextField txtDateEnd, JTextArea txtDescription, JTextField txtMoney, GButton gbtDonate, JTextField txtOrganization, JLabel jlbImage, JTextArea txtMessage, JProgressBar jpbProgress) {
         this.accountId = accountId;
         this.userId = userId;
         this.event = event;
@@ -76,6 +96,7 @@ public class DonationDialogController implements IFormatData {
         this.txtMessage = txtMessage;
         this.jlbImage = jlbImage;
         this.jpbProgress = jpbProgress;
+        this.parent = parent;
     }
 
     public void loadEventData() {
@@ -83,7 +104,8 @@ public class DonationDialogController implements IFormatData {
         event = event2;
         txtEventId.setText(String.valueOf(event2.getId()));
         txtEventName.setText((event2.getName()));
-        txtCategory.setText((event2.getCategory()));
+        String categoryName = categoryService.getCategoryNameById(event2.getCategoryId());
+        txtCategory.setText(categoryName);
         txtCurrentAmount.setText((String.valueOf(moneyFormat.format(event2.getCurrentAmount()))));
         txtTargetAmount.setText((String.valueOf(moneyFormat.format(event2.getTargetAmount()))));
         txtDateBegin.setText(dateFormat.format(event2.getDateBegin()));
@@ -131,7 +153,13 @@ public class DonationDialogController implements IFormatData {
                     MessageDialog.showError("Bạn chưa xác thực thông tin");
                     return;
                 }
-                System.out.println(txtMessage.getText());
+
+                //kiem tra ngay có hết hạn không
+                if (new java.util.Date().after(event.getDateEnd())) {
+                    MessageDialog.showPlain("Sự kiện đã quá hạn quyên góp");
+                    return;
+                }
+
                 String moneyStr = txtMoney.getText().trim();
                 //kiem tra chuoi rong
                 if (moneyStr.isEmpty()) {
@@ -143,7 +171,7 @@ public class DonationDialogController implements IFormatData {
                     JOptionPane.showMessageDialog(null, "Số tiền nhập vào không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                Long money = Long.parseLong(moneyStr);
+                money = Long.parseLong(moneyStr);
 
                 if (money < 2000) {
                     JOptionPane.showMessageDialog(null, "Số tiền quyên góp không bé hơn 2 000 !", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -152,29 +180,14 @@ public class DonationDialogController implements IFormatData {
                 //hien thi thong bao xac nhan
                 int accept = JOptionPane.showConfirmDialog(null, "Xác nhận quyên góp!", "Xác nhận quyên góp!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (accept == JOptionPane.OK_OPTION) { //Dong y
-                    //lấy thời gian hiện tại
-                    long currentTimeMillis = Calendar.getInstance().getTimeInMillis();
-
-                    // Tạo timestamp của SQL
-                    Timestamp currentTimestamp = new Timestamp(currentTimeMillis);
-                    Donation donation = new Donation(event.getId(), userId, money, currentTimestamp, txtMessage.getText());
-                    //them vao danh sach quyen gop
-                    if (donationService.addDonation(donation)) {
-
-                        // cap nhap so tien hien tai cua event
-                        CharityEvent event2 = eventService.getEventById(event.getId());
-                        event2.setCurrentAmount(event2.getCurrentAmount() + money);
-                        if (eventService.updateEvent(event2)) {
-                            loadEventData();//cập nhật giao diện
-                            txtMoney.setText("");
-                            txtMessage.setText("");
-                            JOptionPane.showMessageDialog(null, "Quyên góp thành công! Cảm ơn sự đóng góp của bạn!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Cập nhật số tiền thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Thêm quyên góp thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    //goi api tao ma qr momo
+                    MomoApiHelper.MomoQRResult qrResult = MomoApiHelper.createQRCode(money, event.getId(), userId);
+                    //kiem tra qr ton tai
+                    if (qrResult == null || qrResult.qrCodeUrl == null || qrResult.qrCodeUrl.isEmpty()) {
+                        MessageDialog.showError("Không thể tạo mã QR Momo");
+                        return;
                     }
+                    showMomoQRCodeDialog(qrResult.qrCodeUrl, qrResult.orderId, qrResult.requestId, money);
                 }
             }
         });
@@ -192,8 +205,9 @@ public class DonationDialogController implements IFormatData {
 
         });
     }
-    public void setHoverButtonEvent(){
-      gbtDonate.addMouseListener(new MouseAdapter() {
+
+    public void setHoverButtonEvent() {
+        gbtDonate.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
                 gbtDonate.changeColor("#2d99ae");
@@ -204,5 +218,152 @@ public class DonationDialogController implements IFormatData {
                 gbtDonate.changeColor("#0c5776");
             }
         });
+    }
+
+    //kiem tra trang thai giao dich
+    private boolean checkMomoPaymentStatus(String orderId, String requestId) {
+        try {
+            String response = MomoApiHelper.checkMomoTransactionStatus(orderId, requestId);
+            return response.contains("\"resultCode\":0");
+        } catch (Exception e) {
+            MessageDialog.showError("Không thể kiểm tra trạng thái giao dịch Momo!");
+            return false;
+        }
+    }
+
+    //hien qr thanh toan
+    private void showMomoQRCodeDialog(String qrCodeUrl, String orderId, String requestId, long money) {
+        JDialog qrDialog = new JDialog(parent, "Quét mã QR Momo", true);
+        qrDialog.setLayout(new BorderLayout());
+        qrDialog.setSize(300, 350);
+        qrDialog.setLocationRelativeTo(parent);
+
+        JLabel qrLabel = null;
+        //tạo mã qr
+        try {
+            String filePath = "src/charity/image/qrCode_" + orderId + ".png";
+            createQRCodeImage(qrCodeUrl, filePath);
+            ImageIcon qrIcon = new ImageIcon(filePath);
+            qrLabel = new JLabel();
+            qrLabel.setIcon(qrIcon);
+        } catch (Exception ex) {
+            MessageDialog.showError("Không thể tải mã QR");
+            qrDialog.dispose();
+            return;
+        }
+        JButton btn = new JButton("Mở trang Web");
+        btn.addActionListener(e ->{
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
+                try {
+                    URI uri = new URI(qrCodeUrl);
+                    Desktop.getDesktop().browse(uri);
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(DonationDialogController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(DonationDialogController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+                MessageDialog.showError("Không thể mở trang thanh toán");
+            }
+        });
+        qrDialog.add(qrLabel, BorderLayout.CENTER);
+        qrDialog.add(btn, BorderLayout.SOUTH);
+        //Poilling kiem tra trang thai giao dich moi 3 giay
+        Timer timer = new Timer(3000, null);
+        timer.addActionListener(e -> {
+            String response = MomoApiHelper.checkMomoTransactionStatus(orderId, requestId);
+            if (response == null) {
+                return;
+            }
+            if (response.contains("\"resultCode\":0")) {
+                timer.stop();
+                qrDialog.dispose();
+                doDonate();
+            } else if (response.contains("\"resultCode\":1006")) {
+                timer.stop();
+                qrDialog.dispose();
+                MessageDialog.showError("Giao dịch đã bị hủy");
+            }
+        });
+
+        //dong timer khi tat dialog
+        qrDialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                timer.stop();
+                String filePath = "src/charity/image/qrCode_" + orderId + ".png";
+                new File(filePath).delete();
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                timer.stop();
+                String filePath = "src/charity/image/qrCode_" + orderId + ".png";
+                new File(filePath).delete();
+            }
+
+        });
+
+        timer.start();
+        qrDialog.setVisible(true);
+    }
+
+    //ghi nhan quyen gop
+    private void doDonate() {
+        //lấy thời gian hiện tại
+        long currentTimeMillis = Calendar.getInstance().getTimeInMillis();
+
+        // Tạo timestamp của SQL
+        Timestamp currentTimestamp = new Timestamp(currentTimeMillis);
+
+        Donation donation = new Donation(event.getId(), userId, money, currentTimestamp, txtMessage.getText());
+        //them vao danh sach quyen gop
+        if (donationService.addDonation(donation)) {
+            loadEventData();//cập nhật giao diện
+            if (parent instanceof UserUI) {
+                ((UserUI) parent).getController().reloadMainPanel();
+                ((UserUI) parent).getController().reloadEventPanel();
+
+            }
+            txtMoney.setText("");
+            txtMessage.setText("");
+            JOptionPane.showMessageDialog(null, "Quyên góp thành công! Cảm ơn sự đóng góp của bạn!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Thêm quyên góp thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void createQRCodeImage(String qrCodeURL, String filePath) {
+        String charset = "UTF-8";
+        System.out.println(filePath);
+        Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+
+        try {
+            BitMatrix matrix = new MultiFormatWriter().encode(
+                    new String(qrCodeURL.getBytes(charset), charset),
+                    BarcodeFormat.QR_CODE,
+                    300,
+                    300,
+                    hintMap
+            );
+
+            File file = new File(filePath);
+
+            System.out.println("Absolute path: " + file.getAbsolutePath());
+            //ghi ma tran ra file
+            MatrixToImageWriter.writeToFile(
+                    matrix,
+                    filePath.substring(filePath.lastIndexOf(".") + 1),
+                    file);
+
+        } catch (WriterException ex) {
+            Logger.getLogger(DonationDialogController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(DonationDialogController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DonationDialogController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

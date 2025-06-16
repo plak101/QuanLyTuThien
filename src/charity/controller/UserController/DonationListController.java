@@ -1,5 +1,7 @@
 package charity.controller.UserController;
 
+import charity.component.ClassTableModel;
+import charity.component.ColorCustom;
 import charity.component.GButton;
 import charity.model.Donation;
 import charity.service.DonationService;
@@ -11,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
+import java.text.MessageFormat;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -38,27 +42,16 @@ public class DonationListController {
     private DonationService donationService = null;
 
     private TableRowSorter<TableModel> rowSorter = null;
+    private JTable table = null;
 
-//    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JPanel tablePanel) {
-//        this.txtSearch = txtSearch;
-//        this.jrbtId = jrbtId;
-//        this.jrbtEvent = jrbtEvent;
-//        this.jrbtUser = jrbtUser;
-//        this.gbtReset = gbtReset;
-//        this.jpnTable = tablePanel;
-//
-//        this.classTableModel = new ClassTableModel();
-//        this.donationService = new DonationService();
-//        setHoverButtonEvent();
-//    }
-    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JPanel tablePanel,GButton gbtPrint) {
+    public DonationListController(JTextField txtSearch, JRadioButton jrbtId, JRadioButton jrbtEvent, JRadioButton jrbtUser, GButton gbtReset, JTable table, GButton gbtPrint) {
         this.txtSearch = txtSearch;
         this.jrbtId = jrbtId;
         this.jrbtEvent = jrbtEvent;
         this.jrbtUser = jrbtUser;
         this.gbtReset = gbtReset;
-        this.jpnTable = tablePanel;
-        this.gbtPrint= gbtPrint;
+        this.table = table;
+        this.gbtPrint = gbtPrint;
         this.classTableModel = new ClassTableModel();
         this.donationService = new DonationService();
         setHoverButtonEvent();
@@ -67,10 +60,10 @@ public class DonationListController {
     public void setDonationListTable() {
         List<Donation> donations = donationService.getAllDonation();
         DefaultTableModel model = classTableModel.getDonationTable(donations);
-        JTable donationTable = new JTable(model);
+        table.setModel(model);
 
-        rowSorter = new TableRowSorter<>(donationTable.getModel());
-        donationTable.setRowSorter(rowSorter);
+        rowSorter = new TableRowSorter<>(table.getModel());
+        table.setRowSorter(rowSorter);
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
 
             //"(?i)" khong phan biet chu hoa chu thuong
@@ -116,17 +109,7 @@ public class DonationListController {
             }
         });
 
-        designTable(donationTable);
-
-        //hien thi ra jpnTable
-        JScrollPane scroll = new JScrollPane(donationTable);
-        scroll.setViewportView(donationTable);
-        scroll.setPreferredSize(new Dimension(900, 400));
-        jpnTable.removeAll();
-        jpnTable.setLayout(new CardLayout());
-        jpnTable.add(scroll);
-        jpnTable.revalidate();
-        jpnTable.repaint();
+        designTable(table);
     }
 
     public void designTable(JTable table) {
@@ -142,7 +125,7 @@ public class DonationListController {
         table.setShowVerticalLines(false);
         table.setShowGrid(false);
         table.setShowHorizontalLines(true);
-        table.setFont(new Font("Segoe UI",Font.PLAIN , 14));
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
 //        table.setGridColor(new Color(230, 230, 230));
 //        //size column
@@ -169,16 +152,38 @@ public class DonationListController {
         table.validate();
         table.repaint();
     }
-    
-    public void setEvent(){
+
+    public void setEvent() {
         gbtReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setDonationListTable();
             }
         });
+        gbtPrint.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    MessageFormat header = new MessageFormat("DANH SÁCH QUYÊN GÓP");
+                    MessageFormat footer = new MessageFormat("Trang {0}");
+
+                    try {
+                        if (table.print(JTable.PrintMode.FIT_WIDTH, header, footer))
+                            JOptionPane.showMessageDialog(null, "In thành công!");
+                    } catch (PrinterException ex) {
+                        JOptionPane.showMessageDialog(null, "Lỗi khi in: " + ex.getMessage(),
+                                "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    // If any error occurs, refresh the table
+                    setDonationListTable();
+                }
+            }
+        });
     }
-    public void setHoverButtonEvent(){
+
+    public void setHoverButtonEvent() {
 
         gbtPrint.addMouseListener(new MouseAdapter() {
             @Override
@@ -194,14 +199,17 @@ public class DonationListController {
         gbtReset.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtReset.changeColor("#2d99ae");
+                gbtReset.setColor(ColorCustom.colorBtnReset());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtReset.changeColor("#5dc1d3");
+                gbtReset.setColor(ColorCustom.colorBtnResetHover());
             }
         });
     }
 
+    public void reloadData() {
+        setDonationListTable();
+    }
 }

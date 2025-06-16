@@ -4,6 +4,7 @@
  */
 package charity.view.Admin;
 
+import charity.component.ColorCustom;
 import charity.controller.AdminController.AccountPanelController;
 import charity.model.Role;
 
@@ -21,6 +22,11 @@ public class AccountPanel extends javax.swing.JPanel {
         AccountPanelController controller = new AccountPanelController(txtAddress, txtEmail, txtFullName, txtId, txtPassword, txtPhoneNumber, txtSearch, txtUsername, jcbRole, jdcBirthDate, jrbFemale, jrbMale, tableAccount, gbtAdd, gbtDelete, gbtReset, gbtUpdate, gbtSave, gbtCancel);
         gbtCancel.changeColor("#E53935");
         gbtSave.changeColor("#43A047");
+
+        gbtAdd.setColor(ColorCustom.colorBtnAdd());
+        gbtDelete.setColor(ColorCustom.colorBtnDelete());
+        gbtUpdate.setColor(ColorCustom.colorBtnUpdate());
+        gbtReset.setColor(ColorCustom.colorBtnReset());
     }
 
     /**

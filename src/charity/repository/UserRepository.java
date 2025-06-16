@@ -2,6 +2,7 @@ package charity.repository;
 
 import charity.repository.IRepository.IUserRepository;
 import charity.model.User;
+import charity.utils.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -69,6 +70,8 @@ public class UserRepository implements IUserRepository {
             ps.setDate(6, user.getBirthday());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
+            DBUtils.handleDuplicateEntry((SQLException) ex);
+
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } finally {
@@ -90,6 +93,8 @@ public class UserRepository implements IUserRepository {
             ps.setInt(6, user.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
+            DBUtils.handleDuplicateEntry((SQLException) ex);
+
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } finally {
@@ -199,7 +204,7 @@ public class UserRepository implements IUserRepository {
     @Override
     public User getUserByAccountId(int accountId) {
         User user = null;
-        String sql = "SELECT a.* FROM user u JOIN account a ON a.id=u.accountId WHERE accountId =?";
+        String sql = "SELECT u.* FROM user u JOIN account a ON a.id=u.accountId WHERE accountId =?";
         conn = ConnectionDB.getConnection();
         try {
             ps = conn.prepareStatement(sql);
@@ -228,21 +233,20 @@ public class UserRepository implements IUserRepository {
         String query = "(SELECT 1 FROM user WHERE phone = ? LIMIT 1)\n"
                 + "UNION\n"
                 + "(SELECT 1 FROM organization WHERE hotline = ? LIMIT 1);";
-        conn= ConnectionDB.getConnection();
+        conn = ConnectionDB.getConnection();
         try {
-            ps =conn.prepareStatement(query);
+            ps = conn.prepareStatement(query);
             ps.setString(1, phoneNumber);
             ps.setString(2, phoneNumber);
-            rs= ps.executeQuery();
+            rs = ps.executeQuery();
             return rs.next();//neu co tra ve la da ton tai
         } catch (SQLException ex) {
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             closeResources(conn, ps, rs);
         }
         return false;
-        
-        
+
     }
 
 }

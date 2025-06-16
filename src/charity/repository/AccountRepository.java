@@ -8,6 +8,7 @@ import charity.model.Account;
 import charity.model.Role;
 import charity.model.User;
 import charity.repository.IRepository.IAccountRepository;
+import charity.utils.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.*;
@@ -72,6 +73,8 @@ public class AccountRepository implements IAccountRepository {
             ps.setString(4, "User");
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
+            DBUtils.handleDuplicateEntry((SQLException) ex);
+
             Logger.getLogger(AccountRepository.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeResources(conn, ps);
@@ -92,6 +95,7 @@ public class AccountRepository implements IAccountRepository {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
+            DBUtils.handleDuplicateEntry((SQLException) ex);
             Logger.getLogger(AccountRepository.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeResources(conn, ps);
@@ -157,14 +161,14 @@ public class AccountRepository implements IAccountRepository {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                if (username.equals(rs.getString("username")) && password.equals(rs.getString("password"))){
-                                    return new Account(
-                        rs.getInt("id"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("email"),
-                        Role.valueOf(rs.getString("role"))
-                );
+                if (username.equals(rs.getString("username")) && password.equals(rs.getString("password"))) {
+                    return new Account(
+                            rs.getInt("id"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("email"),
+                            Role.valueOf(rs.getString("role"))
+                    );
                 }
             }
         } catch (SQLException ex) {
@@ -327,6 +331,7 @@ public class AccountRepository implements IAccountRepository {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            DBUtils.handleDuplicateEntry((SQLException) e);
             return false;
         }
     }
@@ -363,8 +368,12 @@ public class AccountRepository implements IAccountRepository {
             conn.commit();
             return true;
         } catch (SQLException e) {
+            DBUtils.handleDuplicateEntry((SQLException) e);
+
             try {
-                if (conn != null) conn.rollback();
+                if (conn != null) {
+                    conn.rollback();
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -372,29 +381,35 @@ public class AccountRepository implements IAccountRepository {
             return false;
         } finally {
             try {
-                if (psAccount != null) psAccount.close();
-                if (psUser != null) psUser.close();
-                if (conn != null) conn.setAutoCommit(true);
+                if (psAccount != null) {
+                    psAccount.close();
+                }
+                if (psUser != null) {
+                    psUser.close();
+                }
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-    
+
     }
 
     @Override
     public boolean isEmailExist(String email) {
-        conn= ConnectionDB.getConnection();
+        conn = ConnectionDB.getConnection();
         String query = "SELECT count(*) FROM account WHERE email=?";
         try {
             ps = conn.prepareStatement(query);
-            rs= ps.executeQuery();
-            if (rs.next()){
-                return rs.getInt(1)>0;
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccountRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             closeResources(conn, ps, rs);
         }
         return false;

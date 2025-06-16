@@ -39,6 +39,10 @@ public class InforPanel extends javax.swing.JPanel {
         gbtAccountSave.changeColor("#43A047");
     }
 
+    public InforPanelController getController() {
+        return controller;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

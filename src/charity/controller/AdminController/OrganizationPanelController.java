@@ -1,9 +1,12 @@
 package charity.controller.AdminController;
 
 import charity.component.GButton;
-import charity.controller.UserController.ClassTableModel;
+import charity.component.ClassTableModel;
+import charity.component.ColorCustom;
+import charity.component.MapHelper;
 import charity.model.Organization;
 import charity.service.OrganizationService;
+import charity.view.Admin.OrganizationDialog;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -20,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -81,6 +85,57 @@ public class OrganizationPanelController {
         this.classTableModel = new ClassTableModel();
     }
 
+    public void setHoverButton(){
+        btnAdd.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnAdd.setColor(ColorCustom.colorBtnAdd());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnAdd.setColor(ColorCustom.colorBtnAddHover());
+            }
+        });
+
+        btnDelete.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnDelete.setColor(ColorCustom.colorBtnDelete());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnDelete.setColor(ColorCustom.colorBtnDeleteHover());
+            }
+        });
+
+        btnEdit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnEdit.setColor(ColorCustom.colorBtnUpdate());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnEdit.setColor(ColorCustom.colorBtnUpdateHover());
+            }
+        });
+
+        btnReset.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnReset.setColor(ColorCustom.colorBtnReset());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnReset.setColor(ColorCustom.colorBtnResetHover());
+            }
+        });
+
+    }
+    
     // Setup the organization table
     public void setOrganizationTable() {
         // Get the list of organizations from the service
@@ -213,66 +268,72 @@ public class OrganizationPanelController {
 
     // Setup the event handlers for buttons
     public void setEvent() {
-        // Reset/Print button to print the table or refresh it
+        // Reset/Print button
         btnReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    // If text on button is "PRINT", print the table
-                    if ("PRINT".equals(btnReset.getText())) {
+                    if ("IN".equals(btnReset.getText())) {
                         MessageFormat header = new MessageFormat("DANH SÁCH TỔ CHỨC TỪ THIỆN");
                         MessageFormat footer = new MessageFormat("Trang {0}");
-
                         try {
-                            organizationTable.print(PrintMode.FIT_WIDTH, header, footer);
-                            JOptionPane.showMessageDialog(null, "In thành công!");
+                            boolean complete = organizationTable.print(PrintMode.FIT_WIDTH, header, footer);
+                            if (complete) {
+                                JOptionPane.showMessageDialog(null, "In thành công!");
+                            }
                         } catch (PrinterException ex) {
                             JOptionPane.showMessageDialog(null, "Lỗi khi in: " + ex.getMessage(),
                                     "Lỗi", JOptionPane.ERROR_MESSAGE);
                         }
                     } else {
-                        // Otherwise refresh the table
                         setOrganizationTable();
                     }
                 } catch (Exception ex) {
-                    // If any error occurs, refresh the table
                     setOrganizationTable();
                 }
             }
         });
 
-        // Add button to create a new organization
+        // Add button
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (validateForm()) {
-                    // Create new organization object
-                    Organization org = new Organization();
-                    org.setName(txtOrgName.getText().trim());
-                    org.setEmail(txtEmail.getText().trim());
-                    org.setHotline(txtHotline.getText().trim());
-                    org.setAddress(txtAddress.getText().trim());
+                try {
+                    OrganizationDialog dialog = new OrganizationDialog(
+                        SwingUtilities.getWindowAncestor(btnAdd),
+                        "Thêm tổ chức mới",
+                        null
+                    );
+                    dialog.setVisible(true);
 
-                    // Call service to save the organization
-                    boolean success = organizationService.addOrganization(org);
+                    if (dialog.isConfirmed()) {
+                        Organization org = dialog.getOrganization();
+                        boolean success = organizationService.addOrganization(org);
 
-                    if (success) {
-                        JOptionPane.showMessageDialog(null, "Thêm tổ chức thành công!");
-                        clearForm();
-                        setOrganizationTable(); // Refresh table
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Thêm tổ chức thất bại!",
-                                "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        if (success) {
+                            JOptionPane.showMessageDialog(null, "Thêm tổ chức thành công!");
+                            clearForm();
+                            setOrganizationTable();
+                            MapHelper.refreshOrganizationCache();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Thêm tổ chức thất bại!",
+                                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, 
+                        "Có lỗi xảy ra khi thêm tổ chức: " + ex.getMessage(),
+                        "Lỗi", 
+                        JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
-        // Edit button to update an existing organization
+        // Edit button
         btnEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (validateForm()) {
+                try {
                     String idStr = txtOrgId.getText().trim();
                     if (idStr.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Vui lòng chọn tổ chức cần cập nhật!",
@@ -280,129 +341,109 @@ public class OrganizationPanelController {
                         return;
                     }
 
-                    try {
-                        int id = Integer.parseInt(idStr);
+                    int id = Integer.parseInt(idStr);
+                    Organization org = new Organization();
+                    org.setId(id);
+                    org.setName(txtOrgName.getText().trim());
+                    org.setEmail(txtEmail.getText().trim());
+                    org.setHotline(txtHotline.getText().trim());
+                    org.setAddress(txtAddress.getText().trim());
 
-                        // Create organization object with updated info
-                        Organization org = new Organization();
-                        org.setId(id);
-                        org.setName(txtOrgName.getText().trim());
-                        org.setEmail(txtEmail.getText().trim());
-                        org.setHotline(txtHotline.getText().trim());
-                        org.setAddress(txtAddress.getText().trim());
+                    OrganizationDialog dialog = new OrganizationDialog(
+                        SwingUtilities.getWindowAncestor(btnEdit),
+                        "Sửa thông tin tổ chức",
+                        org
+                    );
+                    dialog.setVisible(true);
 
-                        // Call service to update
-                        boolean success = organizationService.updateOrganization(org);
+                    if (dialog.isConfirmed()) {
+                        Organization updatedOrg = dialog.getOrganization();
+                        updatedOrg.setId(id);
+                        
+                        boolean success = organizationService.updateOrganization(updatedOrg);
 
                         if (success) {
                             JOptionPane.showMessageDialog(null, "Cập nhật tổ chức thành công!");
                             clearForm();
-                            setOrganizationTable(); // Refresh table
+                            setOrganizationTable();
+                            MapHelper.refreshOrganizationCache();
                         } else {
                             JOptionPane.showMessageDialog(null, "Cập nhật tổ chức thất bại!",
                                     "Lỗi", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(null, "Mã tổ chức không hợp lệ!",
-                                "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        });
-
-        // Delete button to remove an organization
-        btnDelete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String idStr = txtOrgId.getText().trim();
-                if (idStr.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng chọn tổ chức cần xóa!",
-                            "Thông báo", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-
-                try {
-                    int id = Integer.parseInt(idStr);
-
-                    // First check if organization has related events
-                    int totalEvents = organizationService.getTotalEvent(id);
-
-                    if (totalEvents > 0) {
-                        try {
-                            // Lấy danh sách các sự kiện liên quan
-                            List<String> relatedEvents = organizationService.getRelatedEvents(id);
-
-                            // Tạo thông báo với danh sách các sự kiện
-                            StringBuilder message = new StringBuilder();
-                            message.append("Không thể xóa tổ chức này vì có ").append(totalEvents).append(" sự kiện liên quan!\n");
-                            message.append("Vui lòng xoá các sự kiện liên quan trước.\n\n");
-                            message.append("Danh sách sự kiện liên quan:\n");
-
-                            for (String event : relatedEvents) {
-                                message.append("- ").append(event).append("\n");
-                            }
-
-                            JOptionPane.showMessageDialog(null,
-                                    message.toString(),
-                                    "Lỗi", JOptionPane.ERROR_MESSAGE);
-                        } catch (Exception ex) {
-                            // Nếu có lỗi khi lấy danh sách sự kiện, hiển thị thông báo đơn giản hơn
-                            JOptionPane.showMessageDialog(null,
-                                    "Không thể xóa tổ chức này vì có " + totalEvents + " sự kiện liên quan!\n"
-                                    + "Vui lòng xoá các sự kiện liên quan trước.",
-                                    "Lỗi", JOptionPane.ERROR_MESSAGE);
-                            ex.printStackTrace();
-                        }
-                        return;
-                    }
-
-                    // Confirm before deleting
-                    int confirm = JOptionPane.showConfirmDialog(null,
-                            "Bạn có chắc chắn muốn xóa tổ chức này?",
-                            "Xác nhận xóa",
-                            JOptionPane.YES_NO_OPTION);
-
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        // Call service to delete
-                        boolean success = organizationService.deleteOrganization(id);
-
-                        if (success) {
-                            JOptionPane.showMessageDialog(null, "Xóa tổ chức thành công!");
-                            clearForm();
-                            setOrganizationTable(); // Refresh table
-                        } else {
-                            // Attempt to get related events again in case they were added between checks
-                            try {
-                                totalEvents = organizationService.getTotalEvent(id);
-                                if (totalEvents > 0) {
-                                    List<String> relatedEvents = organizationService.getRelatedEvents(id);
-
-                                    StringBuilder message = new StringBuilder();
-                                    message.append("Không thể xóa tổ chức này vì có ").append(totalEvents).append(" sự kiện liên quan!\n");
-                                    message.append("Vui lòng xoá các sự kiện liên quan trước.\n\n");
-                                    message.append("Danh sách sự kiện liên quan:\n");
-
-                                    for (String event : relatedEvents) {
-                                        message.append("- ").append(event).append("\n");
-                                    }
-
-                                    JOptionPane.showMessageDialog(null,
-                                            message.toString(),
-                                            "Lỗi", JOptionPane.ERROR_MESSAGE);
-                                } else {
-                                    JOptionPane.showMessageDialog(null, "Xóa tổ chức thất bại!",
-                                            "Lỗi", JOptionPane.ERROR_MESSAGE);
-                                }
-                            } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(null, "Xóa tổ chức thất bại!",
-                                        "Lỗi", JOptionPane.ERROR_MESSAGE);
-                                ex.printStackTrace();
-                            }
                         }
                     }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Mã tổ chức không hợp lệ!",
                             "Lỗi", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, 
+                        "Có lỗi xảy ra khi cập nhật tổ chức: " + ex.getMessage(),
+                        "Lỗi", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        // Delete button
+        btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String idStr = txtOrgId.getText().trim();
+                    if (idStr.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn tổ chức cần xóa!",
+                                "Thông báo", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+
+                    int id = Integer.parseInt(idStr);
+
+                    // Check related events
+                    int totalEvents = organizationService.getTotalEvent(id);
+                    if (totalEvents > 0) {
+                        StringBuilder message = new StringBuilder();
+                        message.append("Không thể xóa tổ chức này vì có ").append(totalEvents).append(" sự kiện liên quan!\n");
+                        message.append("Vui lòng xoá các sự kiện liên quan trước.\n\n");
+                        message.append("Danh sách sự kiện liên quan:\n");
+
+                        List<String> relatedEvents = organizationService.getRelatedEvents(id);
+                        for (String event : relatedEvents) {
+                            message.append("- ").append(event).append("\n");
+                        }
+
+                        JOptionPane.showMessageDialog(null,
+                                message.toString(),
+                                "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Confirm deletion
+                    int confirm = JOptionPane.showConfirmDialog(null,
+                            "Bạn có chắc chắn muốn xóa tổ chức này?",
+                            "Xác nhận xóa",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        boolean success = organizationService.deleteOrganization(id);
+                        if (success) {
+                            JOptionPane.showMessageDialog(null, "Xóa tổ chức thành công!");
+                            clearForm();
+                            setOrganizationTable();
+                            MapHelper.refreshOrganizationCache();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Xóa tổ chức thất bại!",
+                                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Mã tổ chức không hợp lệ!",
+                            "Lỗi", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, 
+                        "Có lỗi xảy ra khi xóa tổ chức: " + ex.getMessage(),
+                        "Lỗi", 
+                        JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

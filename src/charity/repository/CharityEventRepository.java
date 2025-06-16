@@ -42,7 +42,7 @@ public class CharityEventRepository implements ICharityEventRepository {
                         rs.getInt("eventId"),
                         rs.getInt("organizationId"),
                         rs.getString("eventName"),
-                        rs.getString("category"),
+                        rs.getInt("categoryId"),
                         rs.getLong("targetAmount"),
                         rs.getLong("currentAmount"),
                         rs.getDate("dateBegin"),
@@ -64,14 +64,14 @@ public class CharityEventRepository implements ICharityEventRepository {
     public boolean addEvent(CharityEvent event) {
         Connection connection = ConnectionDB.getConnection();
         PreparedStatement ps = null;
-        String query = "INSERT INTO event (organizationId, eventName, category, targetAmount, currentAmount, dateBegin, dateEnd, description, imageUrl)"
-                + "VALUE (?,?, ?, ?, ?, ?, ?,?,?)";
+        String query = "INSERT INTO event (organizationId, eventName, categoryId, targetAmount, currentAmount, dateBegin, dateEnd, description, imageUrl)"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             ps = connection.prepareStatement(query);
             ps.setInt(1, event.getOrganizationId());
             ps.setString(2, event.getName());
-            ps.setString(3, event.getCategory());
+            ps.setInt(3, event.getCategoryId());
             ps.setLong(4, event.getTargetAmount());
             ps.setLong(5, event.getCurrentAmount());
             ps.setDate(6, (Date) event.getDateBegin());
@@ -92,13 +92,13 @@ public class CharityEventRepository implements ICharityEventRepository {
     public boolean updateEvent(CharityEvent event) {
         connection = ConnectionDB.getConnection();
         ps = null;
-        String query = "UPDATE event SET organizationId=?, eventName=?, category=?, targetAmount=?, currentAmount=?, dateBegin=?, dateEnd=?, description=?, imageUrl=?"
+        String query = "UPDATE event SET organizationId=?, eventName=?, categoryId=?, targetAmount=?, currentAmount=?, dateBegin=?, dateEnd=?, description=?, imageUrl=?"
                 + "WHERE eventId=?";
         try {
             ps = connection.prepareStatement(query);
             ps.setInt(1, event.getOrganizationId());
             ps.setString(2, event.getName());
-            ps.setString(3, event.getCategory());
+            ps.setInt(3, event.getCategoryId());
             ps.setLong(4, event.getTargetAmount());
             ps.setLong(5, event.getCurrentAmount());
             ps.setDate(6, (Date) event.getDateBegin());
@@ -180,7 +180,7 @@ public class CharityEventRepository implements ICharityEventRepository {
                         rs.getInt("eventId"),
                         rs.getInt("organizationId"),
                         rs.getString("eventName"),
-                        rs.getString("category"),
+                        rs.getInt("categoryId"),
                         rs.getLong("targetAmount"),
                         rs.getLong("currentAmount"),
                         rs.getDate("dateBegin"),
@@ -211,12 +211,13 @@ public class CharityEventRepository implements ICharityEventRepository {
                         rs.getInt("eventId"),
                         rs.getInt("organizationId"),
                         rs.getString("eventName"),
-                        rs.getString("category"),
+                        rs.getInt("categoryId"),
                         rs.getLong("targetAmount"),
                         rs.getLong("currentAmount"),
                         rs.getDate("dateBegin"),
                         rs.getDate("dateEnd"),
-                        rs.getString("description")
+                        rs.getString("description"),
+                        rs.getString("imageUrl")
                 ));
             }
         } catch (SQLException ex) {
@@ -240,7 +241,7 @@ public class CharityEventRepository implements ICharityEventRepository {
                         rs.getInt("eventId"),
                         rs.getInt("organizationId"),
                         rs.getString("eventName"),
-                        rs.getString("category"),
+                        rs.getInt("categoryId"),
                         rs.getLong("targetAmount"),
                         rs.getLong("currentAmount"),
                         rs.getDate("dateBegin"),

@@ -12,47 +12,6 @@ public class OrganizationService implements IOrganizationService{
     private OrganizationRepository organizationRepository = new OrganizationRepository();
 
 
-//    public List<Organization> getAllOrganization() {
-//        List<Organization> organizations = new ArrayList<>();
-//        Connection connection = null;
-//        Statement statement = null;
-//        ResultSet rs = null;
-//
-//        try {
-//            connection = ConnectionDB.getConnection(); // Get DB connection
-//            String sql = "SELECT * FROM Organization ORDER BY id";
-//            statement = connection.createStatement();
-//            rs = statement.executeQuery(sql);
-//
-//            while (rs.next()) {
-//                Organization org = new Organization();
-//                org.setId(rs.getInt("id"));
-//                org.setName(rs.getString("name"));
-//                org.setEmail(rs.getString("email"));
-//                org.setHotline(rs.getString("hotline"));
-//                org.setAddress(rs.getString("address"));
-//                organizations.add(org); // Thêm tổ chức vào danh sách
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(OrganizationService.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            // Đảm bảo đóng các tài nguyên sau khi sử dụng
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//                if (statement != null) {
-//                    statement.close();
-//                }
-//                if (connection != null) {
-//                    connection.close();
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(OrganizationService.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        return organizations; // Trả về danh sách các tổ chức
-//    }
 
     public OrganizationService() {
         this.organizationRepository = new OrganizationRepository();
@@ -186,5 +145,53 @@ public class OrganizationService implements IOrganizationService{
     @Override
     public int getOrganizationCount() {
         return organizationRepository.getOrganizationCount();
+    }
+
+    // Kiểm tra trùng lặp email hoặc số điện thoại
+    public Organization findByEmailOrHotline(String email, String hotline) {
+        try {
+            return organizationRepository.findByEmailOrHotline(email, hotline);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi khi kiểm tra trùng lặp: " + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    // Kiểm tra trùng lặp email hoặc số điện thoại, trừ tổ chức có id tương ứng
+    public Organization findByEmailOrHotlineExceptId(String email, String hotline, int id) {
+        try {
+            return organizationRepository.findByEmailOrHotlineExceptId(email, hotline, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi khi kiểm tra trùng lặp: " + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    // Kiểm tra trùng lặp tên tổ chức
+    public Organization findByName(String name) {
+        try {
+            return organizationRepository.findByName(name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi khi kiểm tra tên tổ chức: " + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    // Kiểm tra trùng lặp tên tổ chức, trừ tổ chức có id tương ứng
+    public Organization findByNameExceptId(String name, int id) {
+        try {
+            return organizationRepository.findByNameExceptId(name, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi khi kiểm tra tên tổ chức: " + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
     }
 }

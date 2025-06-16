@@ -1,14 +1,17 @@
 package charity.controller.AdminController;
 
 import charity.component.*;
+import charity.model.Category;
 import charity.model.CharityEvent;
 import charity.model.Organization;
+import charity.service.CategoryService;
 import charity.service.CharityEventService;
 import charity.service.OrganizationService;
 import charity.utils.ScannerUtils;
 import com.toedter.calendar.JDateChooser;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -30,7 +33,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CharityEventPanelController {
 
@@ -44,7 +52,7 @@ public class CharityEventPanelController {
     private JTextField txtTargetAmount;
     private JButton jbtChoose;
     private GButton jbtReset;
-    private JComboBox<String> jcbCategory;
+    private JComboBox<Object> jcbCategory;
     private JComboBox<Object> jcbOrganization;
     private com.toedter.calendar.JDateChooser jdcDateBegin;
     private com.toedter.calendar.JDateChooser jdcDateEnd;
@@ -59,6 +67,7 @@ public class CharityEventPanelController {
     private ClassTableModel classTableModel = null;
     private CharityEventService eventService = null;
     private OrganizationService organizationService = null;
+    private CategoryService categoryService = null;
 
     private TableRowSorter<TableModel> rowSorter = null;
     private JTable eventTable = null;
@@ -73,7 +82,7 @@ public class CharityEventPanelController {
 
     }
 
-    public CharityEventPanelController(JPanel jpnTable, JTextField txtCurrentAmount, JTextArea txtDescription, JTextField txtEventName, JTextField txtId, JTextField txtProgress, JTextField txtSearch, JTextField txtTargetAmount, JButton jbtChoose, GButton jbtReset, JComboBox<String> jcbCategory, JComboBox<Object> jcbOrganization, JDateChooser jdcDateBegin, JDateChooser jdcDateEnd, GButton gbtAdd, GButton gbtCancel, GButton gbtDelete, GButton gbtSave, GButton gbtUpdate, JLabel jlbImage) {
+    public CharityEventPanelController(JPanel jpnTable, JTextField txtCurrentAmount, JTextArea txtDescription, JTextField txtEventName, JTextField txtId, JTextField txtProgress, JTextField txtSearch, JTextField txtTargetAmount, JButton jbtChoose, GButton jbtReset, JComboBox<Object> jcbCategory, JComboBox<Object> jcbOrganization, JDateChooser jdcDateBegin, JDateChooser jdcDateEnd, GButton gbtAdd, GButton gbtCancel, GButton gbtDelete, GButton gbtSave, GButton gbtUpdate, JLabel jlbImage) {
         this.jpnTable = jpnTable;
         this.txtCurrentAmount = txtCurrentAmount;
         this.txtDescription = txtDescription;
@@ -97,6 +106,7 @@ public class CharityEventPanelController {
 
         eventService = new CharityEventService();
         organizationService = new OrganizationService();
+        categoryService = new CategoryService();
         classTableModel = new ClassTableModel();
 
         init();
@@ -132,51 +142,51 @@ public class CharityEventPanelController {
         gbtAdd.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtAdd.changeColor("#2d99ae");
+                gbtAdd.setColor(ColorCustom.colorBtnAdd());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtAdd.changeColor("#5dc1d3");
+                gbtAdd.setColor(ColorCustom.colorBtnAddHover());
             }
         });
-        
+
         gbtDelete.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtDelete.changeColor("#2d99ae");
+                gbtDelete.setColor(ColorCustom.colorBtnDelete());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtDelete.changeColor("#5dc1d3");
+                gbtDelete.setColor(ColorCustom.colorBtnDeleteHover());
             }
         });
-        
+
         gbtUpdate.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtUpdate.changeColor("#2d99ae");
+                gbtUpdate.setColor(ColorCustom.colorBtnUpdate());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtUpdate.changeColor("#5dc1d3");
+                gbtUpdate.setColor(ColorCustom.colorBtnUpdateHover());
             }
         });
-        
+
         jbtReset.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                jbtReset.changeColor("#2d99ae");
+                jbtReset.setColor(ColorCustom.colorBtnReset());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                jbtReset.changeColor("#5dc1d3");
+                jbtReset.setColor(ColorCustom.colorBtnResetHover());
             }
         });
-        
+
         gbtCancel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
@@ -188,7 +198,7 @@ public class CharityEventPanelController {
                 gbtCancel.changeColor("#F44336");
             }
         });
-        
+
         gbtSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
@@ -200,7 +210,7 @@ public class CharityEventPanelController {
                 gbtSave.changeColor("#66BB6A");
             }
         });
-        
+
     }
 
     //khoi tao CBB Organization
@@ -215,9 +225,10 @@ public class CharityEventPanelController {
 
     //khoi tao CBB Category
     private void loadJcbCategory() {
-        String[] categorys = {"", "Y tế", "Giáo dục", "Cứu trợ", "Môi trường", "Nhà ở", "Trẻ em"};
+        List<Category> categorys = categoryService.getAllCategories();
         jcbCategory.removeAllItems();
-        for (String c : categorys) {
+        jcbCategory.addItem(null);
+        for (Category c : categorys) {
             jcbCategory.addItem(c);
         }
     }
@@ -300,13 +311,12 @@ public class CharityEventPanelController {
         table.setShowGrid(false);
 
         //chu can giua
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-
+//        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+//        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+//
+//        for (int i = 0; i < table.getColumnCount(); i++) {
+//            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+//        }
         //size column
         table.getColumnModel().getColumn(0).setMaxWidth(400);
         table.getColumnModel().getColumn(0).setPreferredWidth(40);
@@ -326,6 +336,41 @@ public class CharityEventPanelController {
         table.getColumnModel().getColumn(6).setMaxWidth(500);
         table.getColumnModel().getColumn(6).setPreferredWidth(70);
 
+        //dat mau cho su kien het han
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Color endDateColor = new Color(255, 204, 204);
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+                setHorizontalAlignment(CENTER);
+                int endDateCol = 7;
+                String endDateStr = table.getValueAt(row, endDateCol).toString();
+                Date endDate = null;
+                try {
+                    endDate = sdf.parse(endDateStr);
+                } catch (ParseException ex) {
+                    Logger.getLogger(CharityEventPanelController.class.getName()).log(Level.SEVERE, null, ex);
+                    c.setBackground(Color.white);
+                    return c;
+                }
+                Date now = new Date();
+
+                if (endDate.before(now)) {
+                    c.setBackground(endDateColor);
+                } else if (!isSelected) {
+                    c.setBackground(Color.white);
+                }
+
+                if (isSelected) {
+                    c.setBackground(table.getSelectionBackground());
+                }
+                return c;
+            }
+
+        });
+
         //show
         table.validate();
         table.repaint();
@@ -344,26 +389,19 @@ public class CharityEventPanelController {
                     txtId.setText(model.getValueAt(selectedRow, 0).toString());
                     txtEventName.setText(model.getValueAt(selectedRow, 2).toString());
                     selectComboBoxItemByName(jcbOrganization, model.getValueAt(selectedRow, 1).toString());
-                    jcbCategory.setSelectedItem(model.getValueAt(selectedRow, 3).toString());
-
+                    selectComboBoxItemByName(jcbCategory, model.getValueAt(selectedRow, 3).toString());
                     txtProgress.setText(model.getValueAt(selectedRow, 6).toString());
-
                     int eventId = Integer.parseInt(txtId.getText());
                     CharityEvent event = eventService.getEventById(eventId);
-
                     if (event != null) {
                         txtTargetAmount.setText(String.valueOf(event.getTargetAmount()));
                         txtCurrentAmount.setText(String.valueOf(event.getCurrentAmount()));
-
-//                        txtTargetAmount.setText(nf.format(event.getTargetAmount()));
-//                        txtCurrentAmount.setText(nf.format(event.getCurrentAmount()));
                         txtDescription.setText(event.getDescription());
                         jdcDateBegin.setDate(event.getDateBegin());
                         jdcDateEnd.setDate(event.getDateEnd());
                         jlbImage.setIcon(ImageIconCustom.getSmoothIcon(event.getImageUrl(), 160, 160));
                         imageUrl = event.getImageUrl();
                     }
-
                     // Lưu lại ID sự kiện đã chọn
                     selectedEventId = eventId;
 
@@ -382,7 +420,7 @@ public class CharityEventPanelController {
         txtId.setText(String.valueOf(event.getId()));
         txtEventName.setText(event.getName());
         selectComboBoxItemByName(jcbOrganization, organizationService.getNameById(event.getOrganizationId()));
-        jcbCategory.setSelectedItem(event.getCategory());
+        selectComboBoxItemByName(jcbCategory, categoryService.getCategoryNameById(event.getCategoryId()));
         txtTargetAmount.setText(String.valueOf(event.getTargetAmount()));
         txtCurrentAmount.setText(String.valueOf(event.getCurrentAmount()));
         txtDescription.setText(event.getDescription());
@@ -456,6 +494,7 @@ public class CharityEventPanelController {
                 eventService.deleteEvent(selectedEventId);
                 showEventTable();
                 clearForm();
+                MapHelper.refreshEventCache();
             }
         } else {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn sự kiện để xóa.");
@@ -474,6 +513,8 @@ public class CharityEventPanelController {
             // THÊM MỚI
             if (eventService.addEvent(event)) {
                 JOptionPane.showMessageDialog(null, "Thêm sự kiện thành công.");
+                MapHelper.refreshEventCache();
+
             } else {
                 JOptionPane.showMessageDialog(null, "Thêm sự kiện thất bại.");
             }
@@ -482,6 +523,8 @@ public class CharityEventPanelController {
             event.setId(selectedEventId); // Set ID để cập nhật
             if (eventService.updateEvent(event)) {
                 JOptionPane.showMessageDialog(null, "Cập nhật sự kiện thành công.");
+                MapHelper.refreshEventCache();
+
             } else {
                 JOptionPane.showMessageDialog(null, "Cập nhật sự kiện thất bại.");
             }
@@ -548,7 +591,7 @@ public class CharityEventPanelController {
     private CharityEvent getEventFromForm() {
         try {
             String name = txtEventName.getText().trim();
-            String category = (String) jcbCategory.getSelectedItem();
+            Category category = (Category) jcbCategory.getSelectedItem();
             Organization org = (Organization) jcbOrganization.getSelectedItem();
 
             long targetAmount = Long.parseLong(txtTargetAmount.getText().trim());
@@ -573,7 +616,7 @@ public class CharityEventPanelController {
             CharityEvent event = new CharityEvent();
             event.setId(selectedEventId);
             event.setName(name);
-            event.setCategory(category);
+            event.setCategoryId(category.getCategoryId());
             event.setOrganizationId(org.getId());
             event.setTargetAmount(targetAmount);
             event.setCurrentAmount(currentAmount);

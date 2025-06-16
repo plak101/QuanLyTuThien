@@ -107,7 +107,6 @@ public class LoginController {
             @Override
             public void mouseExited(MouseEvent e) {
                 jlbSignUp.setForeground(Color.BLACK);
-
             }
 
         });

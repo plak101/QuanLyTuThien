@@ -1,6 +1,9 @@
 package charity.controller.AdminController;
 
 import charity.component.GButton;
+import charity.component.ClassTableModel;
+import charity.component.ColorCustom;
+import charity.component.MapHelper;
 import charity.model.Account;
 import charity.model.Role;
 import charity.model.User;
@@ -13,7 +16,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Date;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -180,7 +182,7 @@ public class AccountPanelController {
                 if (text.trim().length() == 0) {
                     rowSorter.setRowFilter(null);
                 } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1, 2));
                 }
             }
 
@@ -252,6 +254,14 @@ public class AccountPanelController {
                         } else {
                             jrbFemale.setSelected(true);
                         }
+                    } else {
+                        txtFullName.setText("");
+                        txtAddress.setText("");
+                        txtPhoneNumber.setText("");
+                        jdcBirthDate.setDate(null);
+                        jrbFemale.setSelected(false);
+                        jrbMale.setSelected(false);
+
                     }
                 }
             }
@@ -333,10 +343,6 @@ public class AccountPanelController {
                 return;
             }
 
-            if (!validateFormInput()) {
-                return;
-            }
-
             Account acc = getAccountFromForm();
             User user = getUserFromForm(acc.getId());
             if (selectedAction == 1) {
@@ -344,6 +350,7 @@ public class AccountPanelController {
                 boolean result = accountService.addAccountWithUser(acc, user);
                 if (result) {
                     JOptionPane.showMessageDialog(null, "Thêm tài khoản thành công!");
+                    MapHelper.refreshUserCache();
                 } else {
                     JOptionPane.showMessageDialog(null, "Thêm tài khoản thất bại!");
                 }
@@ -352,6 +359,8 @@ public class AccountPanelController {
                 boolean result = accountService.updateAccountWithUser(acc, user);
                 if (result) {
                     JOptionPane.showMessageDialog(null, "Cập nhật tài khoản thành công!");
+                    MapHelper.refreshUserCache();
+
                 } else {
                     JOptionPane.showMessageDialog(null, "Cập nhật tài khoản thất bại!");
                 }
@@ -381,6 +390,8 @@ public class AccountPanelController {
                     JOptionPane.showMessageDialog(null, "Xóa tài khoản thành công!");
                     setTableAccount();
                     clearForm();
+                    MapHelper.refreshUserCache();
+
                 } else {
                     JOptionPane.showMessageDialog(null, "Xóa tài khoản thất bại!");
                 }
@@ -413,7 +424,7 @@ public class AccountPanelController {
             JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống!");
             return false;
         }
-        if (!ScannerUtils.isPasswordValid(password)){
+        if (!ScannerUtils.isPasswordValid(password)) {
             return false;
         }
 
@@ -444,48 +455,48 @@ public class AccountPanelController {
         gbtAdd.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtAdd.changeColor("#2d99ae");
+                gbtAdd.setColor(ColorCustom.colorBtnAdd());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtAdd.changeColor("#5dc1d3");
+                gbtAdd.setColor(ColorCustom.colorBtnAddHover());
             }
         });
 
         gbtDelete.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtDelete.changeColor("#2d99ae");
+                gbtDelete.setColor(ColorCustom.colorBtnDelete());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtDelete.changeColor("#5dc1d3");
+                gbtDelete.setColor(ColorCustom.colorBtnDeleteHover());
             }
         });
 
         gbtUpdate.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtUpdate.changeColor("#2d99ae");
+                gbtUpdate.setColor(ColorCustom.colorBtnUpdate());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtUpdate.changeColor("#5dc1d3");
+                gbtUpdate.setColor(ColorCustom.colorBtnUpdateHover());
             }
         });
 
         gbtReset.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                gbtReset.changeColor("#2d99ae");
+                gbtReset.setColor(ColorCustom.colorBtnReset());
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                gbtReset.changeColor("#5dc1d3");
+                gbtReset.setColor(ColorCustom.colorBtnResetHover());
             }
         });
 

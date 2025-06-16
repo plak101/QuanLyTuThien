@@ -1,5 +1,6 @@
 package charity.view.Admin;
 
+import charity.component.ColorCustom;
 import charity.controller.AdminController.OrganizationPanelController;
 import charity.component.GButton;
 import java.awt.Color;
@@ -8,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import javax.swing.border.LineBorder;
 
 public class OrganizationPanel extends javax.swing.JPanel {
 
@@ -23,6 +26,9 @@ public class OrganizationPanel extends javax.swing.JPanel {
     private GButton btnDelete;
     private GButton btnClear;
     private GButton btnReset;
+    private JRadioButton rdoId;
+    private JRadioButton rdoEvent;
+    private JRadioButton rdoDonator;
     private OrganizationPanelController controller;
 
     public OrganizationPanel() {
@@ -43,235 +49,140 @@ public class OrganizationPanel extends javax.swing.JPanel {
         );
         controller.setOrganizationTable();
         controller.setEvent();
+        controller.setHoverButton();
     }
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
         setBackground(Color.WHITE);
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setBorder(new EmptyBorder(20, 20, 20, 20));
+        setLayout(new BorderLayout(10, 10));
+        setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // Top panel with search
+        // Top panel with search and filter options
         JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.WHITE);
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
+        topPanel.setLayout(new GridBagLayout());
+        topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // Sử dụng màu đen thay vì màu đỏ cho tất cả các label
-        Color labelColor = Color.BLACK;
-        Font labelFont = new Font("Segoe UI", Font.BOLD, 14);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel lblSearch = new JLabel("SEARCH");
-        lblSearch.setForeground(labelColor);
-        lblSearch.setFont(labelFont);
-
+        // Search field
+        JLabel lblSearch = new JLabel("Tìm kiếm");
+        lblSearch.setFont(new Font("Segoe UI", Font.BOLD, 14));
         txtSearch = new JTextField();
-        txtSearch.setPreferredSize(new java.awt.Dimension(200, 30));
-        txtSearch.setBackground(Color.LIGHT_GRAY);
+        txtSearch.setPreferredSize(new Dimension(250, 35));
+        txtSearch.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(Color.decode("#B4EBE6")),
+            BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
 
-        // Tạo panel con để căn chỉnh các thành phần search
-        JPanel searchPanel = new JPanel();
-        searchPanel.setBackground(Color.WHITE);
-        searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.X_AXIS));
-        searchPanel.add(lblSearch);
-        searchPanel.add(Box.createHorizontalStrut(10));
-        searchPanel.add(txtSearch);
+        // Radio buttons for search type
+        rdoId = new JRadioButton("ID");
+        rdoEvent = new JRadioButton("Sự kiện");
+        rdoDonator = new JRadioButton("Người quyên góp");
+        
+        ButtonGroup searchTypeGroup = new ButtonGroup();
+        searchTypeGroup.add(rdoId);
+        searchTypeGroup.add(rdoEvent);
+        searchTypeGroup.add(rdoDonator);
+        
+        rdoId.setSelected(true);
 
-        topPanel.add(Box.createHorizontalGlue());
-        topPanel.add(searchPanel);
-        topPanel.add(Box.createHorizontalGlue());
+        // Style radio buttons
+        for (JRadioButton rdo : new JRadioButton[]{rdoId, rdoEvent, rdoDonator}) {
+            rdo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            rdo.setBackground(Color.WHITE);
+        }
 
-        // Middle panel with input fields - sử dụng GridLayout để căn đối hơn
-        JPanel middlePanel = new JPanel();
-        middlePanel.setBackground(Color.WHITE);
-        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.Y_AXIS));
-        
-        // Tạo các panel con để chứa từng cặp label và textfield
-        JPanel row1 = new JPanel();
-        row1.setBackground(Color.WHITE);
-        row1.setLayout(new BoxLayout(row1, BoxLayout.X_AXIS));
-        
-        JPanel row2 = new JPanel();
-        row2.setBackground(Color.WHITE);
-        row2.setLayout(new BoxLayout(row2, BoxLayout.X_AXIS));
-        
-        // Organization ID field
-        JLabel lblOrgId = new JLabel("Mã tổ chức");
-        lblOrgId.setForeground(labelColor);
-        lblOrgId.setFont(labelFont);
-        lblOrgId.setPreferredSize(new java.awt.Dimension(100, 30));
-        
-        txtOrgId = new JTextField();
-        txtOrgId.setPreferredSize(new java.awt.Dimension(100, 30));
-        txtOrgId.setBackground(Color.LIGHT_GRAY);
-        txtOrgId.setEditable(false);
-        
-        // Organization Name field
-        JLabel lblOrgName = new JLabel("Tên tổ chức");
-        lblOrgName.setForeground(labelColor);
-        lblOrgName.setFont(labelFont);
-        lblOrgName.setPreferredSize(new java.awt.Dimension(100, 30));
-        
-        txtOrgName = new JTextField();
-        txtOrgName.setPreferredSize(new java.awt.Dimension(200, 30));
-        txtOrgName.setBackground(Color.LIGHT_GRAY);
-        
-        // Email field
-        JLabel lblEmail = new JLabel("Email");
-        lblEmail.setForeground(labelColor);
-        lblEmail.setFont(labelFont);
-        lblEmail.setPreferredSize(new java.awt.Dimension(80, 30));
-        
-        txtEmail = new JTextField();
-        txtEmail.setPreferredSize(new java.awt.Dimension(200, 30));
-        txtEmail.setBackground(Color.LIGHT_GRAY);
-        
-        // Hotline field
-        JLabel lblHotline = new JLabel("Hotline");
-        lblHotline.setForeground(labelColor);
-        lblHotline.setFont(labelFont);
-        lblHotline.setPreferredSize(new java.awt.Dimension(80, 30));
-        
-        txtHotline = new JTextField();
-        txtHotline.setPreferredSize(new java.awt.Dimension(150, 30));
-        txtHotline.setBackground(Color.LIGHT_GRAY);
-        
-        // Address field
-        JLabel lblAddress = new JLabel("Địa chỉ");
-        lblAddress.setForeground(labelColor);
-        lblAddress.setFont(labelFont);
-        lblAddress.setPreferredSize(new java.awt.Dimension(80, 30));
-        
-        txtAddress = new JTextField();
-        txtAddress.setPreferredSize(new java.awt.Dimension(200, 30));
-        txtAddress.setBackground(Color.LIGHT_GRAY);
-        
-        // Thêm các thành phần vào hàng 1
-        JPanel orgIdPanel = new JPanel();
-        orgIdPanel.setBackground(Color.WHITE);
-        orgIdPanel.setLayout(new BoxLayout(orgIdPanel, BoxLayout.X_AXIS));
-        orgIdPanel.add(lblOrgId);
-        orgIdPanel.add(Box.createHorizontalStrut(5));
-        orgIdPanel.add(txtOrgId);
-        
-        JPanel orgNamePanel = new JPanel();
-        orgNamePanel.setBackground(Color.WHITE);
-        orgNamePanel.setLayout(new BoxLayout(orgNamePanel, BoxLayout.X_AXIS));
-        orgNamePanel.add(lblOrgName);
-        orgNamePanel.add(Box.createHorizontalStrut(5));
-        orgNamePanel.add(txtOrgName);
-        
-        JPanel emailPanel = new JPanel();
-        emailPanel.setBackground(Color.WHITE);
-        emailPanel.setLayout(new BoxLayout(emailPanel, BoxLayout.X_AXIS));
-        emailPanel.add(lblEmail);
-        emailPanel.add(Box.createHorizontalStrut(5));
-        emailPanel.add(txtEmail);
-        
-        row1.add(orgIdPanel);
-        row1.add(Box.createHorizontalStrut(20));
-        row1.add(orgNamePanel);
-        row1.add(Box.createHorizontalStrut(20));
-        row1.add(emailPanel);
-        
-        // Thêm các thành phần vào hàng 2
-        JPanel hotlinePanel = new JPanel();
-        hotlinePanel.setBackground(Color.WHITE);
-        hotlinePanel.setLayout(new BoxLayout(hotlinePanel, BoxLayout.X_AXIS));
-        hotlinePanel.add(lblHotline);
-        hotlinePanel.add(Box.createHorizontalStrut(5));
-        hotlinePanel.add(txtHotline);
-        
-        JPanel addressPanel = new JPanel();
-        addressPanel.setBackground(Color.WHITE);
-        addressPanel.setLayout(new BoxLayout(addressPanel, BoxLayout.X_AXIS));
-        addressPanel.add(lblAddress);
-        addressPanel.add(Box.createHorizontalStrut(5));
-        addressPanel.add(txtAddress);
-        
-        row2.add(hotlinePanel);
-        row2.add(Box.createHorizontalStrut(20));
-        row2.add(addressPanel);
-        row2.add(Box.createHorizontalStrut(20));
-        row2.add(Box.createHorizontalGlue());
-        
-        // Thêm các hàng vào middlePanel
-        middlePanel.add(row1);
-        middlePanel.add(Box.createVerticalStrut(15));
-        middlePanel.add(row2);
-        
-        // Button panel
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(Color.WHITE);
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-        
+        // Buttons
         btnAdd = new GButton("THÊM");
-        btnAdd.setBackground(new Color(100, 180, 100));
-        btnAdd.setForeground(Color.WHITE);
-        btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        
         btnEdit = new GButton("SỬA");
-        btnEdit.setBackground(new Color(100, 180, 100));
-        btnEdit.setForeground(Color.WHITE);
-        btnEdit.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnDelete = new GButton("XÓA");
+        btnClear = new GButton("LÀM MỚI");
+        btnReset = new GButton("IN");
+
+        // Style buttons
+        for (GButton btn : new GButton[]{btnAdd, btnEdit, btnDelete, btnClear, btnReset}) {
+            btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            btn.setForeground(Color.WHITE);
+            btn.setPreferredSize(new Dimension(120, 40));
+        }
+
+        btnAdd.setColor(ColorCustom.colorBtnAdd());
+        btnEdit.setColor(ColorCustom.colorBtnUpdate());
+        btnDelete.setColor(ColorCustom.colorBtnDelete());
+        btnClear.setColor(ColorCustom.colorBtnReset());
+        btnReset.setColor(new Color(100, 180, 100));
+
+        // Add components to panel using GridBagLayout
+        gbc.gridx = 0; gbc.gridy = 0;
+        topPanel.add(lblSearch, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 0; gbc.gridwidth = 2;
+        topPanel.add(txtSearch, gbc);
+
+        // Radio buttons in a sub panel
+        JPanel radioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        radioPanel.setBackground(Color.WHITE);
+        radioPanel.add(rdoId);
+        radioPanel.add(rdoEvent);
+        radioPanel.add(rdoDonator);
+
+        gbc.gridx = 3; gbc.gridy = 0; gbc.gridwidth = 3;
+        topPanel.add(radioPanel, gbc);
+
+        // Hidden fields for selected organization data
+        txtOrgId = new JTextField();
+        txtOrgName = new JTextField();
+        txtEmail = new JTextField();
+        txtHotline = new JTextField();
+        txtAddress = new JTextField();
         
-        btnDelete = new GButton("XOÁ");
-        btnDelete.setBackground(new Color(100, 180, 100));
-        btnDelete.setForeground(Color.WHITE);
-        btnDelete.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        
-        btnClear = new GButton("CLEAR");
-        btnClear.setBackground(new Color(100, 180, 100));
-        btnClear.setForeground(Color.WHITE);
-        btnClear.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        
-        btnReset = new GButton("PRINT");
-        btnReset.setBackground(new Color(100, 180, 100));
-        btnReset.setForeground(Color.WHITE);
-        btnReset.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        
-        buttonPanel.add(Box.createHorizontalGlue());
+        // These fields are not visible but needed for controller
+        txtOrgId.setVisible(false);
+        txtOrgName.setVisible(false);
+        txtEmail.setVisible(false);
+        txtHotline.setVisible(false);
+        txtAddress.setVisible(false);
+
+        // Buttons in a sub panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        buttonPanel.setBackground(Color.WHITE);
         buttonPanel.add(btnAdd);
-        buttonPanel.add(Box.createHorizontalStrut(15));
         buttonPanel.add(btnEdit);
-        buttonPanel.add(Box.createHorizontalStrut(15));
         buttonPanel.add(btnDelete);
-        buttonPanel.add(Box.createHorizontalStrut(15));
         buttonPanel.add(btnClear);
-        buttonPanel.add(Box.createHorizontalStrut(15));
         buttonPanel.add(btnReset);
-        buttonPanel.add(Box.createHorizontalGlue());
-        
-        // Table panel for displaying data
+
+        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 6;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        topPanel.add(buttonPanel, gbc);
+
+        // Table panel
         jpnTable = new JPanel();
-        jpnTable.setBackground(Color.LIGHT_GRAY);
-        jpnTable.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
+        jpnTable.setLayout(new BorderLayout());
+        jpnTable.setBackground(Color.WHITE);
+        jpnTable.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+
         JLabel lblTableTitle = new JLabel("DANH SÁCH TỔ CHỨC TỪ THIỆN");
         lblTableTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblTableTitle.setForeground(labelColor);
         lblTableTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTableTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         
-        // Add all panels to main panel
-        add(topPanel);
-        add(Box.createVerticalStrut(20));
-        add(middlePanel);
-        add(Box.createVerticalStrut(20));
-        add(buttonPanel);
-        add(Box.createVerticalStrut(20));
-        add(lblTableTitle);
-        add(Box.createVerticalStrut(10));
-        add(jpnTable);
-        
-        // Add action listeners
+        jpnTable.add(lblTableTitle, BorderLayout.NORTH);
+
+        // Add panels to main panel
+        add(topPanel, BorderLayout.NORTH);
+        add(jpnTable, BorderLayout.CENTER);
+
+        // Add clear button action
         btnClear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                txtOrgId.setText("");
-                txtOrgName.setText("");
-                txtEmail.setText("");
-                txtHotline.setText("");
-                txtAddress.setText("");
-                txtOrgName.requestFocus();
+                txtSearch.setText("");
+                rdoId.setSelected(true);
             }
         });
     }

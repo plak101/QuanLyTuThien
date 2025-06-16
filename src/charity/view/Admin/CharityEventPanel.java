@@ -4,7 +4,9 @@
  */
 package charity.view.Admin;
 
+import charity.component.ColorCustom;
 import charity.controller.AdminController.CharityEventPanelController;
+import charity.model.Category;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -24,6 +26,11 @@ public class CharityEventPanel extends javax.swing.JPanel {
         jbtChoose.setBackground(new Color(230, 230, 230));
         gbtCancel.changeColor("#E53935");
         gbtSave.changeColor("#43A047");
+        
+        gbtAdd.setColor(ColorCustom.colorBtnAdd());
+        gbtDelete.setColor(ColorCustom.colorBtnDelete());
+        gbtUpdate.setColor(ColorCustom.colorBtnUpdate());
+        jbtReset.setColor(ColorCustom.colorBtnReset());
     }
 
     /**
@@ -166,8 +173,6 @@ public class CharityEventPanel extends javax.swing.JPanel {
         gbtCancel.setBackground(new java.awt.Color(255, 153, 153));
         gbtCancel.setForeground(new java.awt.Color(255, 255, 255));
         gbtCancel.setText("Hủy");
-
-        jcbCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -346,7 +351,7 @@ public class CharityEventPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -362,7 +367,7 @@ public class CharityEventPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -404,7 +409,7 @@ public class CharityEventPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbtChoose;
     private charity.component.GButton jbtReset;
-    private javax.swing.JComboBox<String> jcbCategory;
+    private javax.swing.JComboBox<Object> jcbCategory;
     private javax.swing.JComboBox<Object> jcbOrganization;
     private com.toedter.calendar.JDateChooser jdcDateBegin;
     private com.toedter.calendar.JDateChooser jdcDateEnd;

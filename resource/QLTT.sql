@@ -5,6 +5,7 @@ USE QLTT;
 -- Xóa bảng nếu đã tồn tại
 DROP TABLE IF EXISTS Donation;
 DROP TABLE IF EXISTS Event;
+DROP TABLE IF EXISTS Category;
 DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS account;
 DROP TABLE IF EXISTS organization;
@@ -18,7 +19,7 @@ CREATE TABLE account (
 );
 -- Tạo bảng User
 CREATE TABLE User (
-    accountId int ,
+    accountId int unique,
     userId INT PRIMARY KEY AUTO_INCREMENT,
     userName NVARCHAR(100) NOT NULL,
     address NVARCHAR(255),
@@ -36,19 +37,25 @@ CREATE TABLE Organization (
     hotline VARCHAR(20) NOT NULL,
     address VARCHAR(255) NOT NULL
 );
--- Tạo bảng Event
+-- Tạo bảng Category (Danh mục)
+CREATE TABLE Category (
+    categoryId INT PRIMARY KEY AUTO_INCREMENT,
+    categoryName VARCHAR(50) NOT NULL UNIQUE
+);
+-- Tạo bảng Event (Sự kiện từ thiện)
 CREATE TABLE Event (
     eventId INT PRIMARY KEY AUTO_INCREMENT,
-    organizationId INT NOT NULL,
-    eventName NVARCHAR(255) NOT NULL,
-    category NVARCHAR(100),
+    organizationId INT,
+    eventName VARCHAR(200) NOT NULL,
+    categoryId INT,
+    description TEXT,
     targetAmount BIGINT NOT NULL,
-    currentAmount BIGINT NOT NULL DEFAULT 0,
+    currentAmount BIGINT DEFAULT 0,
     dateBegin DATE NOT NULL,
     dateEnd DATE NOT NULL,
-    description TEXT,
-    imageUrl NVARCHAR(255),
-    FOREIGN KEY (organizationId) REFERENCES organization(id)
+    imageUrl VARCHAR(255) DEFAULT '/charity/image/default.png',
+    FOREIGN KEY (organizationId) REFERENCES Organization(id),
+    FOREIGN KEY (categoryId) REFERENCES Category(categoryId)
 );
 
 -- Tạo bảng Donation
@@ -109,22 +116,24 @@ DELIMITER ;
 -- them du lieu vao bang account
 INSERT INTO account (username, password, email, role) VALUES
 
-('admin01', 'Admin_01', 'qltt.admin1st@gmail.com', 'Admin'),
+('admin01', 'Admin@01', 'qltt.admin1st@gmail.com', 'Admin'),
 
-('admin02', 'Admin_02', 'qltt.admin2nd@gmail.com', 'Admin'),
-('admin03', 'Admin_03', 'qltt.admin3rd@gmail.com', 'Admin'),
+('admin02', 'Admin@02', 'qltt.admin2nd@gmail.com', 'Admin'),
+('admin03', 'Admin@03', 'qltt.admin3rd@gmail.com', 'Admin'),
 
 ('namnguyen', 'namDz=33', 'namnguyenvan@gmail.com', 'User'),
-('bchicute', 'Bchi_1007', 'bchi98@gmail.com', 'User'),
+('bchicute', 'Bchi@1007', 'bchi98@gmail.com', 'User'),
 ('sydeptrai', 'sy99VOLUNT', 'syleeeee@gmail.com', 'User'),
-('khoaloveangiang', 'KHOA@=1001', 'khoa.angiang@gmail.com', 'User'),
+('khoaloveangiang', 'Khoa@=1001', 'khoa.angiang@gmail.com', 'User'),
 ('3thuyduong', 'Duong&123', 'duongthuy@gmail.com', 'User'),
 ('minh4vuong', 'Vuong0%minH', 'minh.vuong@yahoo.com', 'User'),
 ('ngoclan007', '=lanNgoc22=', 'ngoclan.tran@outlook.com', 'User'),
 ('hoanganh357', 'AnhHoang#90', 'hoanganh.le@gmail.com', 'User'),
 ('xuanmai102', 'MaiXuan1^2', 'xuan.mai@gmail.com', 'User'),
 
-('user', 'User_001', 'ductuan1992@gmail.com', 'User');
+('user', 'User@001', 'ductuan1992@gmail.com', 'User'),
+('1', '1', 'qlttadmint@gmail.com', 'Admin'),
+('2', '2', 'qlttadmin1st@gmail.com', 'User');
 
 -- thêm dữ liệu vào bảng User
 INSERT INTO User (accountId, userName, address, phone, gender, birthDay) VALUES
@@ -156,18 +165,27 @@ INSERT INTO Organization (name, email, hotline, address) VALUES
 ('MSD United Way Vietnam', 'contact@msdvietnam.org', '02462769056', 'Phòng 1007, toà nhà 17T9 Hoàng Đạo Thuý, quận Thanh Xuân, Hà Nội, Việt Nam'),
 ('Quỹ Hy vọng', 'hope@quyhyvong.com', '0972776776', 'Tầng 9, Tòa nhà FPT Tower, số 10 Phạm Văn Bạch, Dịch Vọng, Cầu Giấy, Hà Nội');
 
+-- Thêm dữ liệu mẫu cho bảng Category
+INSERT INTO Category (categoryName) VALUES
+('Giáo dục'),
+('Cứu trợ'),
+('Môi trường'),
+('Trẻ em'),
+('Y tế'),
+('Người già');
+
 -- thêm dữ liệu vào bảng Event
-INSERT INTO Event (organizationId, eventname, category, description, targetAmount, currentAmount, dateBegin, dateEnd, imageUrl) VALUES
-(1,'Tiếp sức đến trường 2025', 'Giáo dục', 'Hỗ trợ trẻ em nghèo đến trường', 50000000, 0, '2025-06-01', '2026-01-01', '/charity/image/tiepSucDenTruong.png'),
-(2,'Ôi, ai cứu gương mặt cho em', 'Cứu trợ', 'Hỗ trợ điều trị, phục hồi cho cháu', 70000000, 0,  '2025-02-15', '2025-12-01','/charity/image/guongMatChoEm.jpeg'),
-(3,'Rừng xanh lên 2025', 'Môi trường', 'Trồng cây gây rừng', 100000000,0,  '2025-03-10', '2025-12-31','/charity/image/rungXanhLen.jpg'),
-(4,'Lớp học Hạnh phúc', 'Giáo dục', 'Kiến tạo trường học hạnh phúc: Trang bị phòng học theo mô hình STEM', 30000000, 0, '2025-04-20', '2025-05-20','/charity/image/lopHocHanhPhuc.png'),
-(5,'Giúp em Lê Nguyễn Gia Bảo', 'Trẻ em', 'Hỗ trợ viện phí điều trị cho bé Lê Nguyễn Gia Bảo', 60000000, 0, '2025-09-20', '2025-11-30','/charity/image/leNguyenGiaBao.jpg'),
-(6,'Giúp trò giỏi chữa tật mắt', 'Trẻ em', 'Chung tay để em Đỗ Hữu Dũng có cơ hội được đi khám bệnh, chữa trị mắt', 85000000, 0, '2025-03-31', '2025-10-21','/charity/image/chuTriMat.jpeg'),
-(7,'Gom xe đạp, góp tương lai', 'Giáo dục', 'Hỗ trợ xe đạp cho trẻ em bị ảnh hưởng bởi thiên tai bão lũ', 5000000, 0, '2025-09-20', '2025-11-11','/charity/image/xeDap.png'),
-(8,'Ghép đôi trăng tròn', 'Trẻ em', 'Góp phần làm trọn vẹn niềm vui rằm tháng 8', 120000000, 0, '2025-03-25', '2025-07-31','/charity/image/ghepDoiTrangTron.png'),
-(9,'Cùng em bước qua bão Yagi, vì một Việt Nam kiên cường', 'Cứu trợ', 'Góp phần thực hiện hỗ trợ khắc phục hậu quả bão Yagi', 10000000000, 0, '2024-09-20', '2024-10-31','/charity/image/yagiCuuTro.jpg'),
-(10,'Mang Tết Hy vọng đến các em nhỏ vùng cao', 'Trẻ em', 'Hãy chung tay cùng Quỹ mang Tết Hy vọng cho các em', 300000000, 0, '2025-06-20', '2026-01-01','/charity/image/tetHyVong.jpg');
+INSERT INTO Event (organizationId, eventname, categoryId, description, targetAmount, currentAmount, dateBegin, dateEnd, imageUrl) VALUES
+(1,'Tiếp sức đến trường 2025', 1, 'Hỗ trợ trẻ em nghèo đến trường', 50000000, 0, '2025-06-01', '2026-01-01', '/charity/image/tiepSucDenTruong.png'),
+(2,'Ôi, ai cứu gương mặt cho em', 2, 'Hỗ trợ điều trị, phục hồi cho cháu', 70000000, 0,  '2025-02-15', '2025-12-01','/charity/image/guongMatChoEm.jpeg'),
+(3,'Rừng xanh lên 2025', 3, 'Trồng cây gây rừng', 100000000,0,  '2025-03-10', '2025-12-31','/charity/image/rungXanhLen.jpg'),
+(4,'Lớp học Hạnh phúc', 1, 'Kiến tạo trường học hạnh phúc: Trang bị phòng học theo mô hình STEM', 30000000, 0, '2025-04-20', '2025-05-20','/charity/image/lopHocHanhPhuc.png'),
+(5,'Giúp em Lê Nguyễn Gia Bảo', 4, 'Hỗ trợ viện phí điều trị cho bé Lê Nguyễn Gia Bảo', 60000000, 0, '2025-09-20', '2025-11-30','/charity/image/leNguyenGiaBao.jpg'),
+(6,'Giúp trò giỏi chữa tật mắt', 4, 'Chung tay để em Đỗ Hữu Dũng có cơ hội được đi khám bệnh, chữa trị mắt', 85000000, 0, '2025-03-31', '2025-10-21','/charity/image/chuTriMat.jpeg'),
+(7,'Gom xe đạp, góp tương lai', 1, 'Hỗ trợ xe đạp cho trẻ em bị ảnh hưởng bởi thiên tai bão lũ', 5000000, 0, '2025-09-20', '2025-11-11','/charity/image/xeDap.png'),
+(8,'Ghép đôi trăng tròn', 4, 'Góp phần làm trọn vẹn niềm vui rằm tháng 8', 120000000, 0, '2025-03-25', '2025-07-31','/charity/image/ghepDoiTrangTron.png'),
+(9,'Cùng em bước qua bão Yagi, vì một Việt Nam kiên cường', 2, 'Góp phần thực hiện hỗ trợ khắc phục hậu quả bão Yagi', 10000000000, 0, '2024-09-20', '2024-10-31','/charity/image/yagiCuuTro.jpg'),
+(10,'Mang Tết Hy vọng đến các em nhỏ vùng cao', 4, 'Hãy chung tay cùng Quỹ mang Tết Hy vọng cho các em', 300000000, 0, '2025-06-20', '2026-01-01','/charity/image/tetHyVong.jpg');
  
  -- thêm dữ liệu vào bảng donation
  INSERT INTO Donation (userId, eventId, amount, donationDate, description) VALUES
@@ -216,9 +234,11 @@ INSERT INTO Event (organizationId, eventname, category, description, targetAmoun
 -- Xem dữ liệu trong bảng Event
 SELECT * FROM account;
 SELECT * FROM User;
+SELECT * FROM Category;
 SELECT * FROM Event;
-SELECT * FROM Donation;
+SELECT * FROM Donation order by donationDate DESC;
 SELECT * FROM organization;
+
 -- donation list
 -- SELECT donationId, eventName, userName, amount, donationDate
 -- FROM donation d
@@ -249,7 +269,3 @@ SELECT * FROM organization;
 -- FROM account a
 -- JOIN User u ON a.id = u.accountId
 -- WHERE u.userId = ?;
-
-
-
-SELECT count(*) FROM user WHERE phone='0865019639'

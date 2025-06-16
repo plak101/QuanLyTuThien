@@ -12,7 +12,7 @@ public class DonateJDialog extends javax.swing.JDialog {
     private CharityEvent event;
     private int eventId, accountId, userId;
     private CharityEventService eventService = new CharityEventService();
-    
+    private DonationDialogController controller;
     public DonateJDialog(JFrame parent, boolean modal, int eventId,int accountId, int userId) {
         super(parent, modal);
         initComponents();
@@ -23,7 +23,7 @@ public class DonateJDialog extends javax.swing.JDialog {
         this.accountId= accountId;
         
         this.event = eventService.getEventById(eventId);
-        DonationDialogController controller = new DonationDialogController(accountId, userId, event, txtEventId, txtEventName, txtCategory, txtTargetAmount, txtCurrentAmount,txtProgress,  txtDateBegin, txtDateEnd, txtDescription, txtMoney, gbtDonate, txtOrganization, jlbImage, txtMessage, jpbProgress);
+        controller = new DonationDialogController(parent,accountId, userId, event, txtEventId, txtEventName, txtCategory, txtTargetAmount, txtCurrentAmount,txtProgress,  txtDateBegin, txtDateEnd, txtDescription, txtMoney, gbtDonate, txtOrganization, jlbImage, txtMessage, jpbProgress);
         
         controller.loadEventData();
         controller.settingTxtMoney();
@@ -36,9 +36,12 @@ public class DonateJDialog extends javax.swing.JDialog {
         getContentPane().setBackground(Color.WHITE);
         jpbProgress.setUI(new GProgressBarUI());
         jpbProgress.setBorderPainted(false);
-        
-
     }
+
+    public DonationDialogController getController() {
+        return controller;
+    }
+    
     
     public static void main(String[] args) {
         new DonateJDialog(null, true, 2, 3, 3).setVisible(true);

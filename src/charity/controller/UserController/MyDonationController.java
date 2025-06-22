@@ -2,7 +2,7 @@ package charity.controller.UserController;
 
 import charity.component.ClassTableModel;
 import charity.component.GButton;
-import charity.controller.AdminController.PDFExporter;
+import charity.utils.PDFExporter;
 import charity.model.Donation;
 import charity.model.User;
 import charity.service.DonationService;
@@ -88,7 +88,7 @@ public class MyDonationController {
                     rowSorter.setRowFilter(null);
                 } else {
                     if (jrbtId.isSelected()) {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 0));
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                     } else if (jrbtUser.isSelected()) {
                         rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 2));
                     } else {
@@ -107,7 +107,7 @@ public class MyDonationController {
                     rowSorter.setRowFilter(null);
                 } else {
                     if (jrbtId.isSelected()) {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 0));
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                     } else if (jrbtUser.isSelected()) {
                         rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 2));
                     } else {

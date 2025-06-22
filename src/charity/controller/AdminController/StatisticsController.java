@@ -1,34 +1,31 @@
 package charity.controller.AdminController;
 
 import charity.component.ChartCustom;
-import charity.component.FontCustom;
 import charity.component.GButton;
 import charity.service.StatisticsService;
 import charity.utils.MessageDialog;
 import com.toedter.calendar.JDateChooser;
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
@@ -47,11 +44,16 @@ public class StatisticsController {
     private JLabel lblTotalAmount;
     private JLabel lblActiveDonors;
     private JLabel lblMonthlyGrowth;
+    private JTable table;
 
     private StatisticsService statisticsService = new StatisticsService();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-    public StatisticsController(JDateChooser startDate, JDateChooser endDate, JPanel chartPanel, JComboBox<String> chartTypeCombo, GButton btnGenerate, GButton btnExport, JLabel lblTotalEvents, JLabel lblTotalDonations, JLabel lblTotalAmount, JLabel lblActiveDonors, JLabel lblMonthlyGrowth) {
+    private List<Map<String, Object>> stats;
+    private List<Map<String, Object>> categoryStats;
+    private List<Map<String, Object>> topDonors;
+
+    public StatisticsController(JDateChooser startDate, JDateChooser endDate, JPanel chartPanel, JComboBox<String> chartTypeCombo, GButton btnGenerate, GButton btnExport, JLabel lblTotalEvents, JLabel lblTotalDonations, JLabel lblTotalAmount, JLabel lblActiveDonors, JLabel lblMonthlyGrowth, JTable table) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.chartPanel = chartPanel;
@@ -63,6 +65,7 @@ public class StatisticsController {
         this.lblTotalAmount = lblTotalAmount;
         this.lblActiveDonors = lblActiveDonors;
         this.lblMonthlyGrowth = lblMonthlyGrowth;
+        this.table = table;
 
         init();
         setupListeners();
@@ -76,7 +79,7 @@ public class StatisticsController {
 
     private void setupListeners() {
         btnGenerate.addActionListener(e -> generateChart());
-        chartTypeCombo.addActionListener(e_ -> generateChart());
+        chartTypeCombo.addActionListener(e -> generateChart());
     }
 
     private void loadDashBoardData() {
@@ -115,15 +118,20 @@ public class StatisticsController {
                 case "Thống kê theo thời gian":
                     chart = createTimeSeriesChart(start, end);
                     ChartCustom.customizeLineChart(chart);
-                    System.out.println("0");
+                    updateTimeSeriesTable();
+                    setDateChooser(true);
                     break;
                 case "Thống kê theo danh mục":
                     chart = createCategoryPieChart();
                     ChartCustom.customizePieChart(chart);
+                    updateCategoryPieChartTable();
+                    setDateChooser(false);
                     break;
                 case "Top người quyên góp":
                     chart = createTopDonorsChart(5);
                     ChartCustom.customizeBarChart(chart);
+                    updateTopDonorTable();
+                    setDateChooser(false);
                     break;
 
             }
@@ -139,24 +147,44 @@ public class StatisticsController {
             }
 
         } catch (Exception e) {
+            Logger.getLogger(StatisticsController.class.getName()).log(Level.SEVERE, null, e);
+
             MessageDialog.showError("Lỗi khi tạo biểu đồ");
         }
     }
 
+    //tat datepicker
+    private void setDateChooser(boolean b) {
+        startDate.setEnabled(b);
+        endDate.setEnabled(b);
+    }
+
     // tao bieu do theo thoi gian
     private JFreeChart createTimeSeriesChart(Date start, Date end) {
-        List<Map<String, Object>> stats = statisticsService.getStatisticsByDateRange(start, end);
+        stats = statisticsService.getStatisticsByDateRange(start, end);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        // Map để cộng dồn số tiền theo (ngày, danh mục)
+        Map<String, Map<String, Number>> sumMap = new java.util.HashMap<>();
 
         for (Map<String, Object> stat : stats) {
             Date date = (Date) stat.get("date");
-            String formatedDate = sdf.format(date);
-            dataset.addValue(
-                    (Number) stat.get("totalAmount"),
-                    stat.get("category").toString(),
-                    formatedDate
-            );
+            String formattedDate = sdf.format(date);
+            String category = stat.get("category").toString();
+            Number amount = (Number) stat.get("totalAmount");
 
+            // Cộng dồn
+            sumMap
+                    .computeIfAbsent(formattedDate, k -> new java.util.HashMap<>())
+                    .merge(category, amount, (oldVal, newVal) -> oldVal.doubleValue() + newVal.doubleValue());
+        }
+
+        // Đưa dữ liệu đã cộng dồn vào dataset
+        for (Map.Entry<String, Map<String, Number>> dateEntry : sumMap.entrySet()) {
+            String date = dateEntry.getKey();
+            for (Map.Entry<String, Number> catEntry : dateEntry.getValue().entrySet()) {
+                dataset.addValue(catEntry.getValue(), catEntry.getKey(), date);
+            }
         }
 
         return ChartFactory.createLineChart(
@@ -167,9 +195,38 @@ public class StatisticsController {
         );
     }
 
+    private void updateTimeSeriesTable() {
+        String[] columns = {"Ngày", "Danh mục", "Sư kiện", "Số tiền"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+
+        };
+
+        Object[] obj = new Object[4];
+        for (Map<String, Object> stat : stats) {
+            obj[0] = sdf.format((Date) stat.get("date"));
+            obj[1] = stat.get("category");
+            obj[2] = stat.get("eventName");
+            obj[3] = String.format("%,d", stat.get("totalAmount"));
+            model.addRow(obj);
+        }
+        table.setModel(model);
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment((int) Component.CENTER_ALIGNMENT);
+        table.setDefaultRenderer(Object.class, renderer);
+        table.setDefaultEditor(Object.class, null);
+        //sap xep
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter(model);
+        sorter.setComparator(3, Comparator.comparingLong(o -> Long.valueOf(o.toString().replace(",", ""))));
+        table.setRowSorter(sorter);
+    }
+
     //tao bieu do theo loai
     private JFreeChart createCategoryPieChart() {
-        List<Map<String, Object>> categoryStats = statisticsService.getCategoryStatistics();
+        categoryStats = statisticsService.getCategoryStatistics();
         DefaultPieDataset dataset = new DefaultPieDataset();
         for (Map<String, Object> stat : categoryStats) {
             dataset.setValue(
@@ -187,12 +244,44 @@ public class StatisticsController {
         );
     }
 
+    private void updateCategoryPieChartTable() {
+        String[] columns = {"Id", "Tên danh mục", "Số sự kiện", "Số lượt quyên góp", "Tổng tiền"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        Object[] obj = new Object[5];
+        for (Map<String, Object> stat : categoryStats) {
+            obj[0] = stat.get("categoryId");
+            obj[1] = stat.get("category");
+            obj[2] = stat.get("totalEvent");
+            obj[3] = stat.get("totalDonation");
+            obj[4] = String.format("%,d", ((BigDecimal) stat.get("totalAmount")).longValue());
+            model.addRow(obj);
+        }
+
+        table.setModel(model);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        sorter.setComparator(0, Comparator.comparingInt(o -> ((Number) o).intValue()));
+        sorter.setComparator(2, Comparator.comparingInt(o -> ((Number) o).intValue()));
+        sorter.setComparator(3, Comparator.comparingInt(o -> ((Number) o).intValue()));
+        sorter.setComparator(4, Comparator.comparingLong(o -> Long.valueOf(o.toString().replace(",", ""))));
+        table.setRowSorter(sorter);
+    }
+
     //tao bieu do top người quyên góp
     private JFreeChart createTopDonorsChart(int limit) {
-        List<Map<String, Object>> topDonors = statisticsService.getTopDonors(limit);
+        topDonors = statisticsService.getTopDonors(limit);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
+        int i = 0;
         for (Map<String, Object> donor : topDonors) {
+            if (i == limit) {
+                break;
+            }
+            i++;
             String userName = donor.get("userName").toString();
 
             dataset.addValue(
@@ -221,6 +310,33 @@ public class StatisticsController {
         );
     }
 
+    private void updateTopDonorTable() {
+        String[] columns = {"Id", "Họ tên", "Số lượt quyên góp", "Số sự kiện", "Tổng tiền"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        Object[] obj = new Object[5];
+        for (Map<String, Object> stat : topDonors) {
+            obj[0] = stat.get("userId");
+            obj[1] = stat.get("userName");
+            obj[2] = stat.get("totalDonation");
+            obj[3] = stat.get("totalEvent");
+            obj[4] = String.format("%,d", ((BigDecimal) stat.get("totalAmount")).longValue());
+            model.addRow(obj);
+        }
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        sorter.setComparator(0, Comparator.comparingInt(o -> ((Number) o).intValue()));
+        sorter.setComparator(2, Comparator.comparingInt(o -> ((Number) o).intValue()));
+        sorter.setComparator(3, Comparator.comparingInt(o -> ((Number) o).intValue()));
+        sorter.setComparator(4, Comparator.comparingLong(o -> Long.valueOf(o.toString().replace(",", ""))));
+        table.setModel(model);
+        table.setRowSorter(sorter);
+    }
+
     // dinh dang so
     private String formatNumber(Object number) {
         return String.format("%,d", number);
@@ -239,5 +355,4 @@ public class StatisticsController {
         java.util.Date firstDayOfMonth = calendar.getTime();
         startDate.setDate(firstDayOfMonth);
     }
-
 }

@@ -1,5 +1,6 @@
 package charity.view.User;
 
+import charity.component.ColorCustom;
 import charity.component.FontCustom;
 import charity.component.GButton;
 import charity.component.ImageIconCustom;
@@ -60,6 +61,7 @@ public class MainPanel extends JPanel {
 
         //panel chua noi dung va nut dieu hương
         JPanel centerPanel = new JPanel(new BorderLayout(0, 0));
+        centerPanel.setBorder(new EmptyBorder(0, 30, 0, 20));
         centerPanel.setBackground(Color.white);
 
         btnPrev = createNavigationButton("←");
@@ -167,9 +169,10 @@ public class MainPanel extends JPanel {
         btn.setPreferredSize(new Dimension(40, 40));
         btn.setFont(FontCustom.Arial18B());
         btn.setFocusPainted(false);
-        btn.setBackground(new Color(245, 245, 245));
-        btn.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-
+        btn.setBackground(new Color(252, 252, 252));
+//        btn.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+        //bo goc
+        btn.putClientProperty("JButton.arc", 15);
         //event
         if (text.equals("←")) {
             btn.addActionListener(e -> controller.showPreviousPage());
@@ -306,7 +309,7 @@ public class MainPanel extends JPanel {
         viewPanel.setBorder(new EmptyBorder(5, 0, 0, 0));
         GButton viewButton = new GButton("Xem thông tin");
         viewButton.setPreferredSize(new Dimension(200, 25));
-        
+        viewButton.setHover(ColorCustom.defaultBtn(), ColorCustom.defaultBtnHover());
         //event
         viewButton.addActionListener(e->controller.showEventDialog(frame, event, accountId, userId));
         

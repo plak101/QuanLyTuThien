@@ -5,6 +5,7 @@
 package charity.view.Login;
 
 import charity.controller.LoginController.NewLoginController;
+import com.formdev.flatlaf.FlatClientProperties;
 
 import javax.swing.*;
 import java.awt.*;
@@ -115,6 +116,7 @@ public class NewLogin extends JFrame {
         txtPassword.setBounds(50, 210, 350, 35); // Điều chỉnh bounds và kích thước
         txtPassword.setFont(font14);
         txtPassword.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        txtPassword.putClientProperty(FlatClientProperties.STYLE, ""+"showRevealButton:true;");
         loginFormPanel.add(txtPassword);
 
         // Nhãn "Quên mật khẩu"

@@ -16,7 +16,10 @@ import javax.swing.border.*;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 public class StatisticsPanel extends JPanel {
 
@@ -34,6 +37,8 @@ public class StatisticsPanel extends JPanel {
     private JLabel lblTotalAmount;
     private JLabel lblActiveDonors;
     private JLabel lblMonthlyGrowth;
+    
+    private JTable table;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public StatisticsPanel() {
@@ -41,7 +46,7 @@ public class StatisticsPanel extends JPanel {
         setupLayout();
 
         //khoi tao controller
-        controller = new StatisticsController(startDate, endDate, chartPanel, chartTypeCombo, btnGenerate, btnExport, lblTotalEvents, lblTotalDonations, lblTotalAmount, lblActiveDonors, lblMonthlyGrowth);
+        controller = new StatisticsController(startDate, endDate, chartPanel, chartTypeCombo, btnGenerate, btnExport, lblTotalEvents, lblTotalDonations, lblTotalAmount, lblActiveDonors, lblMonthlyGrowth, table);
 
     }
 
@@ -72,6 +77,9 @@ public class StatisticsPanel extends JPanel {
         lblTotalAmount = createStatsLabel("Tổng số tiền");
         lblActiveDonors = createStatsLabel("Số người quyên góp");
         lblMonthlyGrowth = createStatsLabel("Tăng trưởng tháng");
+        
+        table = new JTable();
+        table.setFillsViewportHeight(true);
     }
 
     private JLabel createStatsLabel(String title) {
@@ -125,8 +133,17 @@ public class StatisticsPanel extends JPanel {
         topPanel.add(dashboardPanel, BorderLayout.NORTH);
         topPanel.add(controlPanel, BorderLayout.SOUTH);
 
+        //table
+        JScrollPane scroll = new JScrollPane(table);
+        scroll.setPreferredSize(new Dimension(0,200));
+        JPanel pnTable = new JPanel(new BorderLayout());
+        pnTable.setBorder(new EmptyBorder(5,20,5,20));
+        pnTable.add(scroll, BorderLayout.CENTER);
+        pnTable.setOpaque(false);
+        
         add(topPanel, BorderLayout.NORTH);
         add(chartPanel, BorderLayout.CENTER);
+        add(pnTable, BorderLayout.SOUTH);
     }
 
     private JPanel createStatBox(String title, JLabel valueLabel) {

@@ -58,7 +58,7 @@ public class DonationPanel extends JPanel {
         topPanelRight.setBackground(Color.white);
         txtSearch = new JTextField();
         
-        jrbtId = new JRadioButton("ID");
+        jrbtId = new JRadioButton("Tất cả");
         jrbtEvent = new JRadioButton("Sự kiện");
         jrbtUser = new JRadioButton("Người quyên góp");
         

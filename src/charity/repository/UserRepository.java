@@ -37,6 +37,7 @@ public class UserRepository implements IUserRepository {
 
             while (rs.next()) {
                 User user = new User(
+                        rs.getInt("accountId"),
                         rs.getInt("userId"),
                         rs.getString("userName"),
                         rs.getString("address"),

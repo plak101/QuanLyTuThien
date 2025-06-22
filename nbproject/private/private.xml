@@ -3,15 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/AdminController/DonationListController.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/Admin/OrganizationDialog.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/Admin/OrganizationFormPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/Admin/OrganizationPanel.java</file>
-            <file>file:/C:/Users/Admin/Desktop/QuanLyTuThien/src/charity/controller/LoginController/NewRegisterController.java</file>
-            <file>file:/C:/Users/Admin/Desktop/QuanLyTuThien/src/charity/controller/LoginController/NewLoginController.java</file>
-            <file>file:/C:/Users/Admin/Desktop/QuanLyTuThien/src/charity/view/Login/NewLogin.java</file>
-            <file>file:/C:/Users/Admin/Desktop/QuanLyTuThien/src/charity/view/Login/NewRegister.java</file>
-            <file>file:/C:/Users/ngank/Desktop/QuanLyTuThien/src/charity/view/Admin/DonationProcessingPanel.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/AdminController/StatisticsController.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/Admin/StatisticsPanel.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/repository/StatisticsRepository.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/Admin/CategoryPanel.java</file>
         </group>
     </open-files>
 </project-private>

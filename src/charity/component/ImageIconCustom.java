@@ -16,6 +16,6 @@ public class ImageIconCustom {
         Image image = icon.getImage();
         Image scaled = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
-
     }
+    
 }

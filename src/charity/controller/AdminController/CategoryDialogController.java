@@ -14,7 +14,7 @@ public class CategoryDialogController {
     private CategoryService service;
 
     private String action;
-    private String name;
+    private String name, oldname;
     private Category category;
     private GButton btnSave, btnCancel;
 
@@ -23,6 +23,12 @@ public class CategoryDialogController {
         this.service = new CategoryService();
         this.btnCancel = dialog.getBtnCancel();
         this.btnSave = dialog.getBtnSave();
+        this.action = dialog.getAction();
+
+        if (action.equals("UPDATE")) {
+            category = dialog.getCategory();
+            oldname = category.getCategoryName();
+        }
 
         initEvent();
     }
@@ -33,9 +39,15 @@ public class CategoryDialogController {
     }
 
     public void onSave() {
-        action = dialog.getAction();
         name = dialog.getCategoryName();
 
+        //kiem tra nhan nut luu khi khong thay doi ten
+        if (action.equals("UPDATE") && oldname.equals(name)) {
+            MessageDialog.showSuccess("Sửa danh mục thành công");
+            dialog.dispose();
+            return ;
+        }
+        
         if (valid()) {
             if (action.equals("ADD")) {
                 category = new Category(name);
@@ -48,16 +60,16 @@ public class CategoryDialogController {
                     MessageDialog.showError("Thêm danh mục thất bại");
                 }
             } else {//action="UPDATE"
-                category = dialog.getCategory();
+
                 category.setCategoryName(name);
-                            if (service.updateCategory(category)) {
-                dialog.dispose();
-                MessageDialog.showSuccess("Sửa danh mục thành công");
-                //cap nhat maphelper
-                MapHelper.refreshCategoryCache();
-            } else {
-                MessageDialog.showError("Sửa danh mục thất bại");
-            }
+                if (service.updateCategory(category)) {
+                    dialog.dispose();
+                    MessageDialog.showSuccess("Sửa danh mục thành công");
+                    //cap nhat maphelper
+                    MapHelper.refreshCategoryCache();
+                } else {
+                    MessageDialog.showError("Sửa danh mục thất bại");
+                }
             }
         }
     }

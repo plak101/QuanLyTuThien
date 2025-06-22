@@ -74,7 +74,6 @@ public class SelectUserDialogController {
         int id = (int) view.getTable().getValueAt(row, 0);
         view.getDonation().setUserId(id);
         ((DonationDialog)view.getOwner()).getTxtDonor().setText(MapHelper.getUserName(id));
-        MessageDialog.showSuccess("Thanh cong");
         view.dispose();
         view.getOwner().setVisible(true);
         

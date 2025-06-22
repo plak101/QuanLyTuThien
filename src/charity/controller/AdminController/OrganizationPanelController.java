@@ -1,5 +1,6 @@
 package charity.controller.AdminController;
 
+import charity.utils.PDFExporter;
 import charity.component.GButton;
 import charity.component.ClassTableModel;
 import charity.component.ColorCustom;
@@ -31,8 +32,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.print.PrinterException;
+import java.io.File;
 import java.text.MessageFormat;
+import javax.swing.JFileChooser;
 import javax.swing.JTable.PrintMode;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class OrganizationPanelController {
 
@@ -247,14 +251,17 @@ public class OrganizationPanelController {
         table.getColumnModel().getColumn(0).setMaxWidth(400);
         table.getColumnModel().getColumn(0).setPreferredWidth(50);
 
-        table.getColumnModel().getColumn(1).setMaxWidth(500);
-        table.getColumnModel().getColumn(1).setPreferredWidth(150);
+//        table.getColumnModel().getColumn(1).setMaxWidth(500);
+//        table.getColumnModel().getColumn(1).setPreferredWidth(150);
+//
+//        table.getColumnModel().getColumn(2).setMaxWidth(500);
+//        table.getColumnModel().getColumn(2).setPreferredWidth(200);
 
-        table.getColumnModel().getColumn(2).setMaxWidth(500);
-        table.getColumnModel().getColumn(2).setPreferredWidth(200);
-
-        table.getColumnModel().getColumn(4).setMaxWidth(500);
-        table.getColumnModel().getColumn(4).setPreferredWidth(200);
+        table.getColumnModel().getColumn(3).setMaxWidth(500);
+        table.getColumnModel().getColumn(3).setPreferredWidth(150);
+        
+        table.getColumnModel().getColumn(5).setMaxWidth(500);
+        table.getColumnModel().getColumn(5).setPreferredWidth(100);
 
         // Center align all columns
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -275,25 +282,47 @@ public class OrganizationPanelController {
         btnReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    if ("IN".equals(btnReset.getText())) {
-                        MessageFormat header = new MessageFormat("DANH SÁCH TỔ CHỨC TỪ THIỆN");
-                        MessageFormat footer = new MessageFormat("Trang {0}");
-                        try {
-                            boolean complete = organizationTable.print(PrintMode.FIT_WIDTH, header, footer);
-                            if (complete) {
-                                JOptionPane.showMessageDialog(null, "In thành công!");
-                            }
-                        } catch (PrinterException ex) {
-                            JOptionPane.showMessageDialog(null, "Lỗi khi in: " + ex.getMessage(),
-                                    "Lỗi", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } else {
-                        setOrganizationTable();
+//                try {
+//                    if ("IN".equals(btnReset.getText())) {
+//                        MessageFormat header = new MessageFormat("DANH SÁCH TỔ CHỨC TỪ THIỆN");
+//                        MessageFormat footer = new MessageFormat("Trang {0}");
+//                        try {
+//                            boolean complete = organizationTable.print(PrintMode.FIT_WIDTH, header, footer);
+//                            if (complete) {
+//                                JOptionPane.showMessageDialog(null, "In thành công!");
+//                            }
+//                        } catch (PrinterException ex) {
+//                            JOptionPane.showMessageDialog(null, "Lỗi khi in: " + ex.getMessage(),
+//                                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+//                        }
+//                    } else {
+//                        setOrganizationTable();
+//                    }
+//                } catch (Exception ex) {
+//                    setOrganizationTable();
+//                }
+
+                JFileChooser fileChooser =new JFileChooser();
+                fileChooser.setDialogTitle("Chọn thư mục");
+                fileChooser.setSelectedFile(new File("DanhSachToChuc.pdf"));
+                
+                //loc dinh dang file
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Files", "pdf");
+                fileChooser.setFileFilter(filter);
+                
+                int select = fileChooser.showSaveDialog(null);//mo hop thoai save
+                if (select== JFileChooser.APPROVE_OPTION){//nguoi dung nhan dong y
+                    File selectedFile = fileChooser.getSelectedFile();
+                    String path = selectedFile.getAbsolutePath();
+                    
+                    if (!path.toLowerCase().endsWith(".pdf")){
+                        path+=".pdf";
                     }
-                } catch (Exception ex) {
-                    setOrganizationTable();
+                    
+                    PDFExporter exporter = new PDFExporter();
+                    exporter.exportOrganization(path, organizationTable);
                 }
+                
             }
         });
 

@@ -8,6 +8,7 @@ import charity.component.ColorCustom;
 import charity.component.FontCustom;
 import charity.controller.AdminController.Program;
 import charity.utils.MessageDialog;
+import charity.view.Login.NewLogin;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -43,8 +44,10 @@ public class Main {
         UIManager.put("TableHeader.background", ColorCustom.backgroundTableHeader());
         UIManager.put("TableHeader.separatorColor", Color.decode("#B4EBE6")); // mau duong phan cach tieu de trung voi mau backgorund tieu de
         UIManager.put("TableHeader.bottomSeparatorColor", Color.decode("#B4EBE6")); // mau duong phan cach tieu de trung voi mau backgorund tieu de
-
+        UIManager.put("Button.arc", 5);
         Program program =new Program();
+//        NewLogin login = new NewLogin();
+//        login.setVisible(true);
         
     }
 

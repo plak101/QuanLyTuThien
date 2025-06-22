@@ -73,7 +73,7 @@ public class OrganizationPanel extends javax.swing.JPanel {
         JLabel lblSearch = new JLabel("Tìm kiếm");
         lblSearch.setFont(new Font("Segoe UI", Font.BOLD, 14));
         txtSearch = new JTextField();
-        txtSearch.setPreferredSize(new Dimension(250, 35));
+        txtSearch.setPreferredSize(new Dimension(300, 30));
         txtSearch.setBorder(BorderFactory.createCompoundBorder(
             new LineBorder(Color.decode("#B4EBE6")),
             BorderFactory.createEmptyBorder(5, 10, 5, 10)
@@ -125,14 +125,14 @@ public class OrganizationPanel extends javax.swing.JPanel {
         topPanel.add(txtSearch, gbc);
 
         // Radio buttons in a sub panel
-        JPanel radioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        radioPanel.setBackground(Color.WHITE);
-        radioPanel.add(rdoId);
-        radioPanel.add(rdoEvent);
-        radioPanel.add(rdoDonator);
+//        JPanel radioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+//        radioPanel.setBackground(Color.WHITE);
+//        radioPanel.add(rdoId);
+//        radioPanel.add(rdoEvent);
+//        radioPanel.add(rdoDonator);
 
-        gbc.gridx = 3; gbc.gridy = 0; gbc.gridwidth = 3;
-        topPanel.add(radioPanel, gbc);
+//        gbc.gridx = 3; gbc.gridy = 0; gbc.gridwidth = 3;
+//        topPanel.add(radioPanel, gbc);
 
         // Hidden fields for selected organization data
         txtOrgId = new JTextField();

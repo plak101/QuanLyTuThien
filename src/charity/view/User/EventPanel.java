@@ -110,7 +110,7 @@ public class EventPanel extends javax.swing.JPanel {
         searchType.add(jrbtId);
         jrbtId.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jrbtId.setSelected(true);
-        jrbtId.setText("ID");
+        jrbtId.setText("Tất cả");
 
         jrbtName.setBackground(new java.awt.Color(255, 255, 255));
         searchType.add(jrbtName);
@@ -143,8 +143,8 @@ public class EventPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jrbtId, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jrbtId, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jrbtName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jrbtCategory)

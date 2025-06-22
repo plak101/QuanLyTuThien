@@ -210,8 +210,6 @@ public class InforPanelController {
                 String gender = jrbtMale.isSelected() ? "Nam" : "Nữ";
 
                 User u = new User(accountId, userId, name, address, phone, gender, birthday);
-                //test
-                System.out.println(u);
                 boolean success;
 
                 if (user == null) {

@@ -74,7 +74,7 @@ public class MyDonationPanel extends JPanel {
 
         // Radio buttons
         ButtonGroup buttonGroup = new ButtonGroup();
-        jrbtId = new JRadioButton("ID");
+        jrbtId = new JRadioButton("Tất cả");
         jrbtId.setSelected(true);
         jrbtEvent = new JRadioButton("Nội dung");
         jrbtUser = new JRadioButton("Sự kiện");

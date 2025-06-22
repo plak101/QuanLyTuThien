@@ -75,7 +75,7 @@ public class DonationListController {
                     rowSorter.setRowFilter(null);
                 } else {
                     if (jrbtId.isSelected()) {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 0));
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                     } else if (jrbtUser.isSelected()) {
                         rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
                     } else {
@@ -94,7 +94,7 @@ public class DonationListController {
                     rowSorter.setRowFilter(null);
                 } else {
                     if (jrbtId.isSelected()) {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 0));
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                     } else if (jrbtUser.isSelected()) {
                         rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
                     } else {

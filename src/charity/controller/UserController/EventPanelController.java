@@ -146,7 +146,7 @@ public class EventPanelController {
             rowSorter.setRowFilter(null);
         } else {
             if (jrbtId.isSelected()) {
-                rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 0));
+                rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
             } else if (jrbtEvent.isSelected()) {
                 rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 2));
             } else {

@@ -1,5 +1,6 @@
 package charity.component;
 
+import com.itextpdf.text.BaseColor;
 import java.awt.Color;
 
 /**
@@ -62,5 +63,16 @@ public class ColorCustom {
 
     public static Color colorBtnInfo() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public static BaseColor tableHeader(){
+        return new BaseColor(0, 168,232);
+    }
+    
+    public static Color defaultBtn(){
+        return Color.decode("#2d99ae");
+    }
+    public static Color defaultBtnHover(){
+        return Color.decode("#5dc1d3");
     }
 }

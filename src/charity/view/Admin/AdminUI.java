@@ -4,6 +4,7 @@ import charity.controller.AdminController.ChuyenManHinh;
 import charity.bean.DanhMuc;
 import charity.component.ImageIconCustom;
 import charity.controller.AdminController.AdminUIController;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class AdminUI extends javax.swing.JFrame {
         listItem.add(new DanhMuc("QuanLyQuyenGop", jpnQuanLyQuyenGop, jibQuanLyQuyenGop));
         listItem.add(new DanhMuc("QuanLyDanhMuc", jpnQuanLyDanhMuc, jibQuanLyDanhMuc));
         listItem.add(new DanhMuc("QuanLyToChuc", jpnQuanLyToChuc, jibQuanLyToChuc));
+        listItem.add(new DanhMuc("QuanLyNguoiQuyenGop", jpnQuanLyNguoiQuyenGop, jibQuanLyNguoiQuyenGop));
         listItem.add(new DanhMuc("QuanLyTaiKhoan", jpnTaiKhoan, jibTaiKhoan));
         listItem.add(new DanhMuc("ThongKe", jpnThongKe, jibThongKe));
 
@@ -35,16 +37,17 @@ public class AdminUI extends javax.swing.JFrame {
 
     public void init() {
         jlbImage.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/AdminTrans.png", 80, 80));
-        jibTrangchu2.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/home.png", 24, 24));
-        jibQuanLyChuongTrinh.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/calendar.png", 24, 24));
-        jibQuanLyQuyenGop.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/list2.png", 24,24));
-        jibQuanLyDanhMuc.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/category.png", 22,22));
-        jibQuanLyToChuc.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/non-profit-organization (2).png", 30, 30));
-        jibTaiKhoan.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/people.png", 30, 30));
-        jibThongKe.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/statistics.png", 22, 22));
+        jibTrangchu2.setIcon(new FlatSVGIcon("charity/icon/home.svg", 25, 25));
+        jibQuanLyChuongTrinh.setIcon(new FlatSVGIcon("charity/icon/event.svg", 25, 25));
+        jibQuanLyQuyenGop.setIcon(new FlatSVGIcon("charity/icon/donate.svg", 25,25));
+        jibQuanLyDanhMuc.setIcon(new FlatSVGIcon("charity/icon/category.svg", 25,25));
+        jibQuanLyToChuc.setIcon(new FlatSVGIcon("charity/icon/organization.svg", 25, 25));
+        jibQuanLyNguoiQuyenGop.setIcon(new FlatSVGIcon("charity/icon/user.svg", 25, 25));
+        jibTaiKhoan.setIcon(new FlatSVGIcon("charity/icon/account.svg", 25, 25));
+        jibThongKe.setIcon(new FlatSVGIcon("charity/icon/statistic.svg", 25, 25));
 
 
-        jlbLogout.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/logout2.png", 20, 20));
+        jlbLogout.setIcon(new FlatSVGIcon("charity/icon/logout.svg", 20, 20));
     }
     
     @SuppressWarnings("unchecked")
@@ -72,6 +75,8 @@ public class AdminUI extends javax.swing.JFrame {
         jibTaiKhoan = new javax.swing.JLabel();
         jpnThongKe = new javax.swing.JPanel();
         jibThongKe = new javax.swing.JLabel();
+        jpnQuanLyNguoiQuyenGop = new javax.swing.JPanel();
+        jibQuanLyNguoiQuyenGop = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -107,7 +112,7 @@ public class AdminUI extends javax.swing.JFrame {
         jpnTrangchu2Layout.setHorizontalGroup(
             jpnTrangchu2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnTrangchu2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(15, 15, 15)
                 .addComponent(jibTrangchu2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnTrangchu2Layout.setVerticalGroup(
@@ -140,7 +145,7 @@ public class AdminUI extends javax.swing.JFrame {
         jpnQuanLyQuyenGopLayout.setHorizontalGroup(
             jpnQuanLyQuyenGopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQuanLyQuyenGopLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jibQuanLyQuyenGop, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnQuanLyQuyenGopLayout.setVerticalGroup(
@@ -164,7 +169,7 @@ public class AdminUI extends javax.swing.JFrame {
         jpnQuanLyDanhMucLayout.setHorizontalGroup(
             jpnQuanLyDanhMucLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQuanLyDanhMucLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jibQuanLyDanhMuc, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnQuanLyDanhMucLayout.setVerticalGroup(
@@ -179,7 +184,7 @@ public class AdminUI extends javax.swing.JFrame {
         jpnQuanLyChuongTrinhLayout.setHorizontalGroup(
             jpnQuanLyChuongTrinhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpnQuanLyChuongTrinhLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jibQuanLyChuongTrinh, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jpnQuanLyQuyenGop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jpnQuanLyDanhMuc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -208,7 +213,7 @@ public class AdminUI extends javax.swing.JFrame {
         jpnQuanLyToChucLayout.setHorizontalGroup(
             jpnQuanLyToChucLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQuanLyToChucLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jibQuanLyToChuc, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnQuanLyToChucLayout.setVerticalGroup(
@@ -257,7 +262,7 @@ public class AdminUI extends javax.swing.JFrame {
         jpnTaiKhoanLayout.setHorizontalGroup(
             jpnTaiKhoanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnTaiKhoanLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jibTaiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnTaiKhoanLayout.setVerticalGroup(
@@ -280,7 +285,7 @@ public class AdminUI extends javax.swing.JFrame {
         jpnThongKeLayout.setHorizontalGroup(
             jpnThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnThongKeLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jibThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnThongKeLayout.setVerticalGroup(
@@ -288,6 +293,29 @@ public class AdminUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnThongKeLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jibThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jpnQuanLyNguoiQuyenGop.setBackground(new java.awt.Color(76, 175, 80));
+
+        jibQuanLyNguoiQuyenGop.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        jibQuanLyNguoiQuyenGop.setForeground(new java.awt.Color(255, 255, 255));
+        jibQuanLyNguoiQuyenGop.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jibQuanLyNguoiQuyenGop.setText("Quản lý người quyên góp");
+        jibQuanLyNguoiQuyenGop.setPreferredSize(new java.awt.Dimension(71, 36));
+
+        javax.swing.GroupLayout jpnQuanLyNguoiQuyenGopLayout = new javax.swing.GroupLayout(jpnQuanLyNguoiQuyenGop);
+        jpnQuanLyNguoiQuyenGop.setLayout(jpnQuanLyNguoiQuyenGopLayout);
+        jpnQuanLyNguoiQuyenGopLayout.setHorizontalGroup(
+            jpnQuanLyNguoiQuyenGopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQuanLyNguoiQuyenGopLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jibQuanLyNguoiQuyenGop, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jpnQuanLyNguoiQuyenGopLayout.setVerticalGroup(
+            jpnQuanLyNguoiQuyenGopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnQuanLyNguoiQuyenGopLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jibQuanLyNguoiQuyenGop, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout jpnMenuLayout = new javax.swing.GroupLayout(jpnMenu);
@@ -315,6 +343,7 @@ public class AdminUI extends javax.swing.JFrame {
                 .addGap(77, 77, 77))
             .addComponent(jpnTaiKhoan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jpnThongKe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jpnQuanLyNguoiQuyenGop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpnMenuLayout.setVerticalGroup(
             jpnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,10 +361,12 @@ public class AdminUI extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jpnQuanLyToChuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
+                .addComponent(jpnQuanLyNguoiQuyenGop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(jpnTaiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jpnThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(jlbLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
@@ -392,6 +423,7 @@ public class AdminUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jibQuanLyChuongTrinh;
     private javax.swing.JLabel jibQuanLyDanhMuc;
+    private javax.swing.JLabel jibQuanLyNguoiQuyenGop;
     private javax.swing.JLabel jibQuanLyQuyenGop;
     private javax.swing.JLabel jibQuanLyToChuc;
     private javax.swing.JLabel jibTaiKhoan;
@@ -403,6 +435,7 @@ public class AdminUI extends javax.swing.JFrame {
     private charity.view.Admin.GradientPanel jpnMenu;
     private javax.swing.JPanel jpnQuanLyChuongTrinh;
     private javax.swing.JPanel jpnQuanLyDanhMuc;
+    private javax.swing.JPanel jpnQuanLyNguoiQuyenGop;
     private javax.swing.JPanel jpnQuanLyQuyenGop;
     private javax.swing.JPanel jpnQuanLyToChuc;
     private javax.swing.JPanel jpnTaiKhoan;

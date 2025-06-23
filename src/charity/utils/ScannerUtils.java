@@ -89,6 +89,14 @@ public class ScannerUtils {
         }
         return false;
     }
+    public static boolean isDateAfterToday(Date date) {
+        Date today = new Date();
+        if (date.after(today)) {
+//            JOptionPane.showMessageDialog(null, "Ngày đã chọn không được lớn hơn ngày hiện tại");
+            return true;
+        }
+        return false;
+    }
 
     public static boolean isPhoneValid(JTextField textField, String message) {
         String phone = textField.getText().trim();

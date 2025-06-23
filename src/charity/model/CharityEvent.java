@@ -20,7 +20,7 @@ public class CharityEvent {
     private long currentAmount;
     private String imageUrl;
     private Date dateBegin, dateEnd;
-//    private List<Donation> donations;// Danh sách đóng góp
+    private String status;
     private String purpose;
 
     public CharityEvent() {
@@ -39,7 +39,7 @@ public class CharityEvent {
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
     }
-    public CharityEvent(int id,int organizationId, String name, int categoryId, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description, String imageUrl) {
+    public CharityEvent(int id,int organizationId, String name, int categoryId, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description, String imageUrl, String status) {
         this.imageUrl = "/charity/image/default.png";
         this.id = id;
         this.organizationId=organizationId;
@@ -51,6 +51,7 @@ public class CharityEvent {
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
         this.imageUrl= imageUrl;
+        this.status = status;
     }
     public CharityEvent(String name, int categoryId, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
         this.imageUrl = "/charity/image/default.png";
@@ -70,19 +71,6 @@ public class CharityEvent {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-
-
-    
-//    public CharityEvent(int organizationId, String name, String category, long targetAmount, long currentAmount, Date dateBegin, Date dateEnd, String description) {
-//        this.organizationId=organizationId;
-//        this.name = name;
-//        this.category = category;
-//        this.description = description;
-//        this.targetAmount = targetAmount;
-//        this.currentAmount = currentAmount;
-//        this.dateBegin = dateBegin;
-//        this.dateEnd = dateEnd;
-//    }
 
     public Date getDateBegin() {
         return dateBegin;
@@ -157,6 +145,14 @@ public class CharityEvent {
         this.currentAmount = currentAmount;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getPurpose() {
         return purpose;
     }
@@ -164,6 +160,7 @@ public class CharityEvent {
     public void setPurpose(String purpose) {
         this.purpose = purpose;
     }
+
 
     @Override
     public String toString() {

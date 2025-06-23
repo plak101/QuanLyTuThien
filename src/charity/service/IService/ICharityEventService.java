@@ -12,7 +12,9 @@ import java.util.List;
  * @author phaml
  */
 public interface ICharityEventService {
+    public List<CharityEvent> getEventListCall();
     public List<CharityEvent> getEventList();
+    public List<CharityEvent> getEventListDistribution();
     public List<CharityEvent> getActiveEventList();
     public List<CharityEvent> getExpiredEventList();
     public CharityEvent getEventById(int eventId) ;

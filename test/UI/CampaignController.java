@@ -23,7 +23,7 @@ public class CampaignController {
     }
 
     public void loadEvents() {
-        allEvents = eventService.getEventList();
+        allEvents = eventService.getEventListCall();
         filteredEvents = new ArrayList<>(allEvents); // Khởi tạo danh sách lọc ban đầu
         showCurrentPage();
     }

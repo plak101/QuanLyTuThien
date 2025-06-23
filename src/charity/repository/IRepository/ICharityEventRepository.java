@@ -10,6 +10,8 @@ import java.sql.*;
  * @author phaml
  */
 public interface ICharityEventRepository {
+    public List<CharityEvent> getEventListCall();
+    public List<CharityEvent> getEventListDistribution();
     public List<CharityEvent> getEventList();
     public List<CharityEvent> getActiveEventList();
     public List<CharityEvent> getExpiredEventList();

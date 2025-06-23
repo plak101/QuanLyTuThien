@@ -16,6 +16,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color; // Import Color
 
+// THÊM CÁC IMPORTS SAU
+import charity.model.Account; // Import lớp Account
+import charity.model.Role; // Import lớp Role
+import charity.service.AccountService; // Import lớp AccountService
+// HẾT PHẦN THÊM IMPORTS
+
 /**
  *
  * @author Admin
@@ -30,6 +36,12 @@ public class NewRegisterController {
     private JButton jbtRegister;
     private JLabel jlbBackToLogin;
 
+    
+    // THÊM THUỘC TÍNH accountService
+    private AccountService accountService; // Khai báo đối tượng AccountService
+    // HẾT PHẦN THÊM THUỘC TÍNH
+
+    
     // Constructor của Controller
     public NewRegisterController(NewRegister registerView, JTextField txtRegUsername, JTextField txtRegEmail,
                                  JPasswordField txtRegPassword, JPasswordField txtRegConfirmPassword,
@@ -41,6 +53,10 @@ public class NewRegisterController {
         this.txtRegConfirmPassword = txtRegConfirmPassword;
         this.jbtRegister = jbtRegister;
         this.jlbBackToLogin = jlbBackToLogin;
+        
+        // KHỞI TẠO accountService TRONG CONSTRUCTOR
+        accountService = new AccountService(); // Khởi tạo AccountService
+        // HẾT PHẦN KHỞI TẠO
     }
 
     // Phương thức để thiết lập các sự kiện cho các thành phần UI
@@ -72,13 +88,13 @@ public class NewRegisterController {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                jlbBackToLogin.setForeground(Color.ORANGE); // Đổi màu khi di chuột vào
+                jlbBackToLogin.setForeground(Color.BLUE); // Đổi màu khi di chuột vào
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 // Đổi lại màu ban đầu của link khi di chuột ra
-                jlbBackToLogin.setForeground(Color.BLUE.darker());
+                jlbBackToLogin.setForeground(Color.BLACK.darker());
             }
         });
     }
@@ -118,13 +134,72 @@ public class NewRegisterController {
 
 
         // 4. Kiểm tra độ dài mật khẩu (tối thiểu 8 ký tự)
-        if (password.length() < 8) {
-            JOptionPane.showMessageDialog(registerView, "Mật khẩu phải ít nhất phải 8 ký tự !", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            txtRegPassword.setText(""); // Xóa mật khẩu đã nhập
-            txtRegConfirmPassword.setText(""); // Xóa xác nhận mật khẩu
-            txtRegPassword.requestFocus();
-            return false;
-        }
+//        if (password.length() < 8) {
+//            JOptionPane.showMessageDialog(registerView, "Mật khẩu phải ít nhất phải 8 ký tự !", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//            txtRegPassword.setText(""); // Xóa mật khẩu đã nhập
+//            txtRegConfirmPassword.setText(""); // Xóa xác nhận mật khẩu
+//            txtRegPassword.requestFocus();
+//            return false;
+//        }
+            
+
+            if (password.length() < 8) {
+                JOptionPane.showMessageDialog(registerView, "Mật khẩu phải ít nhất 8 ký tự!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                txtRegPassword.setText(""); // Xóa mật khẩu đã nhập
+                txtRegConfirmPassword.setText(""); // Xóa xác nhận mật khẩu
+                txtRegPassword.requestFocus();
+                return false;
+            }
+
+            // Kiểm tra từng điều kiện cụ thể của mật khẩu
+            boolean hasUppercase = false;
+            boolean hasLowercase = false;
+            boolean hasDigit = false;
+            boolean hasSpecialChar = false;
+
+            // Duyệt qua từng ký tự trong mật khẩu để kiểm tra
+            for (char c : password.toCharArray()) {
+                if (Character.isUpperCase(c)) {
+                    hasUppercase = true;
+                } else if (Character.isLowerCase(c)) {
+                    hasLowercase = true;
+                } else if (Character.isDigit(c)) {
+                    hasDigit = true;
+                } else if ("!@#$%^&*()_+-=[]{};':\"\\|,.<>/?".indexOf(c) >= 0) { // Danh sách các ký tự đặc biệt
+                    hasSpecialChar = true;
+                }
+            }
+
+            // Xây dựng thông báo lỗi chi tiết
+            StringBuilder errorMessage = new StringBuilder("Mật khẩu phải bao gồm:");
+            boolean isValid = true;
+
+            if (!hasUppercase) {
+                errorMessage.append("\n- Ít nhất 1 chữ hoa");
+                isValid = false;
+            }
+            if (!hasLowercase) {
+                errorMessage.append("\n- Ít nhất 1 chữ thường");
+                isValid = false;
+            }
+            if (!hasDigit) {
+                errorMessage.append("\n- Ít nhất 1 số");
+                isValid = false;
+            }
+            if (!hasSpecialChar) {
+                errorMessage.append("\n- Ít nhất 1 ký tự đặc biệt (!@#$%^&*...)");
+                isValid = false;
+            }
+
+            if (!isValid) {
+                JOptionPane.showMessageDialog(registerView, errorMessage.toString(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                txtRegPassword.setText(""); // Xóa mật khẩu đã nhập
+                txtRegConfirmPassword.setText(""); // Xóa xác nhận mật khẩu
+                txtRegPassword.requestFocus();
+                return false;
+            }
+
+            
 
         // 5. Kiểm tra mật khẩu và xác nhận mật khẩu khớp nhau
         if (!password.equals(confirmPassword)) {
@@ -136,7 +211,11 @@ public class NewRegisterController {
         }
         
         // 6. Kiểm tra tên đăng nhập đã tồn tại chưa
-
+        if (accountService.isUsernameTaken(username)) { // Gọi phương thức isUsernameTaken từ AccountService để kiểm tra tên người dùng
+            JOptionPane.showMessageDialog(registerView, "Tên đăng nhập đã tồn tại! Vui lòng chọn tên khác.", "Lỗi", JOptionPane.ERROR_MESSAGE); // Hiển thị thông báo lỗi
+            txtRegUsername.requestFocus(); // Đặt focus vào trường tên người dùng
+            return false; // Trả về false
+        }
         
         return true; // Tất cả điều kiện hợp lệ
     }
@@ -146,13 +225,13 @@ public class NewRegisterController {
     private void handleRegister() {
         String username = txtRegUsername.getText();
         String email = txtRegEmail.getText();
-        char[] password = txtRegPassword.getPassword();
-        char[] confirmPassword = txtRegConfirmPassword.getPassword();
+        String password = new String (txtRegPassword.getPassword());
+        String confirmPassword = new String (txtRegConfirmPassword.getPassword());
 
-        if (username.isEmpty() || email.isEmpty() || password.length == 0 || confirmPassword.length == 0) {
-            JOptionPane.showMessageDialog(registerView, "Vui lòng điền đầy đủ thông tin.", "Lỗi đăng ký", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+//        if (username.isEmpty() || email.isEmpty() || password.length == 0 || confirmPassword.length == 0) {
+//            JOptionPane.showMessageDialog(registerView, "Vui lòng điền đầy đủ thông tin.", "Lỗi đăng ký", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
 
         if (!String.valueOf(password).equals(String.valueOf(confirmPassword))) {
             JOptionPane.showMessageDialog(registerView, "Mật khẩu và xác nhận mật khẩu không khớp.", "Lỗi đăng ký", JOptionPane.ERROR_MESSAGE);
@@ -161,24 +240,46 @@ public class NewRegisterController {
             txtRegConfirmPassword.setText("");
             return;
         }
+        
+        
+        // BẮT ĐẦU CHỨC NĂNG LƯU TÀI KHOẢN
+        // Tạo một đối tượng Account mới để lưu thông tin người dùng
+        Account newAccount = new Account(); // Tạo đối tượng Account
+        newAccount.setUsername(username); // Thiết lập tên người dùng
+        newAccount.setEmail(email); // Thiết lập email
+        newAccount.setPassword(password); // Thiết lập mật khẩu
+        newAccount.setRole(Role.User); // Thiết lập vai trò mặc định là User
 
+        // Gọi AccountService để thêm tài khoản vào cơ sở dữ liệu
+        boolean success = accountService.addAccount(newAccount); // Gọi addAccount để lưu tài khoản
+
+        if (success) { // Nếu thêm tài khoản thành công
+            JOptionPane.showMessageDialog(registerView, "Đăng ký tài khoản mới thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE); // Hiển thị thông báo thành công
+
+            // Xóa dữ liệu sau khi đăng ký thành công
+            txtRegUsername.setText(""); // Xóa trường tên người dùng
+            txtRegEmail.setText(""); // Xóa trường email
+            txtRegPassword.setText(""); // Xóa trường mật khẩu
+            txtRegConfirmPassword.setText(""); // Xóa trường xác nhận mật khẩu
+
+            // Chuyển người dùng về màn hình đăng nhập
+            // Sử dụng phương thức của view để chuyển màn hình, thay vì tạo NewLogin trực tiếp nếu NewRegister đã có phương thức này
+            registerView.switchToLogin(); // Gọi phương thức của view để chuyển màn hình
+            // registerView.dispose(); // Cần đảm bảo rằng switchToLogin() cũng đóng cửa sổ hiện tại.
+                                     // Nếu không, cần gọi dispose() ở đây.
+        } else { // Nếu thêm tài khoản thất bại (ví dụ: lỗi cơ sở dữ liệu)
+            JOptionPane.showMessageDialog(registerView, "Đăng ký thất bại! Vui lòng thử lại.", "Lỗi đăng ký", JOptionPane.ERROR_MESSAGE); // Hiển thị thông báo lỗi
+        }
+        // KẾT THÚC CHỨC NĂNG LƯU TÀI KHOẢN
+        
+        
         // Logic đăng ký tài khoản
         // Đây là nơi bạn sẽ gọi đến Model (ví dụ: database) để lưu thông tin người dùng mới
         JOptionPane.showMessageDialog(registerView,"Đăng ký tài khoản mới thành công!\n");
-
-        // Xóa dữ liệu sau khi đăng ký thành công
-        txtRegUsername.setText("");
-        txtRegEmail.setText("");
-        txtRegPassword.setText("");
-        txtRegConfirmPassword.setText("");
-
-        // Trong ứng dụng thực tế, bạn có thể chuyển người dùng về màn hình đăng nhập
-        new NewLogin().setVisible(true);
-        registerView.dispose(); // Đóng cửa sổ đăng ký hiện tại
     }
 
     // Phương thức xử lý logic quay lại màn hình đăng nhập
     private void handleBackToLogin() {
-        JOptionPane.showMessageDialog(registerView, "Đang xử lí...");
+        //JOptionPane.showMessageDialog(registerView, "");
     }
 }

@@ -36,15 +36,28 @@ CREATE TABLE IF NOT EXISTS donation_allocations (
     evidenceUrl VARCHAR(500),
     createdBy INT NOT NULL,
     recipient VARCHAR(255),
-    numRecipients INT,
-    criteria VARCHAR(500),
-    recipientList TEXT,
     giftType VARCHAR(255),
-    giftValue VARCHAR(255),
     totalGifts INT,
+    giftValue DOUBLE,
+    numRecipients INT,
+    criteria VARCHAR(255),
+    recipientList TEXT,
     shippingCost DOUBLE,
-    receipt VARCHAR(500),
+    receipt VARCHAR(255),
     feedback TEXT,
     FOREIGN KEY (eventId) REFERENCES Event(eventId),
     FOREIGN KEY (createdBy) REFERENCES User(userId)
 );
+
+-- Nếu đã có bảng, thêm các trường mới bằng ALTER TABLE (an toàn khi migrate)
+ALTER TABLE donation_allocations 
+    ADD COLUMN IF NOT EXISTS recipient VARCHAR(255),
+    ADD COLUMN IF NOT EXISTS giftType VARCHAR(255),
+    ADD COLUMN IF NOT EXISTS totalGifts INT,
+    ADD COLUMN IF NOT EXISTS giftValue DOUBLE,
+    ADD COLUMN IF NOT EXISTS numRecipients INT,
+    ADD COLUMN IF NOT EXISTS criteria VARCHAR(255),
+    ADD COLUMN IF NOT EXISTS recipientList TEXT,
+    ADD COLUMN IF NOT EXISTS shippingCost DOUBLE,
+    ADD COLUMN IF NOT EXISTS receipt VARCHAR(255),
+    ADD COLUMN IF NOT EXISTS feedback TEXT;

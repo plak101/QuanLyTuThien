@@ -18,8 +18,8 @@ public class AllocationRepository {
 
     public boolean save(DonationAllocation allocation) {
         String query = "INSERT INTO donation_allocations (eventId, amount, purpose, status, " +
-                      "allocationDate, usedAmount, evidenceUrl, createdBy) " +
-                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                      "allocationDate, usedAmount, evidenceUrl, createdBy, recipient) " +
+                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             ps = conn.prepareStatement(query);
             ps.setInt(1, allocation.getEventId());
@@ -30,6 +30,7 @@ public class AllocationRepository {
             ps.setDouble(6, allocation.getUsedAmount());
             ps.setString(7, allocation.getEvidenceUrl());
             ps.setInt(8, allocation.getCreatedBy());
+            ps.setString(9, allocation.getRecipient());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {

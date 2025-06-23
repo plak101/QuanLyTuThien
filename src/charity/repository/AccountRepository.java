@@ -133,22 +133,6 @@ public class AccountRepository implements IAccountRepository {
         }
     }
 
-    @Override
-    public void closeResources(Connection conn, PreparedStatement ps, ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-            if (ps != null) {
-                ps.close();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     @Override
     public Account checkAccount(String username, String password) {
@@ -397,12 +381,38 @@ public class AccountRepository implements IAccountRepository {
 
     }
 
+
+    public void closeResources(Connection conn, PreparedStatement ps, ResultSet rs) {
+    try {
+        if (rs != null) {
+            rs.close();
+        }
+        if (ps != null) {
+            ps.close();
+        }
+        if (conn != null) {
+            conn.close();
+        }
+    } catch (SQLException e) {
+        java.util.logging.Logger.getLogger(charity.repository.AccountRepository.class.getName()).log(java.util.logging.Level.SEVERE, "Error closing resources", e);
+    }
+}
+
+
     @Override
     public boolean isEmailExist(String email) {
-        conn = ConnectionDB.getConnection();
-        String query = "SELECT count(*) FROM account WHERE email=?";
+        Connection conn = null; // Khai báo cục bộ để quản lý tốt hơn trong try-finally
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
+            conn = ConnectionDB.getConnection(); // Lấy kết nối
+            if (conn == null) {
+                System.err.println("Database connection is null in isEmailExist method!");
+                return false; // Trả về false nếu không có kết nối
+            }
+            String query = "SELECT count(*) FROM account WHERE email=?";
             ps = conn.prepareStatement(query);
+            ps.setString(1, email); // <<<<< DÒNG NÀY CẦN THÊM VÀO >>>>>
             rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1) > 0;
@@ -413,6 +423,42 @@ public class AccountRepository implements IAccountRepository {
             closeResources(conn, ps, rs);
         }
         return false;
+    }
+
+    public Account getAccountByEmail(String email) {
+        Connection conn = null; // Khai báo cục bộ
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            // Lấy kết nối từ ConnectionDB (hoặc DatabaseConnection tùy theo cấu hình của bạn)
+            conn = charity.repository.ConnectionDB.getConnection(); // Hoặc DatabaseConnection.getConnection() nếu bạn đã thay đổi
+            if (conn == null) {
+                System.err.println("Database connection is null in getAccountByEmail method!");
+                return null;
+            }
+            String query = "SELECT * FROM account WHERE email=?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, email); // Thiết lập tham số email
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Phần tạo đối tượng Account
+                return new charity.model.Account(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        charity.model.Role.valueOf(rs.getString("role")) // Giả định Role là enum
+                );
+            }
+        } catch (SQLException ex) {
+            // Ghi log lỗi chi tiết
+            java.util.logging.Logger.getLogger(charity.repository.AccountRepository.class.getName()).log(java.util.logging.Level.SEVERE, "Error in getAccountByEmail: " + ex.getMessage(), ex);
+        } finally {
+            // Đảm bảo đóng tài nguyên
+            closeResources(conn, ps, rs);
+        }
+        return null; // Trả về null nếu không tìm thấy hoặc có lỗi
     }
 
 }

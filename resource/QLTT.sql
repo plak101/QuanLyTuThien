@@ -54,7 +54,7 @@ CREATE TABLE Event (
     dateBegin DATE NOT NULL,
     dateEnd DATE NOT NULL,
     imageUrl VARCHAR(255) DEFAULT '/charity/image/default.png',
-    status ENUM ('Kêu gọi', 'Phân phát')
+    status ENUM ('Kêu gọi', 'Phân phát') DEFAULT 'Kêu gọi',
     FOREIGN KEY (organizationId) REFERENCES Organization(id),
     FOREIGN KEY (categoryId) REFERENCES Category(categoryId)
 );

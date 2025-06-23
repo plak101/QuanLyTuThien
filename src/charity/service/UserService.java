@@ -56,4 +56,9 @@ public class UserService implements IUserService{
     public boolean isPhoneNumberExist(String phoneNumber){
         return userRepository.isPhoneNumberExist(phoneNumber);
     }
+
+    @Override
+    public List<User> getUserRoleUser() {
+        return userRepository.getUserRoleUser();
+    }
 }

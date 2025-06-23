@@ -246,7 +246,8 @@ public class CharityEventRepository implements ICharityEventRepository {
                         rs.getLong("currentAmount"),
                         rs.getDate("dateBegin"),
                         rs.getDate("dateEnd"),
-                        rs.getString("description")
+                        rs.getString("description"),
+                        rs.getString("imageUrl")
                 ));
             }
         } catch (SQLException ex) {

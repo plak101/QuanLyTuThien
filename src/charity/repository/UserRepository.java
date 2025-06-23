@@ -54,7 +54,6 @@ public class UserRepository implements IUserRepository {
             closeResources(conn, ps, rs);
         }
         return users;
-
     }
 
     @Override
@@ -248,6 +247,40 @@ public class UserRepository implements IUserRepository {
         }
         return false;
 
+    }
+
+    @Override
+    public List<User> getUserRoleUser() {
+        List<User> users = new ArrayList<>();
+        conn = ConnectionDB.getConnection();
+        String query = ""
+                + "SELECT u.*\n"
+                + "FROM User u\n"
+                + "JOIN Account a ON a.id = u.accountId\n"
+                + "WHERE a.role ='USER'";
+        try {
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                User user = new User(
+                        rs.getInt("accountId"),
+                        rs.getInt("userId"),
+                        rs.getString("userName"),
+                        rs.getString("address"),
+                        rs.getString("phone"),
+                        rs.getString("gender"),
+                        rs.getDate("birthday")
+                );
+
+                users.add(user);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeResources(conn, ps, rs);
+        }
+        return users;
     }
 
 }

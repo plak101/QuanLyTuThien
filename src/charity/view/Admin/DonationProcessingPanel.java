@@ -16,6 +16,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class DonationProcessingPanel extends JPanel {
+
     private JTable tblEvents;
     private JTable tblDistributions;
     private JPanel infoPanel;
@@ -46,7 +47,9 @@ public class DonationProcessingPanel extends JPanel {
         // --- Top: Event Table ---
         String[] eventCols = {"ID", "Tên sự kiện", "Mục tiêu", "Đã quyên góp"};
         eventTableModel = new DefaultTableModel(eventCols, 0) {
-            public boolean isCellEditable(int r, int c) { return false; }
+            public boolean isCellEditable(int r, int c) {
+                return false;
+            }
         };
         tblEvents = new JTable(eventTableModel);
         tblEvents.setRowHeight(28);
@@ -65,7 +68,9 @@ public class DonationProcessingPanel extends JPanel {
         // Center: Distribution Table
         String[] distCols = {"ID", "Số tiền", "Mục đích", "Ngày phân phát", "Người nhận"};
         distributionTableModel = new DefaultTableModel(distCols, 0) {
-            public boolean isCellEditable(int r, int c) { return false; }
+            public boolean isCellEditable(int r, int c) {
+                return false;
+            }
         };
         tblDistributions = new JTable(distributionTableModel) {
             @Override
@@ -93,7 +98,7 @@ public class DonationProcessingPanel extends JPanel {
         distHeader.setBackground(new Color(178, 235, 242)); // #B2EBF2
         distHeader.setForeground(new Color(33, 33, 33));
         distHeader.setPreferredSize(new Dimension(100, 38));
-        ((javax.swing.table.DefaultTableCellRenderer)distHeader.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        ((javax.swing.table.DefaultTableCellRenderer) distHeader.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
         tblDistributions.setSelectionBackground(new Color(200, 230, 255));
         tblDistributions.setSelectionForeground(Color.BLACK);
         tblDistributions.setGridColor(new Color(220, 220, 220));
@@ -234,20 +239,57 @@ public class DonationProcessingPanel extends JPanel {
                     detail.append("--- Thông tin phân phát ---\n");
                     if (alloc != null) {
                         detail.append("Mã phân phát: ").append(safe(alloc.getId())).append("\n");
-                        if (alloc.getAmount() > 0) detail.append("Số tiền: ").append(moneyFormat.format(alloc.getAmount())).append("\n");
-                        if (!safe(alloc.getPurpose()).isEmpty()) detail.append("Mục đích: ").append(safe(alloc.getPurpose())).append("\n");
-                        if (alloc.getAllocationDate() != null) detail.append("Ngày phân phát: ").append(safe(alloc.getAllocationDate())).append("\n");
-                        if (!safe(alloc.getRecipient()).isEmpty()) detail.append("Người nhận: ").append(safe(alloc.getRecipient())).append("\n");
-                        if (alloc.getNumRecipients() > 0) detail.append("Số lượng người nhận: ").append(safe(alloc.getNumRecipients())).append("\n");
-                        if (!safe(alloc.getCriteria()).isEmpty()) detail.append("Tiêu chí lựa chọn: ").append(safe(alloc.getCriteria())).append("\n");
-                        if (!safe(alloc.getRecipientList()).isEmpty()) detail.append("Danh sách người nhận: ").append(safe(alloc.getRecipientList())).append("\n");
-                        if (!safe(alloc.getGiftType()).isEmpty()) detail.append("Loại quà/tài sản: ").append(safe(alloc.getGiftType())).append("\n");
-                        if (!safe(alloc.getGiftValue()).isEmpty()) detail.append("Giá trị từng phần quà: ").append(safe(alloc.getGiftValue())).append("\n");
-                        if (alloc.getTotalGifts() > 0) detail.append("Tổng số lượng/quà: ").append(safe(alloc.getTotalGifts())).append("\n");
-                        if (alloc.getShippingCost() > 0) detail.append("Chi phí vận chuyển, nhân công: ").append(safe(alloc.getShippingCost())).append("\n");
-                        if (!safe(alloc.getEvidenceUrl()).isEmpty()) detail.append("Ảnh/video minh chứng: ").append(safe(alloc.getEvidenceUrl())).append("\n");
-                        if (!safe(alloc.getReceipt()).isEmpty()) detail.append("Biên nhận, chữ ký người nhận: ").append(safe(alloc.getReceipt())).append("\n");
-                        if (!safe(alloc.getFeedback()).isEmpty()) detail.append("Phản hồi từ người nhận/địa phương: ").append(safe(alloc.getFeedback())).append("\n");
+                        if (alloc.getAmount() > 0) {
+                            detail.append("Số tiền: ").append(moneyFormat.format(alloc.getAmount())).append("\n");
+                        }
+                        // Hiển thị Mục đích sát trái, kể cả nhiều dòng
+                        if (!safe(alloc.getPurpose()).isEmpty()) {
+                            detail.append("Mục đích: ");
+                            String[] lines = safe(alloc.getPurpose()).split("\\n");
+                            for (int i = 0; i < lines.length; i++) {
+                                if (i == 0) {
+                                    detail.append(lines[i]).append("\n");
+                                } else {
+                                    detail.append("           ").append(lines[i]).append("\n");
+                                }
+                            }
+                        }
+                        if (alloc.getAllocationDate() != null) {
+                            detail.append("Ngày phân phát: ").append(safe(alloc.getAllocationDate())).append("\n");
+                        }
+                        if (!safe(alloc.getRecipient()).isEmpty()) {
+                            detail.append("Người nhận: ").append(safe(alloc.getRecipient())).append("\n");
+                        }
+                        if (alloc.getNumRecipients() > 0) {
+                            detail.append("Số lượng người nhận: ").append(safe(alloc.getNumRecipients())).append("\n");
+                        }
+                        if (!safe(alloc.getCriteria()).isEmpty()) {
+                            detail.append("Tiêu chí lựa chọn: ").append(safe(alloc.getCriteria())).append("\n");
+                        }
+                        if (!safe(alloc.getRecipientList()).isEmpty()) {
+                            detail.append("Danh sách người nhận: ").append(safe(alloc.getRecipientList())).append("\n");
+                        }
+                        if (!safe(alloc.getGiftType()).isEmpty()) {
+                            detail.append("Loại quà/tài sản: ").append(safe(alloc.getGiftType())).append("\n");
+                        }
+                        if (!safe(alloc.getGiftValue()).isEmpty()) {
+                            detail.append("Giá trị từng phần quà: ").append(safe(alloc.getGiftValue())).append("\n");
+                        }
+                        if (alloc.getTotalGifts() > 0) {
+                            detail.append("Tổng số lượng/quà: ").append(safe(alloc.getTotalGifts())).append("\n");
+                        }
+                        if (alloc.getShippingCost() > 0) {
+                            detail.append("Chi phí vận chuyển, nhân công: ").append(safe(alloc.getShippingCost())).append("\n");
+                        }
+                        if (!safe(alloc.getEvidenceUrl()).isEmpty()) {
+                            detail.append("Ảnh/video minh chứng: ").append(safe(alloc.getEvidenceUrl())).append("\n");
+                        }
+                        if (!safe(alloc.getReceipt()).isEmpty()) {
+                            detail.append("Biên nhận, chữ ký người nhận: ").append(safe(alloc.getReceipt())).append("\n");
+                        }
+                        if (!safe(alloc.getFeedback()).isEmpty()) {
+                            detail.append("Phản hồi từ người nhận/địa phương: ").append(safe(alloc.getFeedback())).append("\n");
+                        }
                     } else {
                         detail.append("Không tìm thấy dữ liệu chi tiết.\n");
                     }
@@ -282,8 +324,8 @@ public class DonationProcessingPanel extends JPanel {
                 Object idObj = tblDistributions.getValueAt(row, 0);
                 if (idObj != null) {
                     int allocationId = Integer.parseInt(idObj.toString());
-                int eventId = (int) eventTableModel.getValueAt(eventRow, 0);
-                showEditDistributionDialog(allocationId, eventId);
+                    int eventId = (int) eventTableModel.getValueAt(eventRow, 0);
+                    showEditDistributionDialog(allocationId, eventId);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Vui lòng chọn một phân phát để sửa.");
@@ -298,8 +340,8 @@ public class DonationProcessingPanel extends JPanel {
                 Object idObj = tblDistributions.getValueAt(row, 0);
                 if (idObj != null) {
                     int allocationId = Integer.parseInt(idObj.toString());
-                int eventId = (int) eventTableModel.getValueAt(eventRow, 0);
-                deleteDistribution(allocationId, eventId);
+                    int eventId = (int) eventTableModel.getValueAt(eventRow, 0);
+                    deleteDistribution(allocationId, eventId);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Vui lòng chọn một phân phát để xoá.");
@@ -371,6 +413,7 @@ public class DonationProcessingPanel extends JPanel {
         }
         int eventId = (int) eventTableModel.getValueAt(row, 0);
         double remaining = allocationService.getRemainingAmount(eventId);
+
         // --- Loại phân phát ---
         JRadioButton rbMoney = new JRadioButton("Phân phát tiền");
         JRadioButton rbGoods = new JRadioButton("Phân phát vật tư/quà tặng");
@@ -408,27 +451,37 @@ public class DonationProcessingPanel extends JPanel {
         rbMoney.addActionListener(evt -> cl.show(cardPanel, "MONEY"));
         rbGoods.addActionListener(evt -> cl.show(cardPanel, "GOODS"));
 
-        // Panel chính
+        // Panel chính (căn trái, giảm padding) - GIỐNG EDIT
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(16, 24, 16, 24));
-        JLabel lblTitle = new JLabel("TẠO PHÂN PHÁT MỚI");
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mainPanel.add(lblTitle);
-        mainPanel.add(Box.createVerticalStrut(12));
-        JPanel typePanel = new JPanel();
-        typePanel.setLayout(new BoxLayout(typePanel, BoxLayout.X_AXIS));
+        mainPanel.setBackground(new Color(248, 252, 255));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Giảm padding
+
+        // Header (tiêu đề) - GIỐNG EDIT
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Căn trái tiêu đề
+        headerPanel.setBackground(new Color(33, 120, 200));
+        headerPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); // Giảm chiều cao
+        JLabel lblHeader = new JLabel("TẠO PHÂN PHÁT MỚI");
+        lblHeader.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblHeader.setForeground(Color.WHITE);
+        headerPanel.add(lblHeader);
+        mainPanel.add(headerPanel);
+        mainPanel.add(Box.createVerticalStrut(10)); // Giảm khoảng cách sau tiêu đề
+
+        // Panel chọn loại phân phát (căn trái) - GIỐNG EDIT
+        JPanel typePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0)); // Căn trái, giảm khoảng cách ngang
+        typePanel.setOpaque(false);
         typePanel.add(rbMoney);
-        typePanel.add(Box.createHorizontalStrut(16));
         typePanel.add(rbGoods);
-        typePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         mainPanel.add(typePanel);
-        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(Box.createVerticalStrut(8)); // Giảm khoảng cách
+
+        // Thêm các trường nhập liệu - GIỐNG EDIT
         mainPanel.add(labelFieldPanel("Mục đích:", txtPurpose));
+        mainPanel.add(Box.createVerticalStrut(8));
         mainPanel.add(labelFieldPanel("Người nhận (hoặc danh sách):", txtRecipient));
         mainPanel.add(Box.createVerticalStrut(8));
-        mainPanel.add(cardPanel);
+        mainPanel.add(cardPanel); // Panel động (tiền/vật tư)
 
         int result = JOptionPane.showConfirmDialog(this, mainPanel, "Tạo phân phát mới", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
@@ -446,7 +499,7 @@ public class DonationProcessingPanel extends JPanel {
                 alloc.setStatus("Chờ xác nhận");
                 alloc.setAllocationDate(new java.sql.Date(System.currentTimeMillis()));
                 alloc.setUsedAmount(0);
-                alloc.setCreatedBy(1); // TODO: lấy từ user đăng nhập
+                alloc.setCreatedBy(1);
                 if (rbMoney.isSelected()) {
                     String amountStr = txtAmount.getText().trim();
                     if (amountStr.isEmpty()) {
@@ -462,9 +515,9 @@ public class DonationProcessingPanel extends JPanel {
                         JOptionPane.showMessageDialog(this, "Số tiền phân phát vượt quá số tiền còn lại của sự kiện!");
                         return;
                     }
-                alloc.setAmount(amount);
-                alloc.setGiftType("");
-                alloc.setTotalGifts(0);
+                    alloc.setAmount(amount);
+                    alloc.setGiftType("");
+                    alloc.setTotalGifts(0);
                 } else {
                     String giftType = txtGiftType.getText().trim();
                     String totalGiftsStr = txtTotalGifts.getText().trim();
@@ -545,27 +598,37 @@ public class DonationProcessingPanel extends JPanel {
         rbMoney.addActionListener(evt -> cl.show(cardPanel, "MONEY"));
         rbGoods.addActionListener(evt -> cl.show(cardPanel, "GOODS"));
 
-        // Panel chính
+        // Panel chính (căn trái, giảm padding)
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(16, 24, 16, 24));
-        JLabel lblTitle = new JLabel("SỬA PHÂN PHÁT");
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mainPanel.add(lblTitle);
-        mainPanel.add(Box.createVerticalStrut(12));
-        JPanel typePanel = new JPanel();
-        typePanel.setLayout(new BoxLayout(typePanel, BoxLayout.X_AXIS));
+        mainPanel.setBackground(new Color(248, 252, 255));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Giảm padding
+
+        // Header (tiêu đề)
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Căn trái tiêu đề
+        headerPanel.setBackground(new Color(33, 120, 200));
+        headerPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); // Giảm chiều cao
+        JLabel lblHeader = new JLabel("SỬA PHÂN PHÁT");
+        lblHeader.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblHeader.setForeground(Color.WHITE);
+        headerPanel.add(lblHeader);
+        mainPanel.add(headerPanel);
+        mainPanel.add(Box.createVerticalStrut(10)); // Giảm khoảng cách sau tiêu đề
+
+        // Panel chọn loại phân phát (căn trái)
+        JPanel typePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0)); // Căn trái, giảm khoảng cách ngang
+        typePanel.setOpaque(false);
         typePanel.add(rbMoney);
-        typePanel.add(Box.createHorizontalStrut(16));
         typePanel.add(rbGoods);
-        typePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         mainPanel.add(typePanel);
-        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(Box.createVerticalStrut(8)); // Giảm khoảng cách
+
+        // Thêm các trường nhập liệu (đã căn trái sẵn trong `labelFieldPanel`)
         mainPanel.add(labelFieldPanel("Mục đích:", txtPurpose));
+        mainPanel.add(Box.createVerticalStrut(8));
         mainPanel.add(labelFieldPanel("Người nhận (hoặc danh sách):", txtRecipient));
         mainPanel.add(Box.createVerticalStrut(8));
-        mainPanel.add(cardPanel);
+        mainPanel.add(cardPanel); // Panel động (tiền/vật tư)
 
         int result = JOptionPane.showConfirmDialog(this, mainPanel, "Sửa phân phát", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
@@ -582,22 +645,22 @@ public class DonationProcessingPanel extends JPanel {
                     String amountStr = txtAmount.getText().trim();
                     if (amountStr.isEmpty()) {
                         JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền phân phát.");
-                    return;
-                }
-                double amount = Double.parseDouble(amountStr);
-                if (amount <= 0) {
-                    JOptionPane.showMessageDialog(this, "Số tiền phải lớn hơn 0.");
-                    return;
-                }
-                if (amount > remaining) {
-                    JOptionPane.showMessageDialog(this, "Số tiền phân phát vượt quá số tiền còn lại của sự kiện!");
-                    return;
-                }
-                alloc.setPurpose(purpose);
-                alloc.setRecipient(recipient);
-                alloc.setAmount(amount);
-                alloc.setGiftType("");
-                alloc.setTotalGifts(0);
+                        return;
+                    }
+                    double amount = Double.parseDouble(amountStr);
+                    if (amount <= 0) {
+                        JOptionPane.showMessageDialog(this, "Số tiền phải lớn hơn 0.");
+                        return;
+                    }
+                    if (amount > remaining) {
+                        JOptionPane.showMessageDialog(this, "Số tiền phân phát vượt quá số tiền còn lại của sự kiện!");
+                        return;
+                    }
+                    alloc.setPurpose(purpose);
+                    alloc.setRecipient(recipient);
+                    alloc.setAmount(amount);
+                    alloc.setGiftType("");
+                    alloc.setTotalGifts(0);
                 } else {
                     String giftType = txtGiftType.getText().trim();
                     String totalGiftsStr = txtTotalGifts.getText().trim();
@@ -615,7 +678,7 @@ public class DonationProcessingPanel extends JPanel {
                     alloc.setGiftType(giftType);
                     alloc.setTotalGifts(totalGifts);
                 }
-                    boolean ok = allocationService.updateAllocation(alloc);                
+                boolean ok = allocationService.updateAllocation(alloc);
                 if (ok) {
                     JOptionPane.showMessageDialog(this, "Cập nhật phân phát thành công!");
                     loadDistributions(eventId);
@@ -648,8 +711,10 @@ public class DonationProcessingPanel extends JPanel {
 
     // Renderer cho nút Sửa/Xoá
     class ButtonRenderer extends JButton implements javax.swing.table.TableCellRenderer {
+
         private Color normalColor;
         private Color hoverColor;
+
         // private boolean isHover = false; // Xoá biến không dùng
         public ButtonRenderer(String text, Color color) {
             setText(text);
@@ -674,11 +739,13 @@ public class DonationProcessingPanel extends JPanel {
                 public void mouseEntered(java.awt.event.MouseEvent e) {
                     setBackground(hoverColor);
                 }
+
                 public void mouseExited(java.awt.event.MouseEvent e) {
                     setBackground(normalColor);
                 }
             });
         }
+
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             if (isSelected) {
                 setBackground(normalColor.darker());
@@ -691,6 +758,7 @@ public class DonationProcessingPanel extends JPanel {
 
     // Renderer cho hiển thị nhiều dòng (wrap text) cho cột Người nhận
     class MultiLineTableCellRenderer extends JTextArea implements javax.swing.table.TableCellRenderer {
+
         public MultiLineTableCellRenderer() {
             setLineWrap(true);
             setWrapStyleWord(true);
@@ -698,6 +766,7 @@ public class DonationProcessingPanel extends JPanel {
             setFont(new Font("Segoe UI", Font.PLAIN, 14));
             setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         }
+
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             setText(value == null ? "-" : value.toString());
@@ -714,23 +783,29 @@ public class DonationProcessingPanel extends JPanel {
         }
     }
 
-    // Tiện ích tạo panel label + field căn đẹp
+    // Tiện ích tạo panel label + field: label trên, field dưới, sát trái, chiều ngang vừa phải
     private JPanel labelFieldPanel(String label, JTextField field) {
         JPanel p = new JPanel();
-        p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        p.setOpaque(false);
+        p.setAlignmentX(Component.LEFT_ALIGNMENT); // Ensure left alignment
+        p.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60)); // Allow full width
+        p.setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0)); // Remove left/right padding
+
         JLabel l = new JLabel(label);
-        l.setPreferredSize(new Dimension(170, 32));
-        l.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        l.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        l.setAlignmentX(Component.LEFT_ALIGNMENT); // Left align label
         p.add(l);
-        p.add(Box.createHorizontalStrut(8));
+
         field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         field.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 210, 230)),
-            BorderFactory.createEmptyBorder(4, 8, 4, 8)));
-        field.setMaximumSize(new Dimension(300, 32));
+                BorderFactory.createLineBorder(new Color(200, 210, 230), 1),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+        field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Allow full width
+        field.setAlignmentX(Component.LEFT_ALIGNMENT); // Left align field
         p.add(field);
-        p.setAlignmentX(Component.LEFT_ALIGNMENT);
-        p.setMaximumSize(new Dimension(480, 40));
+
         return p;
     }
 

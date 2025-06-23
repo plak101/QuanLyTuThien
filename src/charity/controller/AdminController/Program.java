@@ -1,6 +1,6 @@
 package charity.controller.AdminController;
 
-import charity.view.Login.LoginFrame;
+import charity.view.Login.NewLogin;
 
 /**
  *
@@ -10,7 +10,7 @@ public class Program {
 
     public Program() {
 
-        LoginFrame login = new LoginFrame();
+        NewLogin login = new NewLogin();
         login.setVisible(true);
     }
 }

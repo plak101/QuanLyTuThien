@@ -54,6 +54,7 @@ CREATE TABLE Event (
     dateBegin DATE NOT NULL,
     dateEnd DATE NOT NULL,
     imageUrl VARCHAR(255) DEFAULT '/charity/image/default.png',
+    status ENUM ('Kêu gọi', 'Phân phát')
     FOREIGN KEY (organizationId) REFERENCES Organization(id),
     FOREIGN KEY (categoryId) REFERENCES Category(categoryId)
 );
@@ -201,7 +202,7 @@ INSERT INTO Event (organizationId, eventname, categoryId, description, targetAmo
 (10, 3, 12000000, '2025-04-05 15:00:00', 'Ủng hộ dự án Rừng xanh lên 2025'),
 (11, 3, 4000000, '2025-05-15 19:30:00', 'Tấm lòng nhân ái cho Rừng xanh lên 2025'),
 (12, 3, 900000, '2025-05-30 11:00:00', 'Chúc Rừng xanh lên 2025 thành công tốt đẹp'),
-(13, 4, 1800000, '2025-04-18 13:45:00', 'Ủng hộ Lớp học Hạnh phúc'),
+(4, 4, 1800000, '2025-04-18 13:45:00', 'Ủng hộ Lớp học Hạnh phúc'),
 (1, 4, 6500000, '2025-05-05 17:15:00', 'Chắp cánh ước mơ cho Lớp học Hạnh phúc'),
 (2, 4, 2200000, '2025-05-10 21:00:00', 'Hỗ trợ tri thức cho Lớp học Hạnh phúc'),
 (3, 4, 600000, '2025-05-14 10:15:00', 'Cùng Lớp học Hạnh phúc kiến tạo tương lai'),
@@ -211,24 +212,24 @@ INSERT INTO Event (organizationId, eventname, categoryId, description, targetAmo
 (7, 5, 800000, '2025-05-25 11:30:00', 'Chúc bé Lê Nguyễn Gia Bảo mau chóng khỏe lại'),
 (8, 6, 7000000, '2025-03-05 10:30:00', 'Chung tay giúp đỡ trò giỏi chữa tật mắt'),
 (9, 6, 15000000, '2025-04-25 15:00:00', 'Vì đôi mắt sáng của em Đỗ Hữu Dũng'),
-(10, 6, 5500000, '2025-06-15 19:30:00', 'Hỗ trợ em Đỗ Hữu Dũng chữa trị mắt'),
-(11, 6, 1200000, '2025-07-01 09:00:00', 'Chúc em Đỗ Hữu Dũng sớm có đôi mắt khỏe mạnh'),
+(10, 6, 5500000, '2025-05-15 19:30:00', 'Hỗ trợ em Đỗ Hữu Dũng chữa trị mắt'),
+(11, 6, 1200000, '2025-04-01 09:00:00', 'Chúc em Đỗ Hữu Dũng sớm có đôi mắt khỏe mạnh'),
 (12, 7, 1200000, '2025-05-03 14:15:00', 'Góp xe đạp cho Gom xe đạp, góp tương lai'),
-(13, 7, 4500000, '2025-05-15 17:45:00', 'Chắp cánh tương lai cùng Gom xe đạp, góp tương lai'),
+(4, 7, 4500000, '2025-05-15 17:45:00', 'Chắp cánh tương lai cùng Gom xe đạp, góp tương lai'),
 (1, 7, 1500000, '2025-06-01 21:30:00', 'Hỗ trợ các em nhỏ của Gom xe đạp, góp tương lai'),
 (2, 7, 400000, '2025-06-10 12:00:00', 'Mong các em có thêm phương tiện đến trường'),
 (3, 8, 9000000, '2025-03-28 08:45:00', 'Góp phần làm trọn vẹn Ghép đôi trăng tròn'),
 (4, 8, 20000000, '2025-04-15 16:15:00', 'Vì niềm vui rằm tháng 8 của các em'),
-(5, 8, 7000000, '2025-06-30 20:45:00', 'Gửi tấm lòng đến Ghép đôi trăng tròn'),
-(6, 8, 1800000, '2025-08-01 11:15:00', 'Chúc Ghép đôi trăng tròn thành công tốt đẹp'),
-(7, 9, 2500000, '2025-09-05 13:00:00', 'Ủng hộ Cùng em bước qua bão Yagi'),
-(8, 9, 10000000, '2025-09-20 17:30:00', 'Sưởi ấm trái tim Việt Nam kiên cường'),
-(9, 9, 3500000, '2025-10-15 21:00:00', 'Chia sẻ hơi ấm cùng Cùng em bước qua bão Yagi'),
-(10, 9, 900000, '2025-10-30 12:30:00', 'Mong Việt Nam sớm vượt qua khó khăn'),
+(5, 8, 7000000, '2025-05-30 20:45:00', 'Gửi tấm lòng đến Ghép đôi trăng tròn'),
+(6, 8, 1800000, '2025-06-01 11:15:00', 'Chúc Ghép đôi trăng tròn thành công tốt đẹp'),
+(7, 9, 2500000, '2025-06-05 13:00:00', 'Ủng hộ Cùng em bước qua bão Yagi'),
+(8, 9, 10000000, '2025-05-20 17:30:00', 'Sưởi ấm trái tim Việt Nam kiên cường'),
+(9, 9, 3500000, '2025-04-15 21:00:00', 'Chia sẻ hơi ấm cùng Cùng em bước qua bão Yagi'),
+(10, 9, 900000, '2025-04-30 12:30:00', 'Mong Việt Nam sớm vượt qua khó khăn'),
 (11, 10, 4500000, '2025-04-22 09:30:00', 'Góp sức cho Mang Tết Hy vọng đến các em nhỏ vùng cao'),
 (12, 10, 11000000, '2025-05-10 14:00:00', 'Mang Tết ấm áp đến các em nhỏ'),
-(13, 10, 3800000, '2025-06-20 18:30:00', 'Cùng nhau mang Tết Hy vọng'),
-(1, 10, 1100000, '2025-07-15 10:00:00', 'Hướng tới một cái Tết trọn vẹn cho các em');
+(4, 10, 3800000, '2025-05-20 18:30:00', 'Cùng nhau mang Tết Hy vọng'),
+(1, 10, 1100000, '2025-06-15 10:00:00', 'Hướng tới một cái Tết trọn vẹn cho các em');
 
 
 -- Xem dữ liệu trong bảng Event
@@ -238,34 +239,3 @@ SELECT * FROM Category;
 SELECT * FROM Event;
 SELECT * FROM Donation order by donationDate DESC;
 SELECT * FROM organization;
-
--- donation list
--- SELECT donationId, eventName, userName, amount, donationDate
--- FROM donation d
--- join user u on d.userId= u.userId
--- join event e on e.eventId = d.eventId
--- order by donationId asc;
-
--- SELECT donationId, eventName, userName, amount, donationDate
--- FROM qltt.donation d
--- join user u on d.userId= u.userId
--- join event e on e.eventId = d.eventId
--- where d.userId =1
--- order by donationId asc;
-
--- get donationByUserId
--- SELECT *
--- FROM qltt.donation d
--- where d.userId = ?
--- order by donationId asc;
-
--- SELECT * FROM event
---  WHERE dateEnd > CURRENT_DATE;
---  
---  
--- SELECT * FROM account WHERE username LIKE 'admin01' AND password LIKE 'admin';
-
--- SELECT a.* 
--- FROM account a
--- JOIN User u ON a.id = u.accountId
--- WHERE u.userId = ?;

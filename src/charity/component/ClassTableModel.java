@@ -31,7 +31,7 @@ public class ClassTableModel implements IFormatData {
 //    -----
 
     private List<CharityEvent> events = null;
-    private String[] listEventColumn = {"ID", "Tên tổ chức", "Tên sự kiện", "Loại", "Mục tiêu", "Số tiền hiện tại", "Tiến độ", "Ngày kết thúc"};
+    private String[] listEventColumn = {"ID", "Hình ảnh", "Tên sự kiện", "Loại", "Mục tiêu", "Số tiền hiện tại", "Tiến độ", "Ngày kết thúc"};
     private String[] listDonationColumn = {"ID", "Người quyên góp", "Sự kiện", "Số tiền", "Ngày quyên góp", "Nội dung"};
     private String[] listOrganizationColumn = {"ID", "Tên tổ chức", "Email", "Hotline", "Địa chỉ", "Số sự kiện"};
     private String[] listAccountColumn = {"ID", "Tên đăng nhập", "Email", "Mật khẩu", "Vai trò"};
@@ -60,7 +60,7 @@ public class ClassTableModel implements IFormatData {
         for (CharityEvent event : listItem) {
             Object[] obj = new Object[columnCount];
             obj[0] = event.getId();
-            obj[1] = MapHelper.getOrganizationName(event.getOrganizationId());
+            obj[1] = ImageIconCustom.getSmoothIcon(event.getImageUrl(), 100, 80);
             obj[2] = event.getName();
             obj[3] = MapHelper.getCategoryName(event.getCategoryId());
             obj[4] = formatMoney(event.getTargetAmount());

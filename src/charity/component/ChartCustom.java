@@ -21,7 +21,7 @@ public class ChartCustom {
         chart.setBackgroundPaint(Color.white);
 
         CategoryPlot plot = chart.getCategoryPlot();
-        plot.setBackgroundPaint(new Color(235, 235, 235));
+        plot.setBackgroundPaint(new Color(245, 245, 245));
         plot.setRangeGridlinePaint(Color.gray);
 
         CategoryAxis domainAxis = plot.getDomainAxis();

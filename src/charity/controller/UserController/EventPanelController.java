@@ -118,7 +118,7 @@ public class EventPanelController {
         table.setRowSorter(rowSorter);
         setupSearchFilter();
         
-        designTable(table);
+        designTable();
         setTableClickEvent();
     }
     
@@ -155,7 +155,7 @@ public class EventPanelController {
         }
     }
 
-    public void designTable(JTable table) {
+    public void designTable() {
 
         //table header
         table.getTableHeader().setBackground(Color.decode("#B4EBE6"));
@@ -165,7 +165,7 @@ public class EventPanelController {
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         //table body
-        table.setRowHeight(40);
+        table.setRowHeight(100);
         table.setShowHorizontalLines(true);
         table.setShowVerticalLines(false);
         table.setShowGrid(false);
@@ -197,6 +197,20 @@ public class EventPanelController {
         table.getColumnModel().getColumn(6).setMaxWidth(500);
         table.getColumnModel().getColumn(6).setPreferredWidth(70);
 
+        table.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer(){
+            @Override
+            protected void setValue(Object value) {
+                if (value instanceof ImageIcon){
+                    setIcon((Icon) value);
+                }else{
+                    super.setValue(value);
+                }
+            }
+            {
+                setHorizontalAlignment(CENTER);
+            }
+            
+        });
         //show
         table.validate();
         table.repaint();

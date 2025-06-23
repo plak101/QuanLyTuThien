@@ -37,7 +37,7 @@ public class StatisticsRepository implements IStatisticsRepository {
                 JOIN Organization o ON o.id = e.OrganizationId
                 WHERE DATE(d.donationDate) BETWEEN ? AND ?
                 GROUP BY DATE(d.donationDate), e.categoryId, e.eventName, o.name
-                ORDER BY date ;
+                ORDER BY date DESC;
         """;
 
         try (
@@ -108,8 +108,10 @@ public class StatisticsRepository implements IStatisticsRepository {
                         COUNT(DISTINCT e.eventId) AS totalEvent,
                         COUNT(d.donationId) AS totalDonation
                     FROM User u
+                    JOIN Account a ON a.id=u.accountId
                     LEFT JOIN Donation d ON d.userId = u.userId
                     LEFT JOIN Event e ON e.eventId = d.eventId
+                    WHERE a.role='USER'
                     GROUP BY u.userId, u.userName
                     ORDER BY totalAmount DESC
                     -- LIMIT ?

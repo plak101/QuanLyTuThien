@@ -1,7 +1,7 @@
 package charity.controller.AdminController;
 
 import charity.service.UserService;
-import charity.view.Login.LoginFrame;
+import charity.view.Login.NewLogin;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
@@ -43,7 +43,7 @@ public class AdminUIController {
                 JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(jlbLogout);
                 currentFrame.dispose();
                 
-                LoginFrame login = new LoginFrame();
+                NewLogin login = new NewLogin();
                 login.setVisible(true);
             }
             

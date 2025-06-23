@@ -241,7 +241,7 @@ public class CharityEventPanelController {
 
         DefaultTableModel model = classTableModel.getEventTable(events);
         eventTable = new JTable(model);
-
+        
         //setup rowsorter
         rowSorter = new TableRowSorter<>(eventTable.getModel());
         eventTable.setRowSorter(rowSorter);
@@ -305,7 +305,7 @@ public class CharityEventPanelController {
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         //table body
-        table.setRowHeight(40);
+        table.setRowHeight(100);
         table.setShowHorizontalLines(true);
         table.setShowVerticalLines(false);
         table.setShowGrid(false);
@@ -370,7 +370,19 @@ public class CharityEventPanelController {
             }
 
         });
-
+        table.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer(){
+            @Override
+            protected void setValue(Object value) {
+                if (value instanceof ImageIcon){
+                    setIcon((Icon) value);
+                }else{
+                    super.setText(imageUrl);
+                }
+            }
+            {
+                setHorizontalAlignment(CENTER);
+            }
+        });
         //show
         table.validate();
         table.repaint();

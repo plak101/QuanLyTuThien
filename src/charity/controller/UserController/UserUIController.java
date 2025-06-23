@@ -4,6 +4,7 @@ import charity.model.User;
 import charity.service.AccountService;
 import charity.service.UserService;
 import charity.view.Login.LoginFrame;
+import charity.view.Login.NewLogin;
 import charity.view.User.DonationPanel;
 import charity.view.User.InforPanel;
 import charity.view.User.EventPanel;
@@ -208,7 +209,7 @@ public class UserUIController {
             public void mouseClicked(MouseEvent e) {
                 parent.dispose();
                 SwingUtilities.invokeLater(() -> {
-                    LoginFrame login = new LoginFrame();
+                    NewLogin login = new NewLogin();
                     login.setVisible(true);
                 });
             }

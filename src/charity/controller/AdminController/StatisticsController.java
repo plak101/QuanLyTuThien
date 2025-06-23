@@ -12,8 +12,10 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
@@ -163,36 +165,30 @@ public class StatisticsController {
     private JFreeChart createTimeSeriesChart(Date start, Date end) {
         stats = statisticsService.getStatisticsByDateRange(start, end);
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-        // Map để cộng dồn số tiền theo (ngày, danh mục)
-        Map<String, Map<String, Number>> sumMap = new java.util.HashMap<>();
-
-        for (Map<String, Object> stat : stats) {
+        //map cong don so tien theo loai
+        Map<Date,Map<String, Number>> sumMap = new TreeMap<>();
+        for (Map<String, Object> stat: stats){
             Date date = (Date) stat.get("date");
-            String formattedDate = sdf.format(date);
-            String category = stat.get("category").toString();
+            String category = (String) stat.get("category");
             Number amount = (Number) stat.get("totalAmount");
-
-            // Cộng dồn
-            sumMap
-                    .computeIfAbsent(formattedDate, k -> new java.util.HashMap<>())
-                    .merge(category, amount, (oldVal, newVal) -> oldVal.doubleValue() + newVal.doubleValue());
+            
+            sumMap.computeIfAbsent(date, k -> new HashMap<>())
+                    .merge(category, amount, (oldValue, newValue)-> oldValue.longValue()+newValue.longValue());
         }
-
-        // Đưa dữ liệu đã cộng dồn vào dataset
-        for (Map.Entry<String, Map<String, Number>> dateEntry : sumMap.entrySet()) {
-            String date = dateEntry.getKey();
-            for (Map.Entry<String, Number> catEntry : dateEntry.getValue().entrySet()) {
-                dataset.addValue(catEntry.getValue(), catEntry.getKey(), date);
+        
+        for (Map.Entry<Date,Map<String, Number>> dateEntry: sumMap.entrySet()){
+            String formatedDate = sdf.format(dateEntry.getKey());
+            for (Map.Entry<String, Number> catEntry: dateEntry.getValue().entrySet()){
+                dataset.addValue(catEntry.getValue(), catEntry.getKey(), formatedDate);
             }
         }
-
+        
         return ChartFactory.createLineChart(
                 "Thống kê quyên góp theo thời gian",
                 "Ngày",
-                "Số tiền (VNĐ)",
-                dataset
-        );
+                "Số tiền",
+                dataset);
+        
     }
 
     private void updateTimeSeriesTable() {

@@ -51,7 +51,7 @@ public class SelectUserDialogController {
         });
     }
     private void loadTable() {
-        List<User> users = service.getAllUser();
+        List<User> users = service.getUserRoleUser();
         view.getModel().setRowCount(0);
         Object[] obj = new Object[6];
         for (User u : users) {

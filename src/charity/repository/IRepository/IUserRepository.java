@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface IUserRepository {
     public List<User> getAllUser();
+    public List<User> getUserRoleUser();
     public User getUserById(int userId);
     public User getUserByAccountId(int accountId);
     public String getUserNameById(int userId);

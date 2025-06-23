@@ -272,7 +272,7 @@ public class CharityEventRepository implements ICharityEventRepository {
     public List<CharityEvent> getActiveEventList() {
         List<CharityEvent> events = new ArrayList<>();
         connection = ConnectionDB.getConnection();
-        String sql = "SELECT * FROM event WHERE dateEnd >= CURRENT_DATE";
+        String sql = "SELECT * FROM event WHERE dateEnd >= CURRENT_DATE AND status = 'Kêu gọi'";
         try {
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -303,7 +303,7 @@ public class CharityEventRepository implements ICharityEventRepository {
     public List<CharityEvent> getExpiredEventList() {
         List<CharityEvent> events = new ArrayList<>();
         connection = ConnectionDB.getConnection();
-        String sql = "SELECT * FROM event WHERE dateEnd < CURRENT_DATE";
+        String sql = "SELECT * FROM event WHERE dateEnd < CURRENT_DATE AND status = 'Kêu gọi'";
         try {
             ps = connection.prepareStatement(sql);
             rs = ps.executeQuery();

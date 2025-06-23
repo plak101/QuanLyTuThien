@@ -39,6 +39,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collector;
@@ -261,68 +262,145 @@ public class CharityEventPanelController {
         jcbFilter.addItem("Phân phát");
     }
 
+    //do in background
     public void showEventTable() {
-        //setup event table
-
-        events = eventService.getEventList();
-
-        model = classTableModel.getEventTable(events);
-        eventTable = new JTable(model);
-
-        //setup rowsorter
-        rowSorter = new TableRowSorter<>(eventTable.getModel());
-        eventTable.setRowSorter(rowSorter);
-        txtSearch.getDocument().addDocumentListener(new DocumentListener() {
-
-            //"(?i)" khong phan biet chu hoa chu thuong
-            //khi nhap vao txtSearch
+        new SwingWorker<List<CharityEvent>, Void>() {
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                String text = txtSearch.getText();
-                if (text.trim().length() == 0) {
-                    rowSorter.setRowFilter(null);
-                } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+            protected List<CharityEvent> doInBackground() {
+                return eventService.getEventList();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    events=get();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(CharityEventPanelController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(CharityEventPanelController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                model = classTableModel.getEventTable(events);
+                eventTable = new JTable(model);
+
+                //setup rowsorter
+                rowSorter = new TableRowSorter<>(eventTable.getModel());
+                eventTable.setRowSorter(rowSorter);
+                txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+
+                    //"(?i)" khong phan biet chu hoa chu thuong
+                    //khi nhap vao txtSearch
+                    @Override
+                    public void insertUpdate(DocumentEvent e) {
+                        String text = txtSearch.getText();
+                        if (text.trim().length() == 0) {
+                            rowSorter.setRowFilter(null);
+                        } else {
+                            rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                        }
+                    }
+
+                    //khi xoa noi dung cua txtSearch
+                    @Override
+                    public void removeUpdate(DocumentEvent e) {
+                        String text = txtSearch.getText();
+
+                        if (text.trim().length() == 0) {
+                            rowSorter.setRowFilter(null);
+                        } else {
+                            rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                        }
+                    }
+
+                    //khi co thay doi thuoc tinh van ban
+                    @Override
+                    public void changedUpdate(DocumentEvent e) {
+                    }
+                });
+
+                designTable(eventTable);
+
+                //hien thi ra jpnTable
+                JScrollPane scroll = new JScrollPane(eventTable);
+                eventTable.setFillsViewportHeight(true);
+                eventTable.setBackground(Color.white);
+                scroll.getViewport().setBackground(Color.white);
+                scroll.setPreferredSize(new Dimension(jpnTable.getWidth(), 400));
+                jpnTable.removeAll();
+                jpnTable.setBackground(Color.white);
+
+                jpnTable.setLayout(new CardLayout());
+                jpnTable.add(scroll);
+                jpnTable.revalidate();
+                jpnTable.repaint();
+                setTableClickEvent();
             }
+        }.execute();
 
-            //khi xoa noi dung cua txtSearch
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                String text = txtSearch.getText();
 
-                if (text.trim().length() == 0) {
-                    rowSorter.setRowFilter(null);
-                } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-                }
-            }
-
-            //khi co thay doi thuoc tinh van ban
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-            }
-        });
-
-        designTable(eventTable);
-
-        //hien thi ra jpnTable
-        JScrollPane scroll = new JScrollPane(eventTable);
-        eventTable.setFillsViewportHeight(true);
-        eventTable.setBackground(Color.white);
-        scroll.getViewport().setBackground(Color.white);
-        scroll.setPreferredSize(new Dimension(jpnTable.getWidth(), 400));
-        jpnTable.removeAll();
-        jpnTable.setBackground(Color.white);
-
-        jpnTable.setLayout(new CardLayout());
-        jpnTable.add(scroll);
-        jpnTable.setPreferredSize(new Dimension(0,400));
-        jpnTable.revalidate();
-        jpnTable.repaint();
-        setTableClickEvent();
+       
     }
 
+//    public void showEventTable() {
+//        
+//        //setup event table
+//
+//        events = eventService.getEventList();
+//
+//        model = classTableModel.getEventTable(events);
+//        eventTable = new JTable(model);
+//
+//        //setup rowsorter
+//        rowSorter = new TableRowSorter<>(eventTable.getModel());
+//        eventTable.setRowSorter(rowSorter);
+//        txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+//
+//            //"(?i)" khong phan biet chu hoa chu thuong
+//            //khi nhap vao txtSearch
+//            @Override
+//            public void insertUpdate(DocumentEvent e) {
+//                String text = txtSearch.getText();
+//                if (text.trim().length() == 0) {
+//                    rowSorter.setRowFilter(null);
+//                } else {
+//                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+//                }
+//            }
+//
+//            //khi xoa noi dung cua txtSearch
+//            @Override
+//            public void removeUpdate(DocumentEvent e) {
+//                String text = txtSearch.getText();
+//
+//                if (text.trim().length() == 0) {
+//                    rowSorter.setRowFilter(null);
+//                } else {
+//                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+//                }
+//            }
+//
+//            //khi co thay doi thuoc tinh van ban
+//            @Override
+//            public void changedUpdate(DocumentEvent e) {
+//            }
+//        });
+//
+//        designTable(eventTable);
+//
+//        //hien thi ra jpnTable
+//        JScrollPane scroll = new JScrollPane(eventTable);
+//        eventTable.setFillsViewportHeight(true);
+//        eventTable.setBackground(Color.white);
+//        scroll.getViewport().setBackground(Color.white);
+//        scroll.setPreferredSize(new Dimension(jpnTable.getWidth(), 400));
+//        jpnTable.removeAll();
+//        jpnTable.setBackground(Color.white);
+//
+//        jpnTable.setLayout(new CardLayout());
+//        jpnTable.add(scroll);
+//        jpnTable.revalidate();
+//        jpnTable.repaint();
+//        setTableClickEvent();
+//    }
     public void designTable(JTable table) {
 
         //table header
@@ -696,7 +774,8 @@ public class CharityEventPanelController {
         selectedButton = 0;
         imageUrl = "/charity/image/default.png";
         jlbImage.setIcon(ImageIconCustom.getSmoothIcon(imageUrl, 170, 160));
-
+        jcbFilter.setSelectedIndex(0);
+        jcbStatus.setSelectedIndex(0);
     }
 
     private boolean validateForm() {
@@ -713,7 +792,7 @@ public class CharityEventPanelController {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn tổ chức!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        if (jcbCategory.getSelectedItem().equals("")) {
+        if (jcbCategory.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn loại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -786,7 +865,8 @@ public class CharityEventPanelController {
             model.addRow(obj);
         }
     }
-        //sự kiện khi chọn filter
+    //sự kiện khi chọn filter
+
     private void filterEvent() {
         String selectedStatus = (String) jcbFilter.getSelectedItem();
         List<CharityEvent> filter;

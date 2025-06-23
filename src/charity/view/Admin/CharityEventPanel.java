@@ -84,7 +84,7 @@ public class CharityEventPanel extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jpnTable.setBackground(new java.awt.Color(204, 255, 255));
+        jpnTable.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jpnTableLayout = new javax.swing.GroupLayout(jpnTable);
         jpnTable.setLayout(jpnTableLayout);

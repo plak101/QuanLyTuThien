@@ -3,19 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/Admin/UserPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/AdminController/UserPanelController.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/LoginController/NewRegisterController.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/LoginController/RegisterController.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/test/UI/CampaignPanel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/test/Donate.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/component/ClassTableModel.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/utils/ScannerUtils.java</file>
             <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/AdminController/CharityEventPanelController.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/controller/UserController/EventPanelController.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/service/CharityEventService.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/repository/IRepository/ICharityEventRepository.java</file>
-            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/repository/CharityEventRepository.java</file>
+            <file>file:/C:/Users/phaml/Desktop/QuanLyTuThien/src/charity/view/Admin/CharityEventPanel.java</file>
         </group>
     </open-files>
 </project-private>

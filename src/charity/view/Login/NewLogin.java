@@ -131,13 +131,7 @@ public class NewLogin extends JFrame {
         jlbForgotPassword.setBounds(300, 255, 100, 20); // Điều chỉnh vị trí
         loginFormPanel.add(jlbForgotPassword);
 
-        // Thêm trình nghe sự kiện chuột cho nhãn "Quên mật khẩu"
-        jlbForgotPassword.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(NewLogin.this, "Bạn đã nhấp vào Quên mật khẩu!");
-            }
-        });
+
 
         // Nút "ĐĂNG NHẬP"
         jbtLogin = new JButton("ĐĂNG NHẬP");

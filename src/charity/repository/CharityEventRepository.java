@@ -28,6 +28,39 @@ public class CharityEventRepository implements ICharityEventRepository {
     }
 
     @Override
+    public List<CharityEvent> getEventListCall() {
+        connection = ConnectionDB.getConnection();
+        List<CharityEvent> eventList = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM event WHERE status = 'Kêu gọi'";
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                CharityEvent event = new CharityEvent(
+                        rs.getInt("eventId"),
+                        rs.getInt("organizationId"),
+                        rs.getString("eventName"),
+                        rs.getInt("categoryId"),
+                        rs.getLong("targetAmount"),
+                        rs.getLong("currentAmount"),
+                        rs.getDate("dateBegin"),
+                        rs.getDate("dateEnd"),
+                        rs.getString("description"),
+                        rs.getString("imageUrl"),
+                        rs.getString("status")
+                );
+                eventList.add(event);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeResources(connection, ps, rs);
+        }
+        return eventList;
+    }
+    @Override
     public List<CharityEvent> getEventList() {
         connection = ConnectionDB.getConnection();
         List<CharityEvent> eventList = new ArrayList<>();
@@ -48,7 +81,41 @@ public class CharityEventRepository implements ICharityEventRepository {
                         rs.getDate("dateBegin"),
                         rs.getDate("dateEnd"),
                         rs.getString("description"),
-                        rs.getString("imageUrl")
+                        rs.getString("imageUrl"),
+                        rs.getString("status")
+                );
+                eventList.add(event);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeResources(connection, ps, rs);
+        }
+        return eventList;
+    }
+    @Override
+    public List<CharityEvent> getEventListDistribution() {
+        connection = ConnectionDB.getConnection();
+        List<CharityEvent> eventList = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM event WHERE status = 'Phân phát'";
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                CharityEvent event = new CharityEvent(
+                        rs.getInt("eventId"),
+                        rs.getInt("organizationId"),
+                        rs.getString("eventName"),
+                        rs.getInt("categoryId"),
+                        rs.getLong("targetAmount"),
+                        rs.getLong("currentAmount"),
+                        rs.getDate("dateBegin"),
+                        rs.getDate("dateEnd"),
+                        rs.getString("description"),
+                        rs.getString("imageUrl"),
+                        rs.getString("status")
                 );
                 eventList.add(event);
             }
@@ -64,8 +131,8 @@ public class CharityEventRepository implements ICharityEventRepository {
     public boolean addEvent(CharityEvent event) {
         Connection connection = ConnectionDB.getConnection();
         PreparedStatement ps = null;
-        String query = "INSERT INTO event (organizationId, eventName, categoryId, targetAmount, currentAmount, dateBegin, dateEnd, description, imageUrl)"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO event (organizationId, eventName, categoryId, targetAmount, currentAmount, dateBegin, dateEnd, description, imageUrl, status)"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             ps = connection.prepareStatement(query);
@@ -78,7 +145,8 @@ public class CharityEventRepository implements ICharityEventRepository {
             ps.setDate(7, (Date) event.getDateEnd());
             ps.setString(8, event.getDescription());
             ps.setString(9, event.getImageUrl());
-            
+            ps.setString(10, event.getStatus());
+
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,7 +160,7 @@ public class CharityEventRepository implements ICharityEventRepository {
     public boolean updateEvent(CharityEvent event) {
         connection = ConnectionDB.getConnection();
         ps = null;
-        String query = "UPDATE event SET organizationId=?, eventName=?, categoryId=?, targetAmount=?, currentAmount=?, dateBegin=?, dateEnd=?, description=?, imageUrl=?"
+        String query = "UPDATE event SET organizationId=?, eventName=?, categoryId=?, targetAmount=?, currentAmount=?, dateBegin=?, dateEnd=?, description=?, imageUrl=?, status = ?"
                 + "WHERE eventId=?";
         try {
             ps = connection.prepareStatement(query);
@@ -105,7 +173,8 @@ public class CharityEventRepository implements ICharityEventRepository {
             ps.setDate(7, (Date) event.getDateEnd());
             ps.setString(8, event.getDescription());
             ps.setString(9, event.getImageUrl());
-            ps.setInt(10, event.getId());
+            ps.setString(10, event.getStatus());
+            ps.setInt(11, event.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -186,7 +255,8 @@ public class CharityEventRepository implements ICharityEventRepository {
                         rs.getDate("dateBegin"),
                         rs.getDate("dateEnd"),
                         rs.getString("description"),
-                        rs.getString("imageUrl")
+                        rs.getString("imageUrl"),
+                        rs.getString("status")
                 );
             }
         } catch (SQLException ex) {
@@ -217,7 +287,8 @@ public class CharityEventRepository implements ICharityEventRepository {
                         rs.getDate("dateBegin"),
                         rs.getDate("dateEnd"),
                         rs.getString("description"),
-                        rs.getString("imageUrl")
+                        rs.getString("imageUrl"),
+                        rs.getString("status")
                 ));
             }
         } catch (SQLException ex) {
@@ -247,7 +318,8 @@ public class CharityEventRepository implements ICharityEventRepository {
                         rs.getDate("dateBegin"),
                         rs.getDate("dateEnd"),
                         rs.getString("description"),
-                        rs.getString("imageUrl")
+                        rs.getString("imageUrl"),
+                        rs.getString("status")
                 ));
             }
         } catch (SQLException ex) {
@@ -282,18 +354,18 @@ public class CharityEventRepository implements ICharityEventRepository {
 
     @Override
     public int getEventCount() {
-        int count =0;
+        int count = 0;
         String query = "SELECT COUNT(*) FROM Event";
         connection = ConnectionDB.getConnection();
         try {
-            ps =connection.prepareStatement(query);
-            rs= ps.executeQuery();
-            if (rs.next()){
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            if (rs.next()) {
                 count = rs.getInt(1);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CharityEventRepository.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             closeResources(connection, ps, rs);
         }
         return count;

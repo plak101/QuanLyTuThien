@@ -31,7 +31,7 @@ public class ClassTableModel implements IFormatData {
 //    -----
 
     private List<CharityEvent> events = null;
-    private String[] listEventColumn = {"ID", "Hình ảnh", "Tên sự kiện", "Loại", "Mục tiêu", "Số tiền hiện tại", "Tiến độ", "Ngày kết thúc"};
+    private String[] listEventColumn = {"ID", "Hình ảnh", "Tên sự kiện", "Loại", "Mục tiêu", "Số tiền hiện tại", "Tiến độ", "Ngày kết thúc", "Trạng thái"};
     private String[] listDonationColumn = {"ID", "Người quyên góp", "Sự kiện", "Số tiền", "Ngày quyên góp", "Nội dung"};
     private String[] listOrganizationColumn = {"ID", "Tên tổ chức", "Email", "Hotline", "Địa chỉ", "Số sự kiện"};
     private String[] listAccountColumn = {"ID", "Tên đăng nhập", "Email", "Mật khẩu", "Vai trò"};
@@ -67,7 +67,7 @@ public class ClassTableModel implements IFormatData {
             obj[5] = formatMoney(event.getCurrentAmount());
             obj[6] = String.format("%.2f%%", (float) event.getCurrentAmount() / event.getTargetAmount() * 100);
             obj[7] = dateFormat.format(event.getDateEnd());
-
+            obj[8] = event.getStatus();
             dtm.addRow(obj);
         }
 
@@ -90,7 +90,7 @@ public class ClassTableModel implements IFormatData {
             userMap.put(u.getId(), u.getName());
         }
         
-        for (CharityEvent e : eventService.getEventList()){
+        for (CharityEvent e : eventService.getEventListCall()){
             eventMap.put(e.getId(), e.getName());
         }
         

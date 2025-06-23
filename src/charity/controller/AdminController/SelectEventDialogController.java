@@ -51,7 +51,7 @@ public class SelectEventDialogController {
         });
     }
     private void loadTable() {
-        List<CharityEvent> events = service.getEventList();
+        List<CharityEvent> events = service.getEventListCall();
         view.getModel().setRowCount(0);
         Object[] obj = new Object[5];
         for (CharityEvent e : events) {

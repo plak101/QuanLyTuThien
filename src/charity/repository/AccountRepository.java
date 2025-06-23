@@ -461,4 +461,42 @@ public class AccountRepository implements IAccountRepository {
         return null; // Trả về null nếu không tìm thấy hoặc có lỗi
     }
 
+    @Override
+    public Account getAccountByUsernameAndEmai(String username, String email) {
+        Connection conn = null; // Khai báo cục bộ
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            // Lấy kết nối từ ConnectionDB (hoặc DatabaseConnection tùy theo cấu hình của bạn)
+            conn = charity.repository.ConnectionDB.getConnection(); // Hoặc DatabaseConnection.getConnection() nếu bạn đã thay đổi
+            if (conn == null) {
+                System.err.println("Database connection is null in getAccountByEmail method!");
+                return null;
+            }
+            String query = "SELECT * FROM account WHERE username =? AND email=?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, username); // Thiết lập tham số email
+            ps.setString(2, email); // Thiết lập tham số email
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Phần tạo đối tượng Account
+                return new charity.model.Account(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        charity.model.Role.valueOf(rs.getString("role")) // Giả định Role là enum
+                );
+            }
+        } catch (SQLException ex) {
+            // Ghi log lỗi chi tiết
+            java.util.logging.Logger.getLogger(charity.repository.AccountRepository.class.getName()).log(java.util.logging.Level.SEVERE, "Error in getAccountByEmail: " + ex.getMessage(), ex);
+        } finally {
+            // Đảm bảo đóng tài nguyên
+            closeResources(conn, ps, rs);
+        }
+        return null; // Trả về null nếu không tìm thấy hoặc có lỗi
+    }
+
 }

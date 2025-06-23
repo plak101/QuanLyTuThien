@@ -16,6 +16,7 @@ public interface IAccountService {
     public List<Account> getAllAccount();
 
     public Account getAccountById(int accountId);
+    public Account getAccountByUsernameAndEmail(String username, String email);
     public Account getAccountByUserId(int userId);
 
     public boolean addAccount(Account account);

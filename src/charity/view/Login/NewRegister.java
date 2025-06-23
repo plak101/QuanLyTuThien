@@ -5,12 +5,14 @@
 package charity.view.Login;
 
 import charity.controller.LoginController.NewRegisterController; // Import Controller mới
+import com.formdev.flatlaf.FlatClientProperties;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 /**
  *
  * @author Admin
@@ -37,7 +39,6 @@ public class NewRegister extends JFrame { // Đổi tên lớp thành NewRegiste
 
     // Khai báo đối tượng controller
     //private NewRegisterController controller;
-
     public NewRegister() {
         init(); // Gọi phương thức init() để khởi tạo giao diện
         // Khởi tạo controller và truyền các thành phần UI cần thiết
@@ -60,7 +61,7 @@ public class NewRegister extends JFrame { // Đổi tên lớp thành NewRegiste
         illustrationPanel = new JPanel();
         illustrationPanel.setBackground(Color.WHITE);
         illustrationPanel.setPreferredSize(new Dimension(400, 550));
-        
+
         String imagePath = "src/charity/image/registerLogo.jpg"; // Giữ nguyên đường dẫn ảnh
         ImageIcon imageIcon = new ImageIcon(imagePath);
 
@@ -70,9 +71,9 @@ public class NewRegister extends JFrame { // Đổi tên lớp thành NewRegiste
             imageLabel.setVerticalAlignment(SwingConstants.CENTER);
             illustrationPanel.add(imageLabel);
         } else {
-            JLabel fallbackLabel = new JLabel("<html><center><br><br><br><br><br><br>" +
-                                          "Không tìm thấy ảnh.<br>Hãy kiểm tra đường dẫn!" +
-                                          "</center></html>");
+            JLabel fallbackLabel = new JLabel("<html><center><br><br><br><br><br><br>"
+                    + "Không tìm thấy ảnh.<br>Hãy kiểm tra đường dẫn!"
+                    + "</center></html>");
             fallbackLabel.setHorizontalAlignment(SwingConstants.CENTER);
             fallbackLabel.setVerticalAlignment(SwingConstants.CENTER);
             illustrationPanel.add(fallbackLabel);
@@ -133,6 +134,7 @@ public class NewRegister extends JFrame { // Đổi tên lớp thành NewRegiste
         txtRegPassword.setBounds(50, 260, 350, 35);
         txtRegPassword.setFont(font14);
         txtRegPassword.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        txtRegPassword.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
         registerFormPanel.add(txtRegPassword);
 
         // Nhãn "Nhập lại mật khẩu"
@@ -146,6 +148,7 @@ public class NewRegister extends JFrame { // Đổi tên lớp thành NewRegiste
         txtRegConfirmPassword.setBounds(50, 330, 350, 35);
         txtRegConfirmPassword.setFont(font14);
         txtRegConfirmPassword.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        txtRegConfirmPassword.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
         registerFormPanel.add(txtRegConfirmPassword);
 
         // Nút "ĐĂNG KÝ"
@@ -168,18 +171,17 @@ public class NewRegister extends JFrame { // Đổi tên lớp thành NewRegiste
         jlbBackToLogin.setHorizontalAlignment(SwingConstants.CENTER);
         registerFormPanel.add(jlbBackToLogin);
 
-
         mainContentPanel.add(registerFormPanel, BorderLayout.CENTER);
 
         add(mainContentPanel);
         setVisible(true);
     }
-    
+
     public void switchToLogin() {
         this.dispose(); // Đóng cửa sổ NewRegister hiện tại
         new charity.view.Login.NewLogin().setVisible(true); // Mở cửa sổ NewLogin mới
     }
-    
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(NewRegister::new);
     }

@@ -7,11 +7,12 @@ package charity.controller.LoginController;
 import charity.model.Account; // Import Account model
 import charity.model.Role;   // Import Role enum
 import charity.service.AccountService; // Import AccountService
+import charity.utils.EmailHelper;
 import charity.view.Admin.AdminUI; // Import AdminUI
 import charity.view.Login.ForgotPasswordDialog;
+import charity.view.Login.ForgotPasswordDialog2;
 import charity.view.User.UserUI;     // Import UserUI
 import charity.view.Login.NewLogin;
-import charity.view.Login.NewRegister;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -48,36 +49,39 @@ public class NewLoginController {
     }
 
     public void setEvent() {
-        jbtLogin.addActionListener(new ActionListener() { //
+        jbtLogin.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { //
+            public void actionPerformed(ActionEvent e) {
                 handleLogin(); //
             }
         });
+        // Thêm trình nghe sự kiện chuột cho nhãn "Quên mật khẩu"
+        jlbForgotPassword.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ForgotPasswordDialog2 dialog = new ForgotPasswordDialog2(loginView);
+                dialog.setVisible(true);
+                if (dialog.isSubmitted()) {
+                    String username = dialog.getUsername();
+                    String email = dialog.getEmail();
+                    // Kiểm tra username và email trong database
+                    Account acc = accountService.getAccountByUsernameAndEmail(username, email);
+                    if (acc != null) {
+                        // Sinh mật khẩu mới
+                        String newPassword = generateTemporaryPassword();
+                        // Cập nhật mật khẩu mới vào DB
+                        acc.setPassword(newPassword);
+                        accountService.updateAccount(acc);
+                        // Gửi email
+                        EmailHelper.send(email, "Mật khẩu mới", "Mật khẩu mới của bạn là: " + newPassword);
+                        JOptionPane.showMessageDialog(loginView, "Mật khẩu mới đã được gửi về email!");
+                    } else {
+                        JOptionPane.showMessageDialog(loginView, "Tên đăng nhập hoặc email không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
 
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                ForgotPasswordDialog2 dialog = new ForgotPasswordDialog2(loginView);
-//                dialog.setVisible(true);
-//                if (dialog.isSubmitted()) {
-//                    String username = dialog.getUsername();
-//                    String email = dialog.getEmail();
-//                    // Kiểm tra username và email trong database
-//                    Account acc = accountService.findByUsernameAndEmail(username, email);
-//                    if (acc != null) {
-//                        // Sinh mật khẩu mới
-//                        String newPassword = generateRandomPassword();
-//                        // Cập nhật mật khẩu mới vào DB
-//                        accountService.updatePassword(acc.getId(), newPassword);
-//                        // Gửi email
-//                        EmailHelper.send(email, "Mật khẩu mới", "Mật khẩu mới của bạn là: " + newPassword);
-//                        JOptionPane.showMessageDialog(loginView, "Mật khẩu mới đã được gửi về email!");
-//                    } else {
-//                        JOptionPane.showMessageDialog(loginView, "Tên đăng nhập hoặc email không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//                    }
-//                }
-//            }
-//        });
 
         jlbSignUpLink.addMouseListener(new MouseAdapter() { //
             @Override
@@ -184,100 +188,13 @@ public class NewLoginController {
 
     // Phương thức trợ giúp để tạo mật khẩu tạm thời an toàn
     private String generateTemporaryPassword() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%!";
         SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[8]; // 8 bytes = 64 bits, sẽ tạo ra chuỗi khoảng 10-11 ký tự trong Base64
-        random.nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i<8;i++){
+            int index = random.nextInt(chars.length());
+            sb.append(chars.charAt(index));
+        }
+        return sb.toString();
     }
 }
-
-
-
-
-
-
-
-
-
-/**
- *
- * @author Admin
- */
-
-
-
-
-
-//public class NewLoginController {
-//
-//    private NewLogin loginView; // Tham chiếu đến đối tượng giao diện (NewLogin.java)
-//    private JTextField txtUsername;
-//    private JPasswordField txtPassword;
-//    private JButton jbtLogin;
-//    private JLabel jlbForgotPassword;
-//    private JLabel jlbSignUpLink;
-//
-//    public NewLoginController(NewLogin loginView, JTextField txtUsername, JPasswordField txtPassword, JButton jbtLogin, JLabel jlbForgotPassword, JLabel jlbSignUpLink) {
-//        this.loginView = loginView;
-//        this.txtUsername = txtUsername;
-//        this.txtPassword = txtPassword;
-//        this.jbtLogin = jbtLogin;
-//        this.jlbForgotPassword = jlbForgotPassword;
-//        this.jlbSignUpLink = jlbSignUpLink; // Khởi tạo biến mới
-//    }
-//
-//    public void setEvent() {
-//        jbtLogin.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                handleLogin();
-//            }
-//        });
-//
-//        jlbForgotPassword.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                handleForgotPassword();
-//            }
-//        });
-//        
-//        jlbSignUpLink.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                loginView.switchToRegister(); // Gọi phương thức của view để chuyển màn hình
-//            }
-//
-//            @Override
-//            public void mouseEntered(MouseEvent e) {
-//                jlbSignUpLink.setForeground(Color.ORANGE); // Đổi màu khi di chuột vào
-//            }
-//
-//            @Override
-//            public void mouseExited(MouseEvent e) {
-//                // Đổi lại màu ban đầu của link khi di chuột ra
-//                jlbSignUpLink.setForeground(Color.BLUE.darker());
-//            }
-//        });
-//    }
-//
-//    private void handleLogin() {
-//        String username = txtUsername.getText();
-//        char[] password = txtPassword.getPassword();
-//
-//        if (username.equals("admin") && String.valueOf(password).equals("123")) {
-//            JOptionPane.showMessageDialog(loginView, "Đăng nhập thành công!");
-//            // loginView.dispose();
-//            // new MainFrame().setVisible(true);
-//        } else {
-//            JOptionPane.showMessageDialog(loginView, "Tên đăng nhập hoặc mật khẩu không đúng.", "Lỗi đăng nhập", JOptionPane.ERROR_MESSAGE);
-//        }
-//
-//        for (int i = 0; i < password.length; i++) {
-//            password[i] = 0;
-//        }
-//    }
-//
-//    private void handleForgotPassword() {
-//        JOptionPane.showMessageDialog(loginView, "Bạn đã nhấp vào Quên mật khẩu! (Logic xử lý quên mật khẩu sẽ ở đây)");
-//    }
-//}

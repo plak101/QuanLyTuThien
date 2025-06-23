@@ -6,8 +6,8 @@ import javax.mail.internet.*;
 
 public class EmailHelper {
     public static boolean send(String to, String subject, String content) {
-        final String username = "your_gmail@gmail.com"; // Thay bằng email gửi
-        final String password = "your_app_password";    // Thay bằng app password (không phải mật khẩu Gmail thường)
+        final String username = "anhkhoa10012005@gmail.com"; 
+        final String password = "tsgb ynku yaie ljhu"; 
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

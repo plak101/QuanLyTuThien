@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS Category;
 DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS account;
 DROP TABLE IF EXISTS organization;
+DROP TABLE IF EXISTS donation_allocations;
 -- tạo bảng tài khoản
 CREATE TABLE account (
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -70,22 +71,7 @@ CREATE TABLE Donation (
     FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE, 
     FOREIGN KEY (eventId) REFERENCES Event(eventId) ON DELETE CASCADE
 );
-DROP TABLE IF EXISTS Distribution;
-DROP TABLE IF EXISTS donation_allocations;
 
--- Tạo bảng Distribution để lưu thông tin phân phối tiền
-CREATE TABLE IF NOT EXISTS Distribution (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    donationId INT,
-    eventId INT,
-    amount DOUBLE,
-    distributionDate DATETIME,
-    note TEXT,
-    distributedBy INT,
-    FOREIGN KEY (donationId) REFERENCES Donation(donationId),
-    FOREIGN KEY (eventId) REFERENCES Event(eventId),
-    FOREIGN KEY (distributedBy) REFERENCES User(userId)
-);
 
 -- Tạo bảng donation_allocations để lưu thông tin phân bổ tiền cho sự kiện
 CREATE TABLE IF NOT EXISTS donation_allocations (

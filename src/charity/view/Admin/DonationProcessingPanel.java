@@ -1,6 +1,5 @@
 package charity.view.Admin;
 
-import charity.component.ColorCustom;
 import charity.component.GButton;
 import charity.model.CharityEvent;
 import charity.model.DonationAllocation;
@@ -14,7 +13,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.DefaultTableCellRenderer;
 
 public class DonationProcessingPanel extends JPanel {
 
@@ -325,7 +323,7 @@ public class DonationProcessingPanel extends JPanel {
 
     private void loadEventList() {
         eventTableModel.setRowCount(0);
-        List<CharityEvent> events = eventService.getExpiredEventList(); // hoặc getEventList nếu muốn tất cả
+        List<CharityEvent> events = eventService.getEventListDistribution(); // hoặc getEventList nếu muốn tất cả
         for (CharityEvent ev : events) {
             eventTableModel.addRow(new Object[]{
                 ev.getId(),
@@ -555,7 +553,7 @@ public class DonationProcessingPanel extends JPanel {
         // Panel tiền
         JPanel moneyPanel = new JPanel();
         moneyPanel.setLayout(new BoxLayout(moneyPanel, BoxLayout.Y_AXIS));
-        JTextField txtAmount = new JTextField(alloc.getAmount() > 0 ? String.valueOf(alloc.getAmount()) : "");
+        JTextField txtAmount = new JTextField(alloc.getAmount() > 0 ? formatForInput(alloc.getAmount()) : "");
         moneyPanel.add(labelFieldPanel("Số tiền phân phát:", txtAmount));
         moneyPanel.add(Box.createVerticalStrut(8));
         moneyPanel.add(labelFieldPanel("Mục đích:", txtPurpose));
@@ -772,4 +770,8 @@ public class DonationProcessingPanel extends JPanel {
     private static String safe(Object v) {
         return (v == null || v.toString().trim().isEmpty()) ? "" : v.toString();
     }
+    private String formatForInput(double amount) {
+    return amount == 0 ? "" : (amount == (int)amount ? String.valueOf((int)amount) : String.valueOf(amount));
+}
+
 }

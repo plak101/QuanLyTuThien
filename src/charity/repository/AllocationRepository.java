@@ -157,7 +157,6 @@ public class AllocationRepository {
                 allocation.setEvidenceUrl(rs.getString("evidenceUrl"));
                 allocation.setCreatedBy(rs.getInt("createdBy"));
                 allocation.setRecipient(rs.getString("recipient"));
-     
             }
         } catch (SQLException ex) {
             Logger.getLogger(AllocationRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -168,7 +167,10 @@ public class AllocationRepository {
     }
 
     public boolean updateAllocation(DonationAllocation allocation) {
-        String query = "UPDATE donation_allocations SET amount=?, purpose=?, status=?, allocationDate=?, usedAmount=?, evidenceUrl=?, createdBy=?, recipient=?, giftType=?, totalGifts=?, giftValue=?, numRecipients=?, criteria=?, recipientList=?, shippingCost=?, receipt=?, feedback=? WHERE id=?";
+        // Sửa câu SQL để chỉ update những trường cần thiết
+        String query = "UPDATE donation_allocations SET amount=?, purpose=?, status=?, " +
+                      "allocationDate=?, usedAmount=?, evidenceUrl=?, createdBy=?, recipient=? " +
+                      "WHERE id=?";
         try {
             ps = conn.prepareStatement(query);
             ps.setDouble(1, allocation.getAmount());
@@ -179,7 +181,8 @@ public class AllocationRepository {
             ps.setString(6, allocation.getEvidenceUrl());
             ps.setInt(7, allocation.getCreatedBy());
             ps.setString(8, allocation.getRecipient());
-            ps.setInt(18, allocation.getId());
+            ps.setInt(9, allocation.getId()); // ID parameter ở vị trí thứ 9
+            
             return ps.executeUpdate() > 0;
         } catch (Exception ex) {
             Logger.getLogger(AllocationRepository.class.getName()).log(Level.SEVERE, null, ex);

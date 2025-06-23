@@ -62,7 +62,7 @@ public class DonationPanel extends JPanel {
         searchPanel.add(searchLeftPanel, BorderLayout.WEST);
 
         JLabel lblSearch = new JLabel("Tìm kiếm");
-        lblSearch.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblSearch.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         searchLeftPanel.add(lblSearch);
 
         txtSearch = new JTextField(20);
@@ -70,7 +70,7 @@ public class DonationPanel extends JPanel {
         searchLeftPanel.add(txtSearch);
 
         typeSearch = new ButtonGroup();
-        jrbtId = new JRadioButton("ID");
+        jrbtId = new JRadioButton("Tất cả");
         jrbtId.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         jrbtId.setBackground(Color.WHITE);
         jrbtId.setSelected(true);

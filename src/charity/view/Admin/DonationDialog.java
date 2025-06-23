@@ -10,6 +10,7 @@ import charity.component.GButton;
 import charity.component.ImageIconCustom;
 import charity.controller.AdminController.DonationDialogController;
 import charity.model.Donation;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
@@ -77,13 +78,15 @@ public class DonationDialog extends JDialog {
 
         // Tên người quyên góp
         txtDonor = new JTextField();
-        btnUserChoice = new JButton(ImageIconCustom.getSmoothIcon("/charity/icon/more.png", 20, 20));
+//        btnUserChoice = new JButton(ImageIconCustom.getSmoothIcon("/charity/icon/search.png", 20, 20));
+        btnUserChoice = new JButton(new FlatSVGIcon("charity/icon/search.svg", 20, 20));
         pnForm.add(createPanelInputChoice("Người quyên góp", txtDonor, btnUserChoice), gbc);
         gbc.gridy++;
 
         // Sự kiện
         txtEvent = new JTextField();
-        btnEventChoice = new JButton(ImageIconCustom.getSmoothIcon("/charity/icon/more.png", 20, 20));
+//        btnEventChoice = new JButton(ImageIconCustom.getSmoothIcon("/charity/icon/search.png", 20, 20));
+        btnEventChoice = new JButton(new FlatSVGIcon("charity/icon/search.svg", 20, 20));
         pnForm.add(createPanelInputChoice("Sự kiện", txtEvent, btnEventChoice), gbc);
         gbc.gridy++;
 

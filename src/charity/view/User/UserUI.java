@@ -4,6 +4,7 @@ import charity.controller.UserController.UserUIController;
 import charity.component.ImageIconCustom;
 import charity.component.IFormatData;
 import charity.service.UserService;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 /**
  *
@@ -30,14 +31,14 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
     public void init() {
         jLabel6.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/user.png", 70, 70));
         
-        jLabel9.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/home.png", 24, 24));
-        lbEvent.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/calendar.png", 24, 24));
-        jLabel3.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/list2.png", 24, 24));
-        jLabel5.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/non-profit-organization (2).png", 24, 24));
-        jLabel2.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/user2.png", 24, 24));
-        jLabel4.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/recent.png", 24, 24));
+        jLabel9.setIcon(new FlatSVGIcon("charity/icon/home.svg", 25, 25));
+        lbEvent.setIcon(new FlatSVGIcon("charity/icon/event.svg", 25, 25));
+        jLabel3.setIcon(new FlatSVGIcon("charity/icon/donate.svg", 25, 25));
+        jLabel5.setIcon(new FlatSVGIcon("charity/icon/organization.svg", 25, 25));
+        jLabel2.setIcon(new FlatSVGIcon("charity/icon/user.svg", 25, 25));
+        jLabel4.setIcon(new FlatSVGIcon("charity/icon/myDonation.svg", 25, 25));
 
-        jlbLogout.setIcon(ImageIconCustom.getSmoothIcon("/charity/icon/logout2.png", 20, 20));
+        jlbLogout.setIcon(new FlatSVGIcon("charity/icon/logout.svg", 20, 20));
     }
 
     public UserUIController getController() {
@@ -117,7 +118,7 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
         jpnDonationOptionLayout.setHorizontalGroup(
             jpnDonationOptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnDonationOptionLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnDonationOptionLayout.setVerticalGroup(
@@ -138,7 +139,7 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
         jpnMyDonationOptionLayout.setHorizontalGroup(
             jpnMyDonationOptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnMyDonationOptionLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnMyDonationOptionLayout.setVerticalGroup(
@@ -158,7 +159,7 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
         jpnInforOptionLayout.setHorizontalGroup(
             jpnInforOptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnInforOptionLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnInforOptionLayout.setVerticalGroup(
@@ -183,7 +184,7 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
         jpnOrganizationOptionLayout.setHorizontalGroup(
             jpnOrganizationOptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpnOrganizationOptionLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnOrganizationOptionLayout.setVerticalGroup(
@@ -212,7 +213,7 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
         jpnMainOptionLayout.setHorizontalGroup(
             jpnMainOptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnMainOptionLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnMainOptionLayout.setVerticalGroup(
@@ -233,7 +234,7 @@ public class UserUI extends javax.swing.JFrame implements IFormatData {
         jpnEventOptionLayout.setHorizontalGroup(
             jpnEventOptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnEventOptionLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(lbEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jpnEventOptionLayout.setVerticalGroup(

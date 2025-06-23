@@ -21,6 +21,7 @@ public class CharityEvent {
     private String imageUrl;
     private Date dateBegin, dateEnd;
 //    private List<Donation> donations;// Danh sách đóng góp
+    private String purpose;
 
     public CharityEvent() {
         this.imageUrl = "/charity/image/default.png";
@@ -156,9 +157,22 @@ public class CharityEvent {
         this.currentAmount = currentAmount;
     }
 
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+
     @Override
     public String toString() {
         return "CharityEvent{" + "id=" + id + ", organizationId=" + organizationId + ", name=" + name + ", categoryId=" + categoryId + ", description=" + description + ", targetAmount=" + targetAmount + ", currentAmount=" + currentAmount + ", imageUrl=" + imageUrl + ", dateBegin=" + dateBegin + ", dateEnd=" + dateEnd + '}';
+    }
+
+// Bổ sung hàm getStartDate cho tương thích giao diện
+    public java.sql.Date getStartDate() {
+        return dateBegin;
     }
 
 

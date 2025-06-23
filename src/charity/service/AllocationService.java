@@ -48,4 +48,16 @@ public class AllocationService {
         double totalAllocated = repository.getTotalAllocatedAmount(eventId);
         return totalDonation - totalAllocated;
     }
+    
+    public DonationAllocation getAllocationById(int allocationId) {
+        return repository.getById(allocationId);
+    }
+    
+    public boolean deleteAllocationById(int allocationId) {
+        return repository.deleteById(allocationId);
+    }
+    
+    public boolean updateAllocation(DonationAllocation allocation) {
+        return repository.updateAllocation(allocation);
+    }
 }

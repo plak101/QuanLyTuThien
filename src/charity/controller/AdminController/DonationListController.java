@@ -1,5 +1,6 @@
 package charity.controller.AdminController;
 
+import charity.utils.PDFExporter;
 import charity.component.ClassTableModel;
 import charity.component.ColorCustom;
 import charity.component.GButton;
@@ -18,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.print.PrinterException;
+import java.io.File;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -91,7 +94,7 @@ public class DonationListController {
                     rowSorter.setRowFilter(null);
                 } else {
                     if (jrbtId.isSelected()) {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 0));
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                     } else if (jrbtUser.isSelected()) {
                         rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
                     } else {
@@ -110,7 +113,7 @@ public class DonationListController {
                     rowSorter.setRowFilter(null);
                 } else {
                     if (jrbtId.isSelected()) {
-                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 0));
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                     } else if (jrbtUser.isSelected()) {
                         rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
                     } else {
@@ -180,22 +183,45 @@ public class DonationListController {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                try {
-                    MessageFormat header = new MessageFormat("DANH SÁCH QUYÊN GÓP");
-                    MessageFormat footer = new MessageFormat("Trang {0}");
+//                try {
+//                    MessageFormat header = new MessageFormat("DANH SÁCH QUYÊN GÓP");
+//                    MessageFormat footer = new MessageFormat("Trang {0}");
+//
+//                    try {
+//                        if (table.print(JTable.PrintMode.FIT_WIDTH, header, footer)) {
+//                            JOptionPane.showMessageDialog(null, "In thành công!");
+//                        }
+//                    } catch (PrinterException ex) {
+//                        JOptionPane.showMessageDialog(null, "Lỗi khi in: " + ex.getMessage(),
+//                                "Lỗi", JOptionPane.ERROR_MESSAGE);
+//                    }
+//                } catch (Exception ex) {
+//                    // If any error occurs, refresh the table
+//                    setDonationListTable();
+//                }
 
-                    try {
-                        if (table.print(JTable.PrintMode.FIT_WIDTH, header, footer)) {
-                            JOptionPane.showMessageDialog(null, "In thành công!");
-                        }
-                    } catch (PrinterException ex) {
-                        JOptionPane.showMessageDialog(null, "Lỗi khi in: " + ex.getMessage(),
-                                "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JFileChooser chooser = new JFileChooser();
+                chooser.setDialogTitle("Chọn thư mục xuất file");
+                chooser.setSelectedFile(new File("DanhSachQuyenGop.pdf"));
+                
+                //loc dinh dang pdf
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Files", "pdf");
+                chooser.setFileFilter(filter);
+                
+                //bagn lua chon
+                int select = chooser.showSaveDialog(null);
+                if (select == JFileChooser.APPROVE_OPTION){
+                    File selectFile = chooser.getSelectedFile();
+                    String path = selectFile.getAbsolutePath();
+                    
+                    if (!path.toLowerCase().endsWith("pdf")){
+                        path += ".pdf";
                     }
-                } catch (Exception ex) {
-                    // If any error occurs, refresh the table
-                    setDonationListTable();
+                    
+                    PDFExporter exporter = new PDFExporter();
+                    exporter.exportDonate(path, table);
                 }
+                
             }
         });
 

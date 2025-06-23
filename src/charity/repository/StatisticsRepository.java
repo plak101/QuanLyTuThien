@@ -37,7 +37,7 @@ public class StatisticsRepository implements IStatisticsRepository {
                 JOIN Organization o ON o.id = e.OrganizationId
                 WHERE DATE(d.donationDate) BETWEEN ? AND ?
                 GROUP BY DATE(d.donationDate), e.categoryId, e.eventName, o.name
-                ORDER BY date DESC;
+                ORDER BY date ;
         """;
 
         try (
@@ -82,6 +82,7 @@ public class StatisticsRepository implements IStatisticsRepository {
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 Map<String, Object> stat = new HashMap<>();
+                stat.put("categoryId", rs.getInt("categoryId"));
                 String categoryName = categoryService.getCategoryNameById(rs.getInt("categoryId"));
                 stat.put("category", categoryName);
                 stat.put("totalEvent", rs.getInt("totalEvent"));
@@ -100,19 +101,22 @@ public class StatisticsRepository implements IStatisticsRepository {
         List<Map<String, Object>> topDonors = new ArrayList<>();
         String sql = """
                     SELECT u.userId, u.userName,
-                    	SUM(d.amount) as totalAmount,
-                        MAX(d.amount) as maxDonation,
-                        MIN(d.amount) as minDonation,
-                        AVG(d.amount) as avgAmount
+                    	COALESCE(SUM(d.amount),0) as totalAmount,
+                        COALESCE(MAX(d.amount),0) as maxDonation,
+                        COALESCE(MIN(d.amount),0) as minDonation,
+                        COALESCE(AVG(d.amount),0) as avgAmount,
+                        COUNT(DISTINCT e.eventId) AS totalEvent,
+                        COUNT(d.donationId) AS totalDonation
                     FROM User u
-                    JOIN Donation d ON d.userId = u.userId
+                    LEFT JOIN Donation d ON d.userId = u.userId
+                    LEFT JOIN Event e ON e.eventId = d.eventId
                     GROUP BY u.userId, u.userName
                     ORDER BY totalAmount DESC
-                    LIMIT ?
+                    -- LIMIT ?
                      """;
         try (
                 Connection conn = ConnectionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);) {
-            ps.setInt(1, limit);
+//            ps.setInt(1, limit);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Map<String, Object> donor = new HashMap<>();
@@ -122,9 +126,12 @@ public class StatisticsRepository implements IStatisticsRepository {
                 donor.put("maxDonation", rs.getBigDecimal("maxDonation"));
                 donor.put("minDonation", rs.getBigDecimal("minDonation"));
                 donor.put("avgAmount", rs.getBigDecimal("avgAmount"));
+                donor.put("totalEvent", rs.getBigDecimal("totalEvent"));
+                donor.put("totalDonation", rs.getBigDecimal("totalDonation"));
                 topDonors.add(donor);
             }
         } catch (SQLException ex) {
+            Logger.getLogger(StatisticsRepository.class.getName()).log(Level.SEVERE, null, ex);
             MessageDialog.showError("Lỗi khi lấy danh sách top người quyên góp!");
         }
         return topDonors;

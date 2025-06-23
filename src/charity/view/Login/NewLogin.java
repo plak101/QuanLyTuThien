@@ -56,9 +56,11 @@ public class NewLogin extends JFrame {
         illustrationPanel.setBackground(Color.WHITE);
         illustrationPanel.setPreferredSize(new Dimension(400, 550)); // Kích thước cố định cho illustration
 
-        String imagePath = "src/charity/image/logoCharity.jpg";
+        String imagePath = "src/charity/image/loginLogo.jpg";
         ImageIcon imageIcon = new ImageIcon(imagePath);
+        
 
+        // Logo bên trái bản gốc
         if (imageIcon.getImageLoadStatus() == MediaTracker.COMPLETE) {
             JLabel imageLabel = new JLabel(imageIcon);
             imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -83,7 +85,7 @@ public class NewLogin extends JFrame {
         Font font28 = new Font("Arial", Font.BOLD, 22); // Điều chỉnh font cho khớp với Login.java ban đầu
         Font font14B = new Font("Arial", Font.BOLD, 14);
         Font font14 = new Font("Arial", Font.PLAIN, 14);
-
+        Font buttonFont = new Font("Arial", Font.BOLD, 16);
 
         // Tiêu đề: ĐĂNG NHẬP VÀO HỆ THỐNG
         jlbHeader = new JLabel("ĐĂNG NHẬP VÀO HỆ THỐNG");
@@ -124,22 +126,24 @@ public class NewLogin extends JFrame {
         jlbForgotPassword.setForeground(Color.BLUE.darker());
         jlbForgotPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
         jlbForgotPassword.setFont(font14);
+        
         // Đặt vị trí bên phải của trường mật khẩu
         jlbForgotPassword.setBounds(300, 255, 100, 20); // Điều chỉnh vị trí
         loginFormPanel.add(jlbForgotPassword);
 
         // Thêm trình nghe sự kiện chuột cho nhãn "Quên mật khẩu"
-//        jlbForgotPassword.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                JOptionPane.showMessageDialog(NewLogin.this, "Bạn đã nhấp vào Quên mật khẩu!");
-//            }
-//        });
+        jlbForgotPassword.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(NewLogin.this, "Bạn đã nhấp vào Quên mật khẩu!");
+            }
+        });
 
         // Nút "ĐĂNG NHẬP"
         jbtLogin = new JButton("ĐĂNG NHẬP");
         jbtLogin.setFont(new Font("Arial", Font.BOLD, 16)); // Giữ font của nút đăng nhập ban đầu
         jbtLogin.setBackground(new Color(23, 32, 42));
+        //jbtLogin.setBackground(Color.BLUE);
         jbtLogin.setForeground(Color.WHITE);
         jbtLogin.setBounds(100, 320, 250, 45); // Điều chỉnh bounds và kích thước, căn giữa theo panel
         jbtLogin.setFocusPainted(false);
@@ -148,19 +152,7 @@ public class NewLogin extends JFrame {
         loginFormPanel.add(jbtLogin);
 
         // Thêm trình nghe sự kiện hành động cho nút "ĐĂNG NHẬP"
-//        jbtLogin.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                String username = txtUsername.getText();
-//                char[] password = txtPassword.getPassword();
-//                JOptionPane.showMessageDialog(NewLogin.this,
-//                        "Đang cố gắng đăng nhập với Tên đăng nhập: " + username +
-//                        " và Mật khẩu: " + String.valueOf(password));
-//                for (int i = 0; i < password.length; i++) {
-//                    password[i] = 0;
-//                }
-//            }
-//        });
+        
 
 
         // Liên kết Đăng ký mới

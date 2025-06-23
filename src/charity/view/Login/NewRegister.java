@@ -60,8 +60,8 @@ public class NewRegister extends JFrame { // Đổi tên lớp thành NewRegiste
         illustrationPanel = new JPanel();
         illustrationPanel.setBackground(Color.WHITE);
         illustrationPanel.setPreferredSize(new Dimension(400, 550));
-
-        String imagePath = "src/charity/image/logoCharity.jpg"; // Giữ nguyên đường dẫn ảnh
+        
+        String imagePath = "src/charity/image/registerLogo.jpg"; // Giữ nguyên đường dẫn ảnh
         ImageIcon imageIcon = new ImageIcon(imagePath);
 
         if (imageIcon.getImageLoadStatus() == MediaTracker.COMPLETE) {
@@ -161,7 +161,7 @@ public class NewRegister extends JFrame { // Đổi tên lớp thành NewRegiste
 
         // Nhãn "Đã có tài khoản? Quay lại Đăng nhập"
         jlbBackToLogin = new JLabel("Đã có tài khoản? Quay lại Đăng nhập");
-        jlbBackToLogin.setForeground(Color.BLUE.darker()); // Màu ban đầu của link
+        jlbBackToLogin.setForeground(Color.BLACK.darker()); // Màu ban đầu của link
         jlbBackToLogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
         jlbBackToLogin.setFont(font14);
         jlbBackToLogin.setBounds(100, 455, 250, 20);

@@ -17,8 +17,16 @@ public class CharityEventService implements ICharityEventService{
         this.charityEventRepository= new CharityEventRepository(); 
     }
     @Override
+    public List<CharityEvent> getEventListCall() {
+        return charityEventRepository.getEventListCall();
+    }
+    @Override
     public List<CharityEvent> getEventList() {
         return charityEventRepository.getEventList();
+    }
+    @Override
+    public List<CharityEvent> getEventListDistribution() {
+        return charityEventRepository.getEventListDistribution();
     }
 
     @Override

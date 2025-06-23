@@ -1,7 +1,6 @@
 
 package charity.repository;
 
-import charity.model.Distribution;
 import charity.repository.IRepository.IDonationRepository;
 import charity.model.Donation;
 import java.sql.*;
@@ -296,34 +295,7 @@ public class DonationRepository implements IDonationRepository {
         }
     }
 
-    @Override
-    public List<Distribution> getDistributionsByDonationId(int donationId) {
-        List<Distribution> distributions = new ArrayList<>();
-        String query = "SELECT * FROM distribution WHERE donationId = ?";
-        conn = ConnectionDB.getConnection();
-        try {
-            ps = conn.prepareStatement(query);
-            ps.setInt(1, donationId);
-            rs = ps.executeQuery();
 
-            while (rs.next()) {
-                Distribution dist = new Distribution();
-                dist.setId(rs.getInt("id"));
-                dist.setDonationId(rs.getInt("donationId"));
-                dist.setEventId(rs.getInt("eventId"));
-                dist.setAmount(rs.getDouble("amount"));
-                dist.setDistributionDate(rs.getDate("distributionDate"));
-                dist.setNote(rs.getString("note"));
-                dist.setDistributedBy(rs.getInt("distributedBy"));
-                distributions.add(dist);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DonationRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            closeResources(conn, ps, rs);
-        }
-        return distributions;
-    }
 
     @Override
     public double getTotalDistributedAmount(int donationId) {
@@ -361,10 +333,6 @@ public class DonationRepository implements IDonationRepository {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    @Override
-    public List<Distribution> getDistributionDetails() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
     @Override
     public List<Donation> getDonationDetails() {

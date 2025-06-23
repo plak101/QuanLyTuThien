@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AllocationRepository {
-
     private Connection conn = null;
     private PreparedStatement ps = null;
     private ResultSet rs = null;
@@ -18,9 +17,9 @@ public class AllocationRepository {
     }
 
     public boolean save(DonationAllocation allocation) {
-        String query = "INSERT INTO donation_allocations (eventId, amount, purpose, status, "
-                + "allocationDate, usedAmount, evidenceUrl, createdBy, recipient) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO donation_allocations (eventId, amount, purpose, status, " +
+                      "allocationDate, usedAmount, evidenceUrl, createdBy, recipient) " +
+                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             ps = conn.prepareStatement(query);
             ps.setInt(1, allocation.getEventId());
@@ -29,8 +28,10 @@ public class AllocationRepository {
             ps.setString(4, allocation.getStatus());
             ps.setDate(5, allocation.getAllocationDate());
             ps.setDouble(6, allocation.getUsedAmount());
+            ps.setString(7, allocation.getEvidenceUrl());
             ps.setInt(8, allocation.getCreatedBy());
             ps.setString(9, allocation.getRecipient());
+
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(AllocationRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,8 +105,8 @@ public class AllocationRepository {
                 allocation.setStatus(rs.getString("status"));
                 allocation.setAllocationDate(rs.getDate("allocationDate"));
                 allocation.setUsedAmount(rs.getDouble("usedAmount"));
+                allocation.setEvidenceUrl(rs.getString("evidenceUrl"));
                 allocation.setCreatedBy(rs.getInt("createdBy"));
-                // Bổ sung các trường minh bạch
                 allocation.setRecipient(rs.getString("recipient"));
 
                 allocations.add(allocation);
@@ -153,10 +154,10 @@ public class AllocationRepository {
                 allocation.setStatus(rs.getString("status"));
                 allocation.setAllocationDate(rs.getDate("allocationDate"));
                 allocation.setUsedAmount(rs.getDouble("usedAmount"));
+                allocation.setEvidenceUrl(rs.getString("evidenceUrl"));
                 allocation.setCreatedBy(rs.getInt("createdBy"));
-                // Bổ sung các trường minh bạch nếu có trong DB
                 allocation.setRecipient(rs.getString("recipient"));
-
+     
             }
         } catch (SQLException ex) {
             Logger.getLogger(AllocationRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -175,6 +176,7 @@ public class AllocationRepository {
             ps.setString(3, allocation.getStatus());
             ps.setDate(4, allocation.getAllocationDate());
             ps.setDouble(5, allocation.getUsedAmount());
+            ps.setString(6, allocation.getEvidenceUrl());
             ps.setInt(7, allocation.getCreatedBy());
             ps.setString(8, allocation.getRecipient());
             ps.setInt(18, allocation.getId());

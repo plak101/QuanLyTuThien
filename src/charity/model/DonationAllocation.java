@@ -3,6 +3,7 @@ package charity.model;
 import java.sql.Date;
 
 public class DonationAllocation {
+
     private int id;
     private int eventId;
     private double amount;
@@ -10,13 +11,14 @@ public class DonationAllocation {
     private String status;
     private Date allocationDate;
     private double usedAmount;
+    private String evidenceUrl;
     private int createdBy;
     private String recipient;
 
     public DonationAllocation() {
     }
 
-    public DonationAllocation(int id, int eventId, double amount, String purpose, String status, Date allocationDate, double usedAmount, int createdBy, String recipient) {
+    public DonationAllocation(int id, int eventId, double amount, String purpose, String status, Date allocationDate, double usedAmount, String evidenceUrl, int createdBy, String recipient) {
         this.id = id;
         this.eventId = eventId;
         this.amount = amount;
@@ -24,8 +26,17 @@ public class DonationAllocation {
         this.status = status;
         this.allocationDate = allocationDate;
         this.usedAmount = usedAmount;
+        this.evidenceUrl = evidenceUrl;
         this.createdBy = createdBy;
         this.recipient = recipient;
+    }
+
+    public String getEvidenceUrl() {
+        return evidenceUrl;
+    }
+
+    public void setEvidenceUrl(String evidenceUrl) {
+        this.evidenceUrl = evidenceUrl;
     }
 
     public int getId() {
@@ -100,5 +111,4 @@ public class DonationAllocation {
         this.recipient = recipient;
     }
 
-   
 }

@@ -62,7 +62,7 @@ public class MapHelper {
     private static Map<Integer, String> getAllEventName(){
         if (cacheEventNames == null){
             cacheEventNames = new HashMap<>();
-            List<CharityEvent> events = eventService.getEventListCall();
+            List<CharityEvent> events = eventService.getEventList();
             for (CharityEvent e : events){
                 cacheEventNames.put(e.getId(), e.getName());
             }

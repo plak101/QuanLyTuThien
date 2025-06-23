@@ -11,7 +11,7 @@ import java.util.Map;//notuse
 public class AccountService implements IAccountService{
 
     private AccountRepository accountRepository;
-    
+
     public AccountService() {
         accountRepository = new AccountRepository();
     }
@@ -35,7 +35,7 @@ public class AccountService implements IAccountService{
     public boolean deleteAccount(int id){
         return accountRepository.deleteAccount(id);
     }
-    
+
     @Override
     public Account checkAccount(String username, String password){
         return accountRepository.checkAccount(username, password);
@@ -53,12 +53,12 @@ public class AccountService implements IAccountService{
     public Account getAccountById(int accountId){
         return accountRepository.getAccountById(accountId);
     }
-    
+
     @Override
     public boolean addAccountWithUser(Account account, User user){
         return accountRepository.insertAccountWithUser(account, user);
     }
-    
+
     @Override
     public boolean updateAccountWithUser(Account account, User user) {
         return accountRepository.updateAccountWithUser(account, user);
@@ -74,5 +74,10 @@ public class AccountService implements IAccountService{
     @Override
     public int getAccountCount(){
         return accountRepository.getAccountCount();
+    }
+
+    @Override
+    public Account getAccountByEmail(String email) {
+        return accountRepository.getAccountByEmail(email);
     }
 }

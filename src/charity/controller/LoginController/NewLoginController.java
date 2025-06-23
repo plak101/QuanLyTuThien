@@ -9,7 +9,6 @@ import charity.model.Role;   // Import Role enum
 import charity.service.AccountService; // Import AccountService
 import charity.view.Admin.AdminUI; // Import AdminUI
 import charity.view.Login.ForgotPasswordDialog;
-import charity.view.Login.ForgotPasswordDialog2;
 import charity.view.User.UserUI;     // Import UserUI
 import charity.view.Login.NewLogin;
 import charity.view.Login.NewRegister;
@@ -23,6 +22,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.security.SecureRandom;
+import java.util.Base64;
 import javax.swing.JFrame; // Import JFrame for dispose()
 
 public class NewLoginController {
@@ -54,7 +55,6 @@ public class NewLoginController {
             }
         });
 
-//        jlbForgotPassword.addMouseListener(new MouseAdapter() {
 //            @Override
 //            public void mouseClicked(MouseEvent e) {
 //                ForgotPasswordDialog2 dialog = new ForgotPasswordDialog2(loginView);
@@ -136,6 +136,58 @@ public class NewLoginController {
         for (int i = 0; i < pwdChars.length; i++) {
             pwdChars[i] = 0; // Ghi đè bằng 0
         }
+    }
+
+    private void handleForgotPassword() {
+        ForgotPasswordDialog forgotPasswordDialog = new ForgotPasswordDialog(loginView);
+        forgotPasswordDialog.showPanel(ForgotPasswordDialog.PANEL_EMAIL_INPUT); // Hiển thị panel nhập email
+        forgotPasswordDialog.setVisible(true); // Hiển thị dialog và chờ nó đóng
+
+        String email = forgotPasswordDialog.getEnteredEmail();
+        if (email != null && !email.isEmpty()) {
+            // Kiểm tra email có tồn tại trong database không
+            if (accountService.isEmailExist(email)) {
+                // Tạo mật khẩu tạm thời
+                String temporaryPassword = generateTemporaryPassword();
+
+                // Tìm tài khoản bằng email
+                Account accountToUpdate = accountService.getAccountByEmail(email); // Sử dụng phương thức mới
+
+                if (accountToUpdate != null) {
+                    // Cập nhật mật khẩu của tài khoản bằng mật khẩu tạm thời
+                    accountToUpdate.setPassword(temporaryPassword);
+                    boolean updated = accountService.updateAccount(accountToUpdate);
+
+                    if (updated) {
+                        // Hiển thị mật khẩu tạm thời cho người dùng
+                        ForgotPasswordDialog displayTempPwdDialog = new ForgotPasswordDialog(loginView);
+                        displayTempPwdDialog.setTemporaryPassword(temporaryPassword);
+                        displayTempPwdDialog.showPanel(ForgotPasswordDialog.PANEL_TEMPORARY_PASSWORD);
+                        displayTempPwdDialog.setVisible(true);
+
+                        JOptionPane.showMessageDialog(loginView,
+                                "Mật khẩu tạm thời đã được tạo và hiển thị. Vui lòng sử dụng mật khẩu này để đăng nhập và thay đổi mật khẩu của bạn sau.",
+                                "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                        txtUsername.setText(accountToUpdate.getUsername()); // Tự động điền username
+                        txtPassword.setText(temporaryPassword); // Tự động điền mật khẩu tạm thời
+                    } else {
+                        JOptionPane.showMessageDialog(loginView, "Không thể cập nhật mật khẩu tạm thời. Vui lòng thử lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(loginView, "Không tìm thấy tài khoản với email này.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(loginView, "Email này không tồn tại trong hệ thống.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    // Phương thức trợ giúp để tạo mật khẩu tạm thời an toàn
+    private String generateTemporaryPassword() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[8]; // 8 bytes = 64 bits, sẽ tạo ra chuỗi khoảng 10-11 ký tự trong Base64
+        random.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 }
 

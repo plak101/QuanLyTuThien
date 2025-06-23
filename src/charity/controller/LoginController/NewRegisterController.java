@@ -275,7 +275,7 @@ public class NewRegisterController {
         
         // Logic đăng ký tài khoản
         // Đây là nơi bạn sẽ gọi đến Model (ví dụ: database) để lưu thông tin người dùng mới
-        JOptionPane.showMessageDialog(registerView,"Đăng ký tài khoản mới thành công!\n");
+        //JOptionPane.showMessageDialog(registerView,"Đăng ký tài khoản mới thành công!\n");
     }
 
     // Phương thức xử lý logic quay lại màn hình đăng nhập

@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AllocationRepository {
+
     private Connection conn = null;
     private PreparedStatement ps = null;
     private ResultSet rs = null;
@@ -17,9 +18,9 @@ public class AllocationRepository {
     }
 
     public boolean save(DonationAllocation allocation) {
-        String query = "INSERT INTO donation_allocations (eventId, amount, purpose, status, " +
-                      "allocationDate, usedAmount, evidenceUrl, createdBy, recipient) " +
-                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO donation_allocations (eventId, amount, purpose, status, "
+                + "allocationDate, usedAmount, evidenceUrl, createdBy, recipient) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             ps = conn.prepareStatement(query);
             ps.setInt(1, allocation.getEventId());
@@ -28,10 +29,8 @@ public class AllocationRepository {
             ps.setString(4, allocation.getStatus());
             ps.setDate(5, allocation.getAllocationDate());
             ps.setDouble(6, allocation.getUsedAmount());
-            ps.setString(7, allocation.getEvidenceUrl());
             ps.setInt(8, allocation.getCreatedBy());
             ps.setString(9, allocation.getRecipient());
-
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(AllocationRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,19 +104,10 @@ public class AllocationRepository {
                 allocation.setStatus(rs.getString("status"));
                 allocation.setAllocationDate(rs.getDate("allocationDate"));
                 allocation.setUsedAmount(rs.getDouble("usedAmount"));
-                allocation.setEvidenceUrl(rs.getString("evidenceUrl"));
                 allocation.setCreatedBy(rs.getInt("createdBy"));
                 // Bổ sung các trường minh bạch
-                try { allocation.setRecipient(rs.getString("recipient")); } catch (Exception e) {}
-                try { allocation.setGiftType(rs.getString("giftType")); } catch (Exception e) {}
-                try { allocation.setTotalGifts(rs.getInt("totalGifts")); } catch (Exception e) {}
-                try { allocation.setGiftValue(rs.getDouble("giftValue")); } catch (Exception e) {}
-                try { allocation.setNumRecipients(rs.getInt("numRecipients")); } catch (Exception e) {}
-                try { allocation.setCriteria(rs.getString("criteria")); } catch (Exception e) {}
-                try { allocation.setRecipientList(rs.getString("recipientList")); } catch (Exception e) {}
-                try { allocation.setShippingCost(rs.getDouble("shippingCost")); } catch (Exception e) {}
-                try { allocation.setReceipt(rs.getString("receipt")); } catch (Exception e) {}
-                try { allocation.setFeedback(rs.getString("feedback")); } catch (Exception e) {}
+                allocation.setRecipient(rs.getString("recipient"));
+
                 allocations.add(allocation);
             }
         } catch (SQLException ex) {
@@ -163,19 +153,10 @@ public class AllocationRepository {
                 allocation.setStatus(rs.getString("status"));
                 allocation.setAllocationDate(rs.getDate("allocationDate"));
                 allocation.setUsedAmount(rs.getDouble("usedAmount"));
-                allocation.setEvidenceUrl(rs.getString("evidenceUrl"));
                 allocation.setCreatedBy(rs.getInt("createdBy"));
                 // Bổ sung các trường minh bạch nếu có trong DB
-                try { allocation.setRecipient(rs.getString("recipient")); } catch (Exception e) {}
-                try { allocation.setGiftType(rs.getString("giftType")); } catch (Exception e) {}
-                try { allocation.setTotalGifts(rs.getInt("totalGifts")); } catch (Exception e) {}
-                try { allocation.setGiftValue(rs.getDouble("giftValue")); } catch (Exception e) {}
-                try { allocation.setNumRecipients(rs.getInt("numRecipients")); } catch (Exception e) {}
-                try { allocation.setCriteria(rs.getString("criteria")); } catch (Exception e) {}
-                try { allocation.setRecipientList(rs.getString("recipientList")); } catch (Exception e) {}
-                try { allocation.setShippingCost(rs.getDouble("shippingCost")); } catch (Exception e) {}
-                try { allocation.setReceipt(rs.getString("receipt")); } catch (Exception e) {}
-                try { allocation.setFeedback(rs.getString("feedback")); } catch (Exception e) {}
+                allocation.setRecipient(rs.getString("recipient"));
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(AllocationRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -194,18 +175,8 @@ public class AllocationRepository {
             ps.setString(3, allocation.getStatus());
             ps.setDate(4, allocation.getAllocationDate());
             ps.setDouble(5, allocation.getUsedAmount());
-            ps.setString(6, allocation.getEvidenceUrl());
             ps.setInt(7, allocation.getCreatedBy());
             ps.setString(8, allocation.getRecipient());
-            ps.setString(9, allocation.getGiftType());
-            ps.setInt(10, allocation.getTotalGifts());
-            ps.setDouble(11, allocation.getGiftValue());
-            ps.setInt(12, allocation.getNumRecipients());
-            ps.setString(13, allocation.getCriteria());
-            ps.setString(14, allocation.getRecipientList());
-            ps.setDouble(15, allocation.getShippingCost());
-            ps.setString(16, allocation.getReceipt());
-            ps.setString(17, allocation.getFeedback());
             ps.setInt(18, allocation.getId());
             return ps.executeUpdate() > 0;
         } catch (Exception ex) {

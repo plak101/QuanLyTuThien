@@ -261,36 +261,6 @@ public class DonationProcessingPanel extends JPanel {
                         if (!safe(alloc.getRecipient()).isEmpty()) {
                             detail.append("Người nhận: ").append(safe(alloc.getRecipient())).append("\n");
                         }
-                        if (alloc.getNumRecipients() > 0) {
-                            detail.append("Số lượng người nhận: ").append(safe(alloc.getNumRecipients())).append("\n");
-                        }
-                        if (!safe(alloc.getCriteria()).isEmpty()) {
-                            detail.append("Tiêu chí lựa chọn: ").append(safe(alloc.getCriteria())).append("\n");
-                        }
-                        if (!safe(alloc.getRecipientList()).isEmpty()) {
-                            detail.append("Danh sách người nhận: ").append(safe(alloc.getRecipientList())).append("\n");
-                        }
-                        if (!safe(alloc.getGiftType()).isEmpty()) {
-                            detail.append("Loại quà/tài sản: ").append(safe(alloc.getGiftType())).append("\n");
-                        }
-                        if (!safe(alloc.getGiftValue()).isEmpty()) {
-                            detail.append("Giá trị từng phần quà: ").append(safe(alloc.getGiftValue())).append("\n");
-                        }
-                        if (alloc.getTotalGifts() > 0) {
-                            detail.append("Tổng số lượng/quà: ").append(safe(alloc.getTotalGifts())).append("\n");
-                        }
-                        if (alloc.getShippingCost() > 0) {
-                            detail.append("Chi phí vận chuyển, nhân công: ").append(safe(alloc.getShippingCost())).append("\n");
-                        }
-                        if (!safe(alloc.getEvidenceUrl()).isEmpty()) {
-                            detail.append("Ảnh/video minh chứng: ").append(safe(alloc.getEvidenceUrl())).append("\n");
-                        }
-                        if (!safe(alloc.getReceipt()).isEmpty()) {
-                            detail.append("Biên nhận, chữ ký người nhận: ").append(safe(alloc.getReceipt())).append("\n");
-                        }
-                        if (!safe(alloc.getFeedback()).isEmpty()) {
-                            detail.append("Phản hồi từ người nhận/địa phương: ").append(safe(alloc.getFeedback())).append("\n");
-                        }
                     } else {
                         detail.append("Không tìm thấy dữ liệu chi tiết.\n");
                     }
@@ -525,8 +495,6 @@ public class DonationProcessingPanel extends JPanel {
                         return;
                     }
                     alloc.setAmount(amount);
-                    alloc.setGiftType("");
-                    alloc.setTotalGifts(0);
                 } else {
                     String giftType = txtGiftType.getText().trim();
                     String totalGiftsStr = txtTotalGifts.getText().trim();
@@ -541,8 +509,6 @@ public class DonationProcessingPanel extends JPanel {
                         return;
                     }
                     alloc.setAmount(0);
-                    alloc.setGiftType(giftType);
-                    alloc.setTotalGifts(totalGifts);
                 }
                 boolean ok = allocationService.createAllocationPlan(alloc);
                 if (ok) {
@@ -596,19 +562,9 @@ public class DonationProcessingPanel extends JPanel {
         moneyPanel.add(Box.createVerticalStrut(8));
         moneyPanel.add(labelFieldPanel("Người nhận (hoặc danh sách):", txtRecipient));
         moneyPanel.add(Box.createVerticalStrut(8));
-
-        // Panel vật tư
-        JPanel goodsPanel = new JPanel();
-        goodsPanel.setLayout(new BoxLayout(goodsPanel, BoxLayout.Y_AXIS));
-        JTextField txtGiftType = new JTextField(safe(alloc.getGiftType()));
-        JTextField txtTotalGifts = new JTextField(alloc.getTotalGifts() > 0 ? String.valueOf(alloc.getTotalGifts()) : "");
-        JTextField txtGiftValue = new JTextField(safe(alloc.getGiftValue()));
-        goodsPanel.add(labelFieldPanel("Loại vật tư/quà tặng:", txtGiftType));
-        goodsPanel.add(labelFieldPanel("Số lượng vật tư/quà tặng:", txtTotalGifts));
-        goodsPanel.add(labelFieldPanel("Giá trị từng phần quà/vật tư:", txtGiftValue));
+        
         // Thêm vào cardPanel
         cardPanel.add(moneyPanel, "MONEY");
-        cardPanel.add(goodsPanel, "GOODS");
         CardLayout cl = (CardLayout) cardPanel.getLayout();
         cl.show(cardPanel, isMoney ? "MONEY" : "GOODS");
 
@@ -677,24 +633,9 @@ public class DonationProcessingPanel extends JPanel {
                     alloc.setPurpose(purpose);
                     alloc.setRecipient(recipient);
                     alloc.setAmount(amount);
-                    alloc.setGiftType("");
-                    alloc.setTotalGifts(0);
+
                 } else {
-                    String giftType = txtGiftType.getText().trim();
-                    String totalGiftsStr = txtTotalGifts.getText().trim();
-                    String giftValue = txtGiftValue.getText().trim();
-                    if (giftType.isEmpty() || totalGiftsStr.isEmpty() || giftValue.isEmpty()) {
-                        JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin vật tư/quà tặng.");
-                        return;
-                    }
-                    int totalGifts = Integer.parseInt(totalGiftsStr);
-                    if (totalGifts <= 0) {
-                        JOptionPane.showMessageDialog(this, "Số lượng vật tư/quà tặng phải lớn hơn 0.");
-                        return;
-                    }
                     alloc.setAmount(0);
-                    alloc.setGiftType(giftType);
-                    alloc.setTotalGifts(totalGifts);
                 }
                 boolean ok = allocationService.updateAllocation(alloc);
                 if (ok) {

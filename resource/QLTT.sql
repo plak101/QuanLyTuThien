@@ -96,18 +96,8 @@ CREATE TABLE IF NOT EXISTS donation_allocations (
     status VARCHAR(50) NOT NULL DEFAULT 'PENDING',
     allocationDate DATE NOT NULL,
     usedAmount DOUBLE DEFAULT 0,
-    evidenceUrl VARCHAR(500),
     createdBy INT NOT NULL,
     recipient VARCHAR(255),
-    numRecipients INT,
-    criteria VARCHAR(500),
-    recipientList TEXT,
-    giftType VARCHAR(255),
-    giftValue VARCHAR(255),
-    totalGifts INT,
-    shippingCost DOUBLE,
-    receipt VARCHAR(500),
-    feedback TEXT,
     FOREIGN KEY (eventId) REFERENCES Event(eventId),
     FOREIGN KEY (createdBy) REFERENCES User(userId)
 );

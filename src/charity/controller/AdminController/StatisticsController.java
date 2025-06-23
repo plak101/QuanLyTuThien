@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -216,6 +217,14 @@ public class StatisticsController {
         table.setDefaultEditor(Object.class, null);
         //sap xep
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter(model);
+        sorter.setComparator(0, Comparator.comparing(o->{
+            try {
+                return sdf.parse((String) o);
+            } catch (ParseException ex) {
+                Logger.getLogger(StatisticsController.class.getName()).log(Level.SEVERE, null, ex);
+                return new Date(0);
+            }
+        }));
         sorter.setComparator(3, Comparator.comparingLong(o -> Long.valueOf(o.toString().replace(",", ""))));
         table.setRowSorter(sorter);
     }

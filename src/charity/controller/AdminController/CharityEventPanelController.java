@@ -273,7 +273,7 @@ public class CharityEventPanelController {
             @Override
             protected void done() {
                 try {
-                    events=get();
+                    events = get();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(CharityEventPanelController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ExecutionException ex) {
@@ -336,8 +336,6 @@ public class CharityEventPanelController {
             }
         }.execute();
 
-
-       
     }
 
 //    public void showEventTable() {
@@ -507,7 +505,6 @@ public class CharityEventPanelController {
                     // Lấy dữ liệu từ model
                     txtId.setText(model.getValueAt(selectedRow, 0).toString());
                     txtEventName.setText(model.getValueAt(selectedRow, 2).toString());
-                    selectComboBoxItemByName(jcbOrganization, model.getValueAt(selectedRow, 1).toString());
                     selectComboBoxItemByName(jcbCategory, model.getValueAt(selectedRow, 3).toString());
                     txtProgress.setText(model.getValueAt(selectedRow, 6).toString());
                     int eventId = Integer.parseInt(txtId.getText());
@@ -521,6 +518,7 @@ public class CharityEventPanelController {
                         jlbImage.setIcon(ImageIconCustom.getSmoothIcon(event.getImageUrl(), 160, 160));
                         imageUrl = event.getImageUrl();
                         jcbStatus.setSelectedItem(event.getStatus());
+                        selectComboBoxItemByName(jcbOrganization, MapHelper.getOrganizationName(event.getOrganizationId()));
                     }
                     // Lưu lại ID sự kiện đã chọn
                     selectedEventId = eventId;
@@ -634,7 +632,6 @@ public class CharityEventPanelController {
             if (eventService.addEvent(event)) {
                 JOptionPane.showMessageDialog(null, "Thêm sự kiện thành công.");
                 MapHelper.refreshEventCache();
-
             } else {
                 JOptionPane.showMessageDialog(null, "Thêm sự kiện thất bại.");
             }
@@ -649,7 +646,7 @@ public class CharityEventPanelController {
                 JOptionPane.showMessageDialog(null, "Cập nhật sự kiện thất bại.");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Cập nhật sự kiện thất bại-if");
+            JOptionPane.showMessageDialog(null, "Cập nhật sự kiện thất bại");
         }
 
         showEventTable();
@@ -691,11 +688,9 @@ public class CharityEventPanelController {
             copyFileToImageFolder(selectedFile, fileName);
 
             imageUrl = relativePath;
-            jlbImage.setIcon(ImageIconCustom.getSmoothIcon(imageUrl, 170, 160));
         }
-
-        //test
-        System.out.println(imageUrl);
+        System.out.println("1");
+        jlbImage.setIcon(ImageIconCustom.getSmoothIcon(imageUrl, 170, 160));
     }
 
     private void resetButtonState() {
@@ -826,7 +821,7 @@ public class CharityEventPanelController {
     //--------------------------------
     private void copyFileToImageFolder(File sourceFile, String fileName) {
         //đường dẫn thực tế đến thư mục ảnh trong project
-        File destDir = new File("src/charity/image");
+        File destDir = new File("src/charity/image/");
 
         if (!destDir.exists()) {
             destDir.mkdirs();//tạo thư mục nếu chưa có

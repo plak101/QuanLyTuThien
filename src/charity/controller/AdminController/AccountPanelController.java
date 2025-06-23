@@ -9,6 +9,7 @@ import charity.model.Role;
 import charity.model.User;
 import charity.service.AccountService;
 import charity.service.UserService;
+import charity.utils.MessageDialog;
 import charity.utils.ScannerUtils;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
@@ -445,6 +446,11 @@ public class AccountPanelController {
 
         if (jdcBirthDate.getDate() == null) {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn ngày sinh!");
+            return false;
+        }
+        
+        if (ScannerUtils.isDateAfterToday(jdcBirthDate.getDate())){
+            MessageDialog.showError("Ngày đã chọn không được lớn hơn ngày hiện tại");
             return false;
         }
 

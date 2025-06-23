@@ -10,7 +10,7 @@ public class ImageIconCustom {
         URL imgUrl = ImageIconCustom.class.getResource(url);
         if (imgUrl ==null){
             System.err.println("Không tìm thấy ảnh: "+ url);
-            return null;
+            imgUrl = ImageIconCustom.class.getResource("/charity/image/default.png");
         }
         ImageIcon icon = new ImageIcon(imgUrl);
         Image image = icon.getImage();

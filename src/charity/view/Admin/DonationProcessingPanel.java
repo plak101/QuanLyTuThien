@@ -1,5 +1,6 @@
 package charity.view.Admin;
 
+import charity.component.ColorCustom;
 import charity.component.GButton;
 import charity.model.CharityEvent;
 import charity.model.DonationAllocation;
@@ -421,6 +422,8 @@ public class DonationProcessingPanel extends JPanel {
         group.add(rbMoney);
         group.add(rbGoods);
         rbMoney.setSelected(true);
+        rbMoney.setVisible(false);
+        rbGoods.setVisible(false);
 
         // --- Trường chung ---
         JTextField txtPurpose = new JTextField();
@@ -431,8 +434,14 @@ public class DonationProcessingPanel extends JPanel {
         // Panel tiền
         JPanel moneyPanel = new JPanel();
         moneyPanel.setLayout(new BoxLayout(moneyPanel, BoxLayout.Y_AXIS));
+
         JTextField txtAmount = new JTextField();
         moneyPanel.add(labelFieldPanel("Số tiền phân phát:", txtAmount));
+        moneyPanel.add(Box.createVerticalStrut(8));
+        moneyPanel.add(labelFieldPanel("Mục đích:", txtPurpose));
+        moneyPanel.add(Box.createVerticalStrut(8));
+        moneyPanel.add(labelFieldPanel("Người nhận (hoặc danh sách):", txtRecipient));
+
         // Panel vật tư
         JPanel goodsPanel = new JPanel();
         goodsPanel.setLayout(new BoxLayout(goodsPanel, BoxLayout.Y_AXIS));
@@ -458,12 +467,16 @@ public class DonationProcessingPanel extends JPanel {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Giảm padding
 
         // Header (tiêu đề) - GIỐNG EDIT
-        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Căn trái tiêu đề
-        headerPanel.setBackground(new Color(33, 120, 200));
-        headerPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); // Giảm chiều cao
-        JLabel lblHeader = new JLabel("TẠO PHÂN PHÁT MỚI");
+        JLabel lblHeader = new JLabel("TẠO PHÂN PHÁT MỚI", JLabel.CENTER);
         lblHeader.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblHeader.setForeground(Color.WHITE);
+        lblHeader.setOpaque(true);
+//        lblHeader.setBackground(ColorCustom.backroundHeaderTitle()); // Màu xanh lá ví dụ
+        lblHeader.setForeground(Color.BLACK);
+
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setPreferredSize(new Dimension(300, 40));
+        headerPanel.setOpaque(false); // hoặc setBackground nếu muốn
+        headerPanel.add(lblHeader, BorderLayout.CENTER);
         headerPanel.add(lblHeader);
         mainPanel.add(headerPanel);
         mainPanel.add(Box.createVerticalStrut(10)); // Giảm khoảng cách sau tiêu đề
@@ -477,10 +490,6 @@ public class DonationProcessingPanel extends JPanel {
         mainPanel.add(Box.createVerticalStrut(8)); // Giảm khoảng cách
 
         // Thêm các trường nhập liệu - GIỐNG EDIT
-        mainPanel.add(labelFieldPanel("Mục đích:", txtPurpose));
-        mainPanel.add(Box.createVerticalStrut(8));
-        mainPanel.add(labelFieldPanel("Người nhận (hoặc danh sách):", txtRecipient));
-        mainPanel.add(Box.createVerticalStrut(8));
         mainPanel.add(cardPanel); // Panel động (tiền/vật tư)
 
         int result = JOptionPane.showConfirmDialog(this, mainPanel, "Tạo phân phát mới", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -568,6 +577,8 @@ public class DonationProcessingPanel extends JPanel {
         group.add(rbGoods);
         rbMoney.setSelected(isMoney);
         rbGoods.setSelected(!isMoney);
+        rbMoney.setVisible(false);
+        rbGoods.setVisible(false);
 
         // --- Trường chung ---
         JTextField txtPurpose = new JTextField(safe(alloc.getPurpose()));
@@ -580,6 +591,12 @@ public class DonationProcessingPanel extends JPanel {
         moneyPanel.setLayout(new BoxLayout(moneyPanel, BoxLayout.Y_AXIS));
         JTextField txtAmount = new JTextField(alloc.getAmount() > 0 ? String.valueOf(alloc.getAmount()) : "");
         moneyPanel.add(labelFieldPanel("Số tiền phân phát:", txtAmount));
+        moneyPanel.add(Box.createVerticalStrut(8));
+        moneyPanel.add(labelFieldPanel("Mục đích:", txtPurpose));
+        moneyPanel.add(Box.createVerticalStrut(8));
+        moneyPanel.add(labelFieldPanel("Người nhận (hoặc danh sách):", txtRecipient));
+        moneyPanel.add(Box.createVerticalStrut(8));
+
         // Panel vật tư
         JPanel goodsPanel = new JPanel();
         goodsPanel.setLayout(new BoxLayout(goodsPanel, BoxLayout.Y_AXIS));
@@ -608,12 +625,14 @@ public class DonationProcessingPanel extends JPanel {
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Căn trái tiêu đề
         headerPanel.setBackground(new Color(33, 120, 200));
         headerPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); // Giảm chiều cao
+        headerPanel.setPreferredSize(new Dimension(300, 40)); // Giảm chiều cao
         JLabel lblHeader = new JLabel("SỬA PHÂN PHÁT");
         lblHeader.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblHeader.setForeground(Color.WHITE);
+        lblHeader.setForeground(Color.BLACK);
         headerPanel.add(lblHeader);
         mainPanel.add(headerPanel);
         mainPanel.add(Box.createVerticalStrut(10)); // Giảm khoảng cách sau tiêu đề
+        mainPanel.add(cardPanel); // Panel động (tiền/vật tư)
 
         // Panel chọn loại phân phát (căn trái)
         JPanel typePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0)); // Căn trái, giảm khoảng cách ngang
@@ -624,12 +643,11 @@ public class DonationProcessingPanel extends JPanel {
         mainPanel.add(Box.createVerticalStrut(8)); // Giảm khoảng cách
 
         // Thêm các trường nhập liệu (đã căn trái sẵn trong `labelFieldPanel`)
-        mainPanel.add(labelFieldPanel("Mục đích:", txtPurpose));
-        mainPanel.add(Box.createVerticalStrut(8));
-        mainPanel.add(labelFieldPanel("Người nhận (hoặc danh sách):", txtRecipient));
-        mainPanel.add(Box.createVerticalStrut(8));
-        mainPanel.add(cardPanel); // Panel động (tiền/vật tư)
-
+//        mainPanel.add(labelFieldPanel("Mục đích:", txtPurpose));
+//        mainPanel.add(Box.createVerticalStrut(8));
+//        mainPanel.add(labelFieldPanel("Người nhận (hoặc danh sách):", txtRecipient));
+//        mainPanel.add(Box.createVerticalStrut(8));
+//        mainPanel.add(cardPanel); // Panel động (tiền/vật tư)
         int result = JOptionPane.showConfirmDialog(this, mainPanel, "Sửa phân phát", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             try {

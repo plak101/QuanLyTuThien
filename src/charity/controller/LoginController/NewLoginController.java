@@ -54,30 +54,30 @@ public class NewLoginController {
             }
         });
 
-        jlbForgotPassword.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                ForgotPasswordDialog2 dialog = new ForgotPasswordDialog2(loginView);
-                dialog.setVisible(true);
-                if (dialog.isSubmitted()) {
-                    String username = dialog.getUsername();
-                    String email = dialog.getEmail();
-                    // Kiểm tra username và email trong database
-                    Account acc = accountService.findByUsernameAndEmail(username, email);
-                    if (acc != null) {
-                        // Sinh mật khẩu mới
-                        String newPassword = generateRandomPassword();
-                        // Cập nhật mật khẩu mới vào DB
-                        accountService.updatePassword(acc.getId(), newPassword);
-                        // Gửi email
-                        EmailHelper.send(email, "Mật khẩu mới", "Mật khẩu mới của bạn là: " + newPassword);
-                        JOptionPane.showMessageDialog(loginView, "Mật khẩu mới đã được gửi về email!");
-                    } else {
-                        JOptionPane.showMessageDialog(loginView, "Tên đăng nhập hoặc email không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        });
+//        jlbForgotPassword.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                ForgotPasswordDialog2 dialog = new ForgotPasswordDialog2(loginView);
+//                dialog.setVisible(true);
+//                if (dialog.isSubmitted()) {
+//                    String username = dialog.getUsername();
+//                    String email = dialog.getEmail();
+//                    // Kiểm tra username và email trong database
+//                    Account acc = accountService.findByUsernameAndEmail(username, email);
+//                    if (acc != null) {
+//                        // Sinh mật khẩu mới
+//                        String newPassword = generateRandomPassword();
+//                        // Cập nhật mật khẩu mới vào DB
+//                        accountService.updatePassword(acc.getId(), newPassword);
+//                        // Gửi email
+//                        EmailHelper.send(email, "Mật khẩu mới", "Mật khẩu mới của bạn là: " + newPassword);
+//                        JOptionPane.showMessageDialog(loginView, "Mật khẩu mới đã được gửi về email!");
+//                    } else {
+//                        JOptionPane.showMessageDialog(loginView, "Tên đăng nhập hoặc email không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+//                    }
+//                }
+//            }
+//        });
 
         jlbSignUpLink.addMouseListener(new MouseAdapter() { //
             @Override

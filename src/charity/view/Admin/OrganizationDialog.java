@@ -4,6 +4,7 @@ import charity.component.ColorCustom;
 import charity.component.GButton;
 import charity.model.Organization;
 import charity.service.OrganizationService;
+import charity.utils.ScannerUtils;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -86,6 +87,7 @@ public class OrganizationDialog extends JDialog {
         txtOrgName = new JTextField();
         txtEmail = new JTextField();
         txtHotline = new JTextField();
+        ScannerUtils.setOnlyInputNumber(txtHotline);
         txtAddress = new JTextField();
 
         // Style all text fields

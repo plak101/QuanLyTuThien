@@ -5,8 +5,10 @@ import charity.model.CharityEvent;
 import charity.model.DonationAllocation;
 import charity.service.AllocationService;
 import charity.service.CharityEventService;
+import charity.utils.ScannerUtils;
 import java.awt.*;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -339,6 +341,7 @@ public class DonationProcessingPanel extends JPanel {
 
     // Sửa loadDistributions: KHÔNG có cột Sửa/Xoá nữa
     private void loadDistributions(int eventId) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         distributionTableModel.setRowCount(0);
         List<DonationAllocation> allocations = allocationService.getAllocationsByEvent(eventId);
         for (DonationAllocation alloc : allocations) {
@@ -352,7 +355,7 @@ public class DonationProcessingPanel extends JPanel {
                 alloc.getId(),
                 moneyFormat.format(alloc.getAmount()),
                 alloc.getPurpose(),
-                alloc.getAllocationDate(),
+                sdf.format(alloc.getAllocationDate()),
                 recipient
             });
         }
@@ -404,6 +407,7 @@ public class DonationProcessingPanel extends JPanel {
         moneyPanel.setLayout(new BoxLayout(moneyPanel, BoxLayout.Y_AXIS));
 
         JTextField txtAmount = new JTextField();
+        ScannerUtils.setOnlyInputNumber(txtAmount);
         moneyPanel.add(labelFieldPanel("Số tiền phân phát:", txtAmount));
         moneyPanel.add(Box.createVerticalStrut(8));
         moneyPanel.add(labelFieldPanel("Mục đích:", txtPurpose));
@@ -554,6 +558,7 @@ public class DonationProcessingPanel extends JPanel {
         JPanel moneyPanel = new JPanel();
         moneyPanel.setLayout(new BoxLayout(moneyPanel, BoxLayout.Y_AXIS));
         JTextField txtAmount = new JTextField(alloc.getAmount() > 0 ? formatForInput(alloc.getAmount()) : "");
+        ScannerUtils.setOnlyInputNumber(txtAmount);
         moneyPanel.add(labelFieldPanel("Số tiền phân phát:", txtAmount));
         moneyPanel.add(Box.createVerticalStrut(8));
         moneyPanel.add(labelFieldPanel("Mục đích:", txtPurpose));
